@@ -1,0 +1,2 @@
+include ':app'
+rootProject.name = "ld_street_lights_maintenance"
