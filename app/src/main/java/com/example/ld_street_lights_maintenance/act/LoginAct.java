@@ -90,12 +90,8 @@ public class LoginAct extends Activity {
             public void onClick(View v) {
 
 
-                String json = (String) SpUtils.getValue(SpUtils.LOGIN_INFO,"");
 
-                Log.e("xxx", "》》》》》》》》》》》》》》》》》》》》》 show 当前保存的json  json = " + json);
-
-
-              /*  username = ((EditText) findViewById(R.id.txt_user_name))
+                username = ((EditText) findViewById(R.id.txt_user_name))
                         .getText().toString().trim();
                 password = ((EditText) findViewById(R.id.txt_pass_word))
                         .getText().toString().trim();
@@ -118,7 +114,7 @@ public class LoginAct extends Activity {
                 }
 
                 showProgress();
-                makeSampleHttpRequest();*/
+                makeSampleHttpRequest();
             }
         });
 
