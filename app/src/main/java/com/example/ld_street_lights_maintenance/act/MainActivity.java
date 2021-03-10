@@ -27,8 +27,9 @@ public class MainActivity extends AppCompatActivity {
         //初始化TabHost容器
         tab.setup();
         //在TabHost创建标签，然后设置：标题／图标／标签页布局
-        tab.addTab(tab.newTabSpec("tab1").setIndicator("本地音乐" , null).setContent(R.id.tab1));
-        tab.addTab(tab.newTabSpec("tab2").setIndicator("网络音乐" , null).setContent(R.id.tab2));
+        tab.addTab(tab.newTabSpec("tab1").setIndicator("BLUE" , null).setContent(R.id.tab1));
+        tab.addTab(tab.newTabSpec("tab2").setIndicator("NFC" , null).setContent(R.id.tab2));
+        tab.addTab(tab.newTabSpec("tab2").setIndicator("MAP" , null).setContent(R.id.tab3));
 
         initView();
 

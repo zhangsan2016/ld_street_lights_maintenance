@@ -57,6 +57,21 @@
                         android:layout_height="wrap_content"
                         android:text="第二个tab的布局" />
                 </LinearLayout>
+
+
+
+                <LinearLayout
+                    android:id="@+id/tab3"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="第三个tab的布局" />
+                </LinearLayout>
+
             </FrameLayout>
         </LinearLayout>
     </TabHost>
