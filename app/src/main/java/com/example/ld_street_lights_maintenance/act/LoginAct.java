@@ -187,6 +187,9 @@ public class LoginAct extends Activity {
                 intent.putExtras(bundle);
                 startActivity(intent);*/
 
+                            Intent intent = new Intent(LoginAct.this, MainActivity.class);
+                            startActivity(intent);
+
 
                             stopProgress();
                             LoginAct.this.finish();
