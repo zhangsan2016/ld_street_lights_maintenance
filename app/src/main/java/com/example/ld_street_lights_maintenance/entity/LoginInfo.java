@@ -13,202 +13,174 @@ public class LoginInfo implements Serializable {
 
 
     /**
-     * b : true
-     * msg : null
-     * data : [{"ID":"1","NAME":"admin","PHONE":"13633333333","PASSWORD":"d658c4853f123e4f377ab51e79c4b10c","MENUPOWER":"3","OPERATEPOWER":"15","SYSTEM":"15","REMARK":"","POSITION":"1","HEADPIC":"http://47.99.168.98:9001/Files/2018-12-27/o_1cvmrei6rr941fud1fh1jbg15c7h.jpg","LOGINSTATUS":"1","STATUS":"0","DEFSYSTEM":"2","url":"http://47.99.168.98:9001/API/CommonFn.asmx/Login","TOKEN":"u5I/5F0oAv2Vp+GfAzT73OoE7XHFJ+bvznVln4a1AjPo2Yk3Jzslv9kSk+tm2jCuMBqFEC2xWs0yxEJVuvtzdVdiiULZvGm312MvFqKVKMZa83b7rzbyYJdlI2sUcCiZQiYKfyI+qyFQXg/uUyV89JQYi4llTm5h1+NRv3MteVQ=","Response":"http://47.99.168.98:9002/api/Common.asmx/LoginToken?strToken=u5I/5F0oAv2Vp+GfAzT73OoE7XHFJ+bvznVln4a1AjPo2Yk3Jzslv9kSk+tm2jCuMBqFEC2xWs0yxEJVuvtzdVdiiULZvGm312MvFqKVKMZa83b7rzbyYJdlI2sUcCiZQiYKfyI+qyFQXg/uUyV89JQYi4llTm5h1+NRv3MteVQ="}]
+     * errno : 0
+     * errmsg :
+     * data : {"token":{"username":"ld","token":"1f706c00-8145-11eb-8d74-8b5e97bc2b27","expired":1615428344512},"userProfile":{"_id":27,"username":"ld","phone":"18011223344","fullname":"洛丁","roles":"[\"维护员\"]","openid":"oa89fv9pPkNdTKw5XKqcR6KOwcMg"},"grantedActions":["device/view","project/view","v_device_ebox/view","v_device_lamp/view","v_device_warning/view","v_device_wiresafe/view","v_ticket/view","menu_light/main","menu_light/home","device_ebox/view","device_lamp/view","device_wiresafe/view","device_warning/view","menu_video/main","menu_video/vehicle","device/view","project/view","v_device_ebox/view","v_device_lamp/view","v_device_wiresafe/view","v_device_warning/view","v_ticket/view","device/new","project/new","project/edit","device/edit","v_device_ebox/new","v_device_lamp/new","v_device_wiresafe/new","v_ticket/new","v_ticket/edit","v_device_warning/delete","v_device_warning/close","v_device_wiresafe/edit","v_device_lamp/edit","v_device_ebox/edit","v_device_wiresafe/control","v_device_lamp/control","v_device_ebox/control","v_device_ebox/metrics","v_device_lamp/metrics","v_device_wiresafe/metrics","menu_light/main","menu_video/main","menu_light/home","menu_video/vehicle","device_ebox/view","device_lamp/view","device_wiresafe/view","device_warning/view","ticket/view","ticket/new","menu_video/person","device_ebox/new","device_lamp/new","device_wiresafe/new","device_wiresafe/edit","device_lamp/edit","device_ebox/edit","device_ebox/control","device_wiresafe/control","device_lamp/control","menu_alarm/main"]}
      */
 
-    private boolean b;
-    private Object msg;
-    private List<DataBean> data;
+    private int errno;
+    private String errmsg;
+    private LoginInfo.DataBean data;
 
-    public boolean isB() {
-        return b;
+    public int getErrno() {
+        return errno;
     }
 
-    public void setB(boolean b) {
-        this.b = b;
+    public void setErrno(int errno) {
+        this.errno = errno;
     }
 
-    public Object getMsg() {
-        return msg;
+    public String getErrmsg() {
+        return errmsg;
     }
 
-    public void setMsg(Object msg) {
-        this.msg = msg;
+    public void setErrmsg(String errmsg) {
+        this.errmsg = errmsg;
     }
 
-    public List<DataBean> getData() {
+    public LoginInfo.DataBean getData() {
         return data;
     }
 
-    public void setData(List<DataBean> data) {
+    public void setData(LoginInfo.DataBean data) {
         this.data = data;
     }
 
-    public static class DataBean implements Serializable{
+    public static class DataBean {
         /**
-         * ID : 1
-         * NAME : admin
-         * PHONE : 13633333333
-         * PASSWORD : d658c4853f123e4f377ab51e79c4b10c
-         * MENUPOWER : 3
-         * OPERATEPOWER : 15
-         * SYSTEM : 15
-         * REMARK :
-         * POSITION : 1
-         * HEADPIC : http://47.99.168.98:9001/Files/2018-12-27/o_1cvmrei6rr941fud1fh1jbg15c7h.jpg
-         * LOGINSTATUS : 1
-         * STATUS : 0
-         * DEFSYSTEM : 2
-         * url : http://47.99.168.98:9001/API/CommonFn.asmx/Login
-         * TOKEN : u5I/5F0oAv2Vp+GfAzT73OoE7XHFJ+bvznVln4a1AjPo2Yk3Jzslv9kSk+tm2jCuMBqFEC2xWs0yxEJVuvtzdVdiiULZvGm312MvFqKVKMZa83b7rzbyYJdlI2sUcCiZQiYKfyI+qyFQXg/uUyV89JQYi4llTm5h1+NRv3MteVQ=
-         * Response : http://47.99.168.98:9002/api/Common.asmx/LoginToken?strToken=u5I/5F0oAv2Vp+GfAzT73OoE7XHFJ+bvznVln4a1AjPo2Yk3Jzslv9kSk+tm2jCuMBqFEC2xWs0yxEJVuvtzdVdiiULZvGm312MvFqKVKMZa83b7rzbyYJdlI2sUcCiZQiYKfyI+qyFQXg/uUyV89JQYi4llTm5h1+NRv3MteVQ=
+         * token : {"username":"ld","token":"1f706c00-8145-11eb-8d74-8b5e97bc2b27","expired":1615428344512}
+         * userProfile : {"_id":27,"username":"ld","phone":"18011223344","fullname":"洛丁","roles":"[\"维护员\"]","openid":"oa89fv9pPkNdTKw5XKqcR6KOwcMg"}
+         * grantedActions : ["device/view","project/view","v_device_ebox/view","v_device_lamp/view","v_device_warning/view","v_device_wiresafe/view","v_ticket/view","menu_light/main","menu_light/home","device_ebox/view","device_lamp/view","device_wiresafe/view","device_warning/view","menu_video/main","menu_video/vehicle","device/view","project/view","v_device_ebox/view","v_device_lamp/view","v_device_wiresafe/view","v_device_warning/view","v_ticket/view","device/new","project/new","project/edit","device/edit","v_device_ebox/new","v_device_lamp/new","v_device_wiresafe/new","v_ticket/new","v_ticket/edit","v_device_warning/delete","v_device_warning/close","v_device_wiresafe/edit","v_device_lamp/edit","v_device_ebox/edit","v_device_wiresafe/control","v_device_lamp/control","v_device_ebox/control","v_device_ebox/metrics","v_device_lamp/metrics","v_device_wiresafe/metrics","menu_light/main","menu_video/main","menu_light/home","menu_video/vehicle","device_ebox/view","device_lamp/view","device_wiresafe/view","device_warning/view","ticket/view","ticket/new","menu_video/person","device_ebox/new","device_lamp/new","device_wiresafe/new","device_wiresafe/edit","device_lamp/edit","device_ebox/edit","device_ebox/control","device_wiresafe/control","device_lamp/control","menu_alarm/main"]
          */
 
-        private String ID;
-        private String NAME;
-        private String PHONE;
-        private String PASSWORD;
-        private String MENUPOWER;
-        private String OPERATEPOWER;
-        private String SYSTEM;
-        private String REMARK;
-        private String POSITION;
-        private String HEADPIC;
-        private String LOGINSTATUS;
-        private String STATUS;
-        private String DEFSYSTEM;
-        private String url;
-        private String TOKEN;
-        private String Response;
+        private LoginInfo.DataBean.TokenBean token;
+        private LoginInfo.DataBean.UserProfileBean userProfile;
+        private List<String> grantedActions;
 
-        public String getID() {
-            return ID;
+        public LoginInfo.DataBean.TokenBean getToken() {
+            return token;
         }
 
-        public void setID(String ID) {
-            this.ID = ID;
+        public void setToken(LoginInfo.DataBean.TokenBean token) {
+            this.token = token;
         }
 
-        public String getNAME() {
-            return NAME;
+        public LoginInfo.DataBean.UserProfileBean getUserProfile() {
+            return userProfile;
         }
 
-        public void setNAME(String NAME) {
-            this.NAME = NAME;
+        public void setUserProfile(LoginInfo.DataBean.UserProfileBean userProfile) {
+            this.userProfile = userProfile;
         }
 
-        public String getPHONE() {
-            return PHONE;
+        public List<String> getGrantedActions() {
+            return grantedActions;
         }
 
-        public void setPHONE(String PHONE) {
-            this.PHONE = PHONE;
+        public void setGrantedActions(List<String> grantedActions) {
+            this.grantedActions = grantedActions;
         }
 
-        public String getPASSWORD() {
-            return PASSWORD;
+        public static class TokenBean {
+            /**
+             * username : ld
+             * token : 1f706c00-8145-11eb-8d74-8b5e97bc2b27
+             * expired : 1615428344512
+             */
+
+            private String username;
+            private String token;
+            private long expired;
+
+            public String getUsername() {
+                return username;
+            }
+
+            public void setUsername(String username) {
+                this.username = username;
+            }
+
+            public String getToken() {
+                return token;
+            }
+
+            public void setToken(String token) {
+                this.token = token;
+            }
+
+            public long getExpired() {
+                return expired;
+            }
+
+            public void setExpired(long expired) {
+                this.expired = expired;
+            }
         }
 
-        public void setPASSWORD(String PASSWORD) {
-            this.PASSWORD = PASSWORD;
-        }
+        public static class UserProfileBean {
+            /**
+             * _id : 27
+             * username : ld
+             * phone : 18011223344
+             * fullname : 洛丁
+             * roles : ["维护员"]
+             * openid : oa89fv9pPkNdTKw5XKqcR6KOwcMg
+             */
 
-        public String getMENUPOWER() {
-            return MENUPOWER;
-        }
+            private int _id;
+            private String username;
+            private String phone;
+            private String fullname;
+            private String roles;
+            private String openid;
 
-        public void setMENUPOWER(String MENUPOWER) {
-            this.MENUPOWER = MENUPOWER;
-        }
+            public int get_id() {
+                return _id;
+            }
 
-        public String getOPERATEPOWER() {
-            return OPERATEPOWER;
-        }
+            public void set_id(int _id) {
+                this._id = _id;
+            }
 
-        public void setOPERATEPOWER(String OPERATEPOWER) {
-            this.OPERATEPOWER = OPERATEPOWER;
-        }
+            public String getUsername() {
+                return username;
+            }
 
-        public String getSYSTEM() {
-            return SYSTEM;
-        }
+            public void setUsername(String username) {
+                this.username = username;
+            }
 
-        public void setSYSTEM(String SYSTEM) {
-            this.SYSTEM = SYSTEM;
-        }
+            public String getPhone() {
+                return phone;
+            }
 
-        public String getREMARK() {
-            return REMARK;
-        }
+            public void setPhone(String phone) {
+                this.phone = phone;
+            }
 
-        public void setREMARK(String REMARK) {
-            this.REMARK = REMARK;
-        }
+            public String getFullname() {
+                return fullname;
+            }
 
-        public String getPOSITION() {
-            return POSITION;
-        }
+            public void setFullname(String fullname) {
+                this.fullname = fullname;
+            }
 
-        public void setPOSITION(String POSITION) {
-            this.POSITION = POSITION;
-        }
+            public String getRoles() {
+                return roles;
+            }
 
-        public String getHEADPIC() {
-            return HEADPIC;
-        }
+            public void setRoles(String roles) {
+                this.roles = roles;
+            }
 
-        public void setHEADPIC(String HEADPIC) {
-            this.HEADPIC = HEADPIC;
-        }
+            public String getOpenid() {
+                return openid;
+            }
 
-        public String getLOGINSTATUS() {
-            return LOGINSTATUS;
-        }
-
-        public void setLOGINSTATUS(String LOGINSTATUS) {
-            this.LOGINSTATUS = LOGINSTATUS;
-        }
-
-        public String getSTATUS() {
-            return STATUS;
-        }
-
-        public void setSTATUS(String STATUS) {
-            this.STATUS = STATUS;
-        }
-
-        public String getDEFSYSTEM() {
-            return DEFSYSTEM;
-        }
-
-        public void setDEFSYSTEM(String DEFSYSTEM) {
-            this.DEFSYSTEM = DEFSYSTEM;
-        }
-
-        public String getUrl() {
-            return url;
-        }
-
-        public void setUrl(String url) {
-            this.url = url;
-        }
-
-        public String getTOKEN() {
-            return TOKEN;
-        }
-
-        public void setTOKEN(String TOKEN) {
-            this.TOKEN = TOKEN;
-        }
-
-        public String getResponse() {
-            return Response;
-        }
-
-        public void setResponse(String Response) {
-            this.Response = Response;
+            public void setOpenid(String openid) {
+                this.openid = openid;
+            }
         }
     }
 

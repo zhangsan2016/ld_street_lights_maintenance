@@ -143,8 +143,8 @@ public class LoginAct extends Activity {
 
                 RequestBody requestBody = new FormBody.Builder()
                         .add("strTemplate", "{\"ischeck\":$data.rows}")
-                        .add("strName", username)
-                        .add("strPwd", password + "1")
+                        .add("username", username)
+                        .add("password", password )
                         .add("strVerify", "[admin]")
                         .build();
 
@@ -170,19 +170,34 @@ public class LoginAct extends Activity {
                     public void onResponse(Call call, Response response) throws IOException {
                         String json = response.body().string();
 
-                        Log.e("xxx", "成功 json = " + json);
+
 						/*Log.e("xxx", "成功 json = " + json);
 						stopProgress();*/
 
 						// {"errno":0,"errmsg":"","data":{"grantedActions":null}}
                         Gson gson = new Gson();
                         LoginInfo loginInfo = gson.fromJson(json, LoginInfo.class);
-                        if(loginInfo.isB()){
+                        if(loginInfo.getErrno() == 0){
 
-                            Log.e("xxx", "成功" + loginInfo.getData().get(0).getResponse());
+                            Log.e("xxx", "成功 json = " + json);
                             // cookie持久化
-                            String url = loginInfo.getData().get(0).getResponse();
-                            getSookie(url,loginInfo);
+                            // 保存用户名和密码
+                            SharedPreferences.Editor editor = preferences.edit();
+                            editor.putString("username", username);
+                            editor.putString("password", password);
+                            editor.commit();
+
+
+            /*    Intent intent = new Intent(LoginAct.this, ParameterAct.class);
+                Bundle bundle = new Bundle();
+                bundle.putInt(ParameterAct.FRAGMENT_FLAG, ParameterAct.MAIN);
+                bundle.putSerializable("loginInfo", loginInfo);
+                intent.putExtras(bundle);
+                startActivity(intent);*/
+
+
+                            stopProgress();
+                            LoginAct.this.finish();
 
                         }else{
                             Log.e("xxx", "失败" + json);
@@ -205,53 +220,6 @@ public class LoginAct extends Activity {
 
     }
 
-    /**
-     *  获取sookie做持久化操作
-     * @param url Response 地址
-     * @param loginInfo
-     */
-    private void getSookie(String url, final LoginInfo loginInfo) {
-
-        HttpUtil.sendGetSookieHttpRequest(url, new Callback() {
-
-            @Override
-            public void onFailure(Call call, IOException e) {
-                Log.e("xxx", "失败" + e.toString());
-                stopProgress();
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                Log.e("xxx", "成功" + response.body().string());
-
-                // 获取uuid
-                boolean uuidState = getAppUuid(username);
-                if(!uuidState){
-                    showToast("本地生成应用UUID失败！");
-                    return;
-                }
-
-                // 保存用户名和密码
-                SharedPreferences.Editor editor = preferences.edit();
-                editor.putString("username", username);
-                editor.putString("password", password);
-                editor.commit();
-
-
-            /*    Intent intent = new Intent(LoginAct.this, ParameterAct.class);
-                Bundle bundle = new Bundle();
-                bundle.putInt(ParameterAct.FRAGMENT_FLAG, ParameterAct.MAIN);
-                bundle.putSerializable("loginInfo", loginInfo);
-                intent.putExtras(bundle);
-                startActivity(intent);*/
-
-
-                stopProgress();
-                LoginAct.this.finish();
-
-            }
-        });
-    }
 
 
 
