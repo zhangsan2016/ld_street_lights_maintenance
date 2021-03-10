@@ -7,8 +7,7 @@
     android:orientation="vertical">
 
 
-    <TabHost
-        xmlns:android="http://schemas.android.com/apk/res/android"
+    <TabHost xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@android:id/tabhost"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -16,20 +15,17 @@
 
 
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
 
-            <!-- TabWidget组件id值不可变-->
             <TabWidget
                 android:id="@android:id/tabs"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-            </TabWidget>
+                android:layout_height="wrap_content"></TabWidget>
 
 
-            <!-- FrameLayout布局，id值不可变-->
             <FrameLayout
                 android:id="@android:id/tabcontent"
                 android:layout_width="fill_parent"
@@ -37,11 +33,10 @@
                 android:layout_above="@android:id/tabs">
 
 
-                <!-- 第一个tab的布局 -->
                 <LinearLayout
                     android:id="@+id/tab1"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" >
+                    android:layout_height="match_parent">
 
 
                     <TextView
@@ -51,11 +46,10 @@
                 </LinearLayout>
 
 
-                <!-- 第二个tab的布局 -->
                 <LinearLayout
                     android:id="@+id/tab2"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" >
+                    android:layout_height="match_parent">
 
 
                     <TextView
@@ -63,11 +57,6 @@
                         android:layout_height="wrap_content"
                         android:text="第二个tab的布局" />
                 </LinearLayout>
-
-
-
-
-
             </FrameLayout>
         </LinearLayout>
     </TabHost>
@@ -94,11 +83,11 @@
             android:drawableTop="@drawable/tab_record_selector"
             android:text="照明规划" />
 
-      <!--  <RadioButton
+        <RadioButton
             android:id="@+id/contact_tab"
             style="@style/Custom.TabRadioButton"
             android:drawableTop="@drawable/tab_contact_selector"
-            android:text="通讯录" />-->
+            android:text="通讯录" />
 
         <RadioButton
             android:id="@+id/settings_tab"
@@ -106,7 +95,6 @@
             android:drawableTop="@drawable/tab_setting_selector"
             android:text="设置" />
     </RadioGroup>
-
 
 
 </LinearLayout>
