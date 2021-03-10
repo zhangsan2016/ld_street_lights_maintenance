@@ -25,6 +25,7 @@ import com.example.ld_street_lights_maintenance.util.CustomUtils;
 import com.example.ld_street_lights_maintenance.util.HttpConfiguration;
 import com.example.ld_street_lights_maintenance.util.HttpUtil;
 import com.example.ld_street_lights_maintenance.util.LogUtil;
+import com.example.ld_street_lights_maintenance.util.SpUtils;
 import com.google.gson.Gson;
 
 import org.json.JSONObject;
@@ -59,7 +60,6 @@ public class LoginAct extends Activity {
     private int newVersionCode;
     private String newVersionName;
 
-    private SharedPreferences preferences;
     String username,password,serviceAddress;
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,17 +70,14 @@ public class LoginAct extends Activity {
 
 
 
-        preferences = getSharedPreferences(CLIENT_STATE, 0);
-        username = preferences.getString("username", "");
-        password = preferences.getString("password", "");
+        username = (String) SpUtils.getValue("username", "");
+        password = (String) SpUtils.getValue("password", "");
 
         if(!TextUtils.isEmpty(username) &&
                 !TextUtils.isEmpty(password)){
             ((EditText) findViewById(R.id.txt_user_name)).setText(username);
             ((EditText) findViewById(R.id.txt_pass_word)).setText(password);
         }
-
-
 
 
         // 测试
@@ -92,7 +89,13 @@ public class LoginAct extends Activity {
         loginBtn.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
 
-                username = ((EditText) findViewById(R.id.txt_user_name))
+
+                String json = (String) SpUtils.getValue(SpUtils.LOGIN_INFO,"");
+
+                Log.e("xxx", "》》》》》》》》》》》》》》》》》》》》》 show 当前保存的json  json = " + json);
+
+
+              /*  username = ((EditText) findViewById(R.id.txt_user_name))
                         .getText().toString().trim();
                 password = ((EditText) findViewById(R.id.txt_pass_word))
                         .getText().toString().trim();
@@ -113,15 +116,9 @@ public class LoginAct extends Activity {
                     showToast("用户名和密码长度不能超过16");
                     return;
                 }
-		/*		// 最高权限，直接进入系统
-				else if (username.equals("hjw") && password.equals("hjw")) {
-					Intent intent = new Intent(LoginAct.this, MainAct.class);
-					startActivity(intent);
-					LoginAct.this.finish();
-					return;
-				}*/
+
                 showProgress();
-                makeSampleHttpRequest();
+                makeSampleHttpRequest();*/
             }
         });
 
@@ -168,8 +165,8 @@ public class LoginAct extends Activity {
 
                     @Override
                     public void onResponse(Call call, Response response) throws IOException {
-                        String json = response.body().string();
 
+                        String json = response.body().string();
 
 						/*Log.e("xxx", "成功 json = " + json);
 						stopProgress();*/
@@ -182,10 +179,9 @@ public class LoginAct extends Activity {
                             Log.e("xxx", "成功 json = " + json);
                             // cookie持久化
                             // 保存用户名和密码
-                            SharedPreferences.Editor editor = preferences.edit();
-                            editor.putString("username", username);
-                            editor.putString("password", password);
-                            editor.commit();
+                            SpUtils.putValue("username", username);
+                            SpUtils.putValue("password", password);
+                            SpUtils.putValue(SpUtils.LOGIN_INFO, json);
 
 
             /*    Intent intent = new Intent(LoginAct.this, ParameterAct.class);
