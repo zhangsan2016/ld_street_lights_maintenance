@@ -7,7 +7,7 @@
     android:orientation="vertical">
 
 
-   <!-- ViewPager -->
+    <!-- ViewPager -->
     <TabHost xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@android:id/tabhost"
         android:layout_width="match_parent"
@@ -24,15 +24,16 @@
             <TabWidget
                 android:id="@android:id/tabs"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"></TabWidget>
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"></TabWidget>
 
 
             <FrameLayout
                 android:id="@android:id/tabcontent"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
-                android:layout_weight="1"
-                android:layout_above="@android:id/tabs">
+                android:layout_above="@android:id/tabs"
+                android:layout_weight="1">
 
                 <androidx.viewpager.widget.ViewPager
                     android:id="@+id/viewPager"
@@ -40,43 +41,43 @@
                     android:layout_height="match_parent"></androidx.viewpager.widget.ViewPager>
 
 
-                <LinearLayout
-                    android:id="@+id/tab1"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                <!--  <LinearLayout
+                      android:id="@+id/tab1"
+                      android:layout_width="match_parent"
+                      android:layout_height="match_parent">
 
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="第一个tab的布局" />
-                </LinearLayout>
+                      <TextView
+                          android:layout_width="wrap_content"
+                          android:layout_height="wrap_content"
+                          android:text="第一个tab的布局" />
+                  </LinearLayout>
 
 
-                <LinearLayout
-                    android:id="@+id/tab2"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                  <LinearLayout
+                      android:id="@+id/tab2"
+                      android:layout_width="match_parent"
+                      android:layout_height="match_parent">
 
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="第二个tab的布局" />
-                </LinearLayout>
+                      <TextView
+                          android:layout_width="wrap_content"
+                          android:layout_height="wrap_content"
+                          android:text="第二个tab的布局" />
+                  </LinearLayout>
 
 
-                <LinearLayout
-                    android:id="@+id/tab3"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                  <LinearLayout
+                      android:id="@+id/tab3"
+                      android:layout_width="match_parent"
+                      android:layout_height="match_parent">
 
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="第三个tab的布局" />
-                </LinearLayout>
+                      <TextView
+                          android:layout_width="wrap_content"
+                          android:layout_height="wrap_content"
+                          android:text="第三个tab的布局" />
+                  </LinearLayout>-->
 
             </FrameLayout>
         </LinearLayout>
@@ -103,11 +104,6 @@
             android:drawableTop="@drawable/tab_record_selector"
             android:text="照明规划" />
 
-        <!-- <RadioButton
-             android:id="@+id/contact_tab"
-             style="@style/Custom.TabRadioButton"
-             android:drawableTop="@drawable/tab_contact_selector"
-             android:text="通讯录" />-->
 
         <RadioButton
             android:id="@+id/settings_tab"

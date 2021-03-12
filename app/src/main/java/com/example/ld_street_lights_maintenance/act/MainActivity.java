@@ -45,6 +45,7 @@ public class MainActivity extends FragmentActivity {
         tabHost.setOnTabChangedListener(new TabHost.OnTabChangeListener() {
             @Override
             public void onTabChanged(String tabId) {
+                Log.e("x", ">>>>>>>>>>>>>>>>>>>>>>>>>> onTabChanged tabId = " + tabId);
                 if (tabId.equals("tab1")) {
                     viewPager.setCurrentItem(0);
                 } else if (tabId.equals("tab2")) {
@@ -77,10 +78,20 @@ public class MainActivity extends FragmentActivity {
         //初始化TabHost容器
         tabHost.setup();
 
-        //在TabHost创建标签，然后设置：标题／图标／标签页布局
+         //动态载入XML，而不需要Activity
+        LayoutInflater i = LayoutInflater.from(this);
+        i.inflate(R.layout.tab1_main, tabHost.getTabContentView());
+        i.inflate(R.layout.tab2_main, tabHost.getTabContentView());
+        i.inflate(R.layout.tab3_main, tabHost.getTabContentView());
+        tabHost.addTab(tabHost.newTabSpec("tab1").setIndicator("标签1").setContent(R.id.LinearLayout01));
+        tabHost.addTab(tabHost.newTabSpec("tab2").setIndicator("标签2").setContent(R.id.LinearLayout02));
+        tabHost.addTab(tabHost.newTabSpec("tab3").setIndicator("标签3").setContent(R.id.LinearLayout03));
+
+
+   /*     //在TabHost创建标签，然后设置：标题／图标／标签页布局
         tabHost.addTab(tabHost.newTabSpec("tab1").setIndicator("BLUE", null).setContent(R.id.tab1));
         tabHost.addTab(tabHost.newTabSpec("tab2").setIndicator("NFC", null).setContent(R.id.tab2));
-        tabHost.addTab(tabHost.newTabSpec("tab3").setIndicator("MAP", null).setContent(R.id.tab3));
+        tabHost.addTab(tabHost.newTabSpec("tab3").setIndicator("MAP", null).setContent(R.id.tab3));*/
 
       /*  Intent intent = new Intent(this,NfcActivity.class);
       //  tabHost.addTab(tabHost.newTabSpec("tab4").setIndicator("MAP4", null).setContent(intent));
