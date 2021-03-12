@@ -1,6 +1,6 @@
 package com.example.ld_street_lights_maintenance.act;
 
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager.widget.ViewPager;
 
 import android.content.Intent;
@@ -8,18 +8,16 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.TranslateAnimation;
+import android.view.WindowManager;
 import android.widget.RadioGroup;
 import android.widget.TabHost;
-import android.widget.TextView;
 
 import com.example.ld_street_lights_maintenance.R;
 import com.example.ld_street_lights_maintenance.adapter.MainTabAdapter;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends FragmentActivity {
 
     private RadioGroup mTabRadioGroup;
     private ArrayList<View> viewList;
@@ -30,14 +28,32 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+
         setContentView(R.layout.activity_main);
 
 
         initView();
 
         // 设置 getViewPager 添加适配器
-        MainTabAdapter adapter = new MainTabAdapter(viewList);
+        MainTabAdapter adapter = new MainTabAdapter(this.getSupportFragmentManager(), 2);
         viewPager.setAdapter(adapter);
+
+        //TabHost的监听事件
+        tabHost.setOnTabChangedListener(new TabHost.OnTabChangeListener() {
+            @Override
+            public void onTabChanged(String tabId) {
+                if (tabId.equals("tab1")) {
+                    viewPager.setCurrentItem(0);
+                } else if (tabId.equals("tab2")) {
+                    viewPager.setCurrentItem(1);
+                } else if (tabId.equals("tab3")) {
+                    viewPager.setCurrentItem(2);
+                }
+            }
+        });
 
 
     }
@@ -75,29 +91,27 @@ public class MainActivity extends AppCompatActivity {
         addTab("act3", "界面3", MapActivity.class);*/
 
 
-
-
     }
 
     /**
      * 添加Activity标签
-     * @param tag	标识
-     * @param title	标签标题
+     *
+     * @param tag   标识
+     * @param title 标签标题
      * @param clazz 激活的界面
      */
     private void addTab(String tag, String title, Class clazz) {
         TabHost.TabSpec tabSpec = tabHost.newTabSpec(tag);
         tabSpec.setIndicator(title);
 
-        Intent intent = new Intent(getApplicationContext(),clazz);
+        Intent intent = new Intent(getApplicationContext(), clazz);
         tabSpec.setContent(intent);
         tabHost.addTab(tabSpec);
     }
 
 
-
     private void initViewPager() {
-        viewPager =  findViewById(R.id.viewPager);
+        viewPager = findViewById(R.id.viewPager);
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 
             @Override
@@ -107,7 +121,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onPageSelected(int position) {
                 Log.e("x", ">>>>>>>>>>>>>>>>>>>>>>>>>> 当前position = " + position);
-                if(tabHost!=null){
+                if (tabHost != null) {
                     tabHost.setCurrentTab(position);
                 }
             }
@@ -147,8 +161,6 @@ public class MainActivity extends AppCompatActivity {
             }*/
         }
     };
-
-
 
 
 }
