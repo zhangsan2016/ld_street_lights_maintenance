@@ -1,25 +1,22 @@
 package com.example.ld_street_lights_maintenance.act;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.viewpager.widget.ViewPager;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.TranslateAnimation;
 import android.widget.RadioGroup;
 import android.widget.TabHost;
-import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewpager.widget.ViewPager;
 
 import com.example.ld_street_lights_maintenance.R;
 import com.example.ld_street_lights_maintenance.adapter.MainTabAdapter;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity2 extends AppCompatActivity {
 
     private RadioGroup mTabRadioGroup;
     private ArrayList<View> viewList;
@@ -30,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main2);
 
 
         initView();
@@ -62,17 +59,17 @@ public class MainActivity extends AppCompatActivity {
         tabHost.setup();
 
         //在TabHost创建标签，然后设置：标题／图标／标签页布局
-        tabHost.addTab(tabHost.newTabSpec("tab1").setIndicator("BLUE", null).setContent(R.id.tab1));
+       /* tabHost.addTab(tabHost.newTabSpec("tab1").setIndicator("BLUE", null).setContent(R.id.tab1));
         tabHost.addTab(tabHost.newTabSpec("tab2").setIndicator("NFC", null).setContent(R.id.tab2));
-        tabHost.addTab(tabHost.newTabSpec("tab3").setIndicator("MAP", null).setContent(R.id.tab3));
+        tabHost.addTab(tabHost.newTabSpec("tab3").setIndicator("MAP", null).setContent(R.id.tab3));*/
 
-      /*  Intent intent = new Intent(this,NfcActivity.class);
+        Intent intent = new Intent(this,NfcActivity.class);
       //  tabHost.addTab(tabHost.newTabSpec("tab4").setIndicator("MAP4", null).setContent(intent));
 
       // 添加 activity 界面
        addTab("act1", "界面1", BuleActivity.class);
         addTab("act2", "界面2", NfcActivity.class);
-        addTab("act3", "界面3", MapActivity.class);*/
+        addTab("act3", "界面3", MapActivity.class);
 
 
 
