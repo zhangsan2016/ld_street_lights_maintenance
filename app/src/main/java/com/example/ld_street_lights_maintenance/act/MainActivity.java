@@ -41,21 +41,6 @@ public class MainActivity extends FragmentActivity {
         MainTabAdapter adapter = new MainTabAdapter(this.getSupportFragmentManager(), 2);
         viewPager.setAdapter(adapter);
 
-        //TabHost的监听事件
-        tabHost.setOnTabChangedListener(new TabHost.OnTabChangeListener() {
-            @Override
-            public void onTabChanged(String tabId) {
-                Log.e("x", ">>>>>>>>>>>>>>>>>>>>>>>>>> onTabChanged tabId = " + tabId);
-                if (tabId.equals("tab1")) {
-                    viewPager.setCurrentItem(0);
-                } else if (tabId.equals("tab2")) {
-                    viewPager.setCurrentItem(1);
-                } else if (tabId.equals("tab3")) {
-                    viewPager.setCurrentItem(2);
-                }
-            }
-        });
-
 
     }
 
@@ -78,47 +63,29 @@ public class MainActivity extends FragmentActivity {
         //初始化TabHost容器
         tabHost.setup();
 
-         //动态载入XML，而不需要Activity
-        LayoutInflater i = LayoutInflater.from(this);
-        i.inflate(R.layout.tab1_main, tabHost.getTabContentView());
-        i.inflate(R.layout.tab2_main, tabHost.getTabContentView());
-        i.inflate(R.layout.tab3_main, tabHost.getTabContentView());
-        tabHost.addTab(tabHost.newTabSpec("tab1").setIndicator("标签1").setContent(R.id.LinearLayout01));
-        tabHost.addTab(tabHost.newTabSpec("tab2").setIndicator("标签2").setContent(R.id.LinearLayout02));
-        tabHost.addTab(tabHost.newTabSpec("tab3").setIndicator("标签3").setContent(R.id.LinearLayout03));
+        tabHost.addTab(tabHost.newTabSpec("tab1").setIndicator("BLUE").setContent(R.id.tab1));
+        tabHost.addTab(tabHost.newTabSpec("tab2").setIndicator("NFC").setContent(R.id.tab2));
+        tabHost.addTab(tabHost.newTabSpec("tab3").setIndicator("MAP").setContent(R.id.tab3));
 
 
-   /*     //在TabHost创建标签，然后设置：标题／图标／标签页布局
-        tabHost.addTab(tabHost.newTabSpec("tab1").setIndicator("BLUE", null).setContent(R.id.tab1));
-        tabHost.addTab(tabHost.newTabSpec("tab2").setIndicator("NFC", null).setContent(R.id.tab2));
-        tabHost.addTab(tabHost.newTabSpec("tab3").setIndicator("MAP", null).setContent(R.id.tab3));*/
-
-      /*  Intent intent = new Intent(this,NfcActivity.class);
-      //  tabHost.addTab(tabHost.newTabSpec("tab4").setIndicator("MAP4", null).setContent(intent));
-
-      // 添加 activity 界面
-       addTab("act1", "界面1", BuleActivity.class);
-        addTab("act2", "界面2", NfcActivity.class);
-        addTab("act3", "界面3", MapActivity.class);*/
+        //TabHost的监听事件
+        tabHost.setOnTabChangedListener(new TabHost.OnTabChangeListener() {
+            @Override
+            public void onTabChanged(String tabId) {
+                Log.e("x", ">>>>>>>>>>>>>>>>>>>>>>>>>> onTabChanged tabId = " + tabId);
+                if (tabId.equals("tab1")) {
+                    viewPager.setCurrentItem(0);
+                } else if (tabId.equals("tab2")) {
+                    viewPager.setCurrentItem(1);
+                } else if (tabId.equals("tab3")) {
+                    viewPager.setCurrentItem(2);
+                }
+            }
+        });
 
 
     }
 
-    /**
-     * 添加Activity标签
-     *
-     * @param tag   标识
-     * @param title 标签标题
-     * @param clazz 激活的界面
-     */
-    private void addTab(String tag, String title, Class clazz) {
-        TabHost.TabSpec tabSpec = tabHost.newTabSpec(tag);
-        tabSpec.setIndicator(title);
-
-        Intent intent = new Intent(getApplicationContext(), clazz);
-        tabSpec.setContent(intent);
-        tabHost.addTab(tabSpec);
-    }
 
 
     private void initViewPager() {
