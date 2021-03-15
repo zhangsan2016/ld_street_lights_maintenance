@@ -119,13 +119,13 @@
         android:orientation="horizontal">
 
         <RadioButton
-            android:id="@+id/today_tab"
+            android:id="@+id/order_tab"
             style="@style/Custom.TabRadioButton"
             android:drawableTop="@drawable/tab_sign_selector"
             android:text="指令" />
 
         <RadioButton
-            android:id="@+id/record_tab"
+            android:id="@+id/lighting_planning_tab"
             style="@style/Custom.TabRadioButton"
             android:drawableTop="@drawable/tab_record_selector"
             android:text="照明规划" />

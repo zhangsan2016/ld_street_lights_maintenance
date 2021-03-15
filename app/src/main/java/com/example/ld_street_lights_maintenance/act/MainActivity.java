@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TabHost;
 
@@ -24,6 +25,8 @@ public class MainActivity extends FragmentActivity {
     private View blueView, nfcView, mapView;
     private ViewPager viewPager;
     private TabHost tabHost;
+
+    private RadioButton rb_order_tab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +58,23 @@ public class MainActivity extends FragmentActivity {
 
         /// 初始化底部Tab
         mTabRadioGroup = findViewById(R.id.tabs_rg);
-        mTabRadioGroup.setOnCheckedChangeListener(mOnCheckedChangeListener);
+      //  mTabRadioGroup.setOnCheckedChangeListener(mOnCheckedChangeListener);
+
+         rb_order_tab = findViewById(R.id.order_tab);
+        rb_order_tab.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+                Log.e("x", "isChecked = " + rb_order_tab.isChecked() );
+                Log.e("x", "isSelected = " + rb_order_tab.isSelected() );
+
+
+            }
+        });
+
+
+
+
     }
 
     private void initViewTab() {
@@ -124,6 +143,7 @@ public class MainActivity extends FragmentActivity {
      * 底部 tab 点击监听
      */
     private RadioGroup.OnCheckedChangeListener mOnCheckedChangeListener = new RadioGroup.OnCheckedChangeListener() {
+
         @Override
         public void onCheckedChanged(RadioGroup group, int checkedId) {
 
