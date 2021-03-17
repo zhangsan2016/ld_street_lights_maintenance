@@ -5,6 +5,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager.widget.ViewPager;
 
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,6 +18,7 @@ import android.view.WindowManager;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TabHost;
+import android.widget.TextView;
 
 import com.example.ld_street_lights_maintenance.R;
 import com.example.ld_street_lights_maintenance.adapter.MainTabAdapter;
@@ -110,8 +112,16 @@ public class MainActivity extends AppCompatActivity {
         // 初始化 tabHost 颜色
         for(int i=0;i<tabHost.getTabWidget().getChildCount();i++)
         {
-            if (i == 0) tabHost.getTabWidget().getChildAt(i).setBackgroundColor(Color.parseColor("#039A9A"));
-            else tabHost.getTabWidget().getChildAt(i).setBackgroundColor(Color.parseColor("#41C7DB"));
+            if (i == 0)
+            {
+                tabHost.getTabWidget().getChildAt(i).setBackgroundColor(Color.parseColor("#039A9A"));
+                TextView tv =  tabHost.getTabWidget().getChildAt(i).findViewById(android.R.id.title);;//非选择的背景
+                tv.setTextColor(Color.parseColor("#000000"));
+            } else {
+                tabHost.getTabWidget().getChildAt(i).setBackgroundColor(Color.parseColor("#41C7DB"));
+                TextView tv =  tabHost.getTabWidget().getChildAt(i).findViewById(android.R.id.title);;//非选择的背景
+                tv.setTextColor(Color.parseColor("#ffffff"));
+            }
         }
 
 
@@ -131,13 +141,21 @@ public class MainActivity extends AppCompatActivity {
                 for(int i=0;i<tabHost.getTabWidget().getChildCount();i++)
                 {
                     tabHost.getTabWidget().getChildAt(i).setBackgroundColor(getResources().getColor(R.color.cyan_039A9A)); //unselected
+                    // 设置字体颜色
+                    TextView tv = (TextView) tabHost.getTabWidget().getChildAt(i).findViewById(android.R.id.title);
+                    tv.setTextColor(Color.parseColor("#ffffff"));
                 }
                 tabHost.getTabWidget().getChildAt(tabHost.getCurrentTab()).setBackgroundColor(Color.parseColor("#41C7DB")); // selected
+                TextView tv =  tabHost.getTabWidget().getChildAt(tabHost.getCurrentTab()).findViewById(android.R.id.title);;//非选择的背景
+                tv.setTextColor(Color.parseColor("#000000"));
+
             }
         });
 
 
     }
+
+
 
 
     private void initViewPager() {
