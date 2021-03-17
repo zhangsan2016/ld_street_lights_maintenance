@@ -1,13 +1,15 @@
 package com.example.ld_street_lights_maintenance.act;
 
-import androidx.fragment.app.FragmentActivity;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager.widget.ViewPager;
 
-import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -18,7 +20,7 @@ import com.example.ld_street_lights_maintenance.adapter.MainTabAdapter;
 
 import java.util.ArrayList;
 
-public class MainActivity extends FragmentActivity {
+public class MainActivity extends AppCompatActivity {
 
     private RadioGroup mTabRadioGroup;
     private ArrayList<View> viewList;
@@ -31,10 +33,17 @@ public class MainActivity extends FragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
-
+       if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            Window win = getWindow();
+            WindowManager.LayoutParams winParams = win.getAttributes();
+            final int bits = WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS;
+            winParams.flags |= bits;
+            win.setAttributes(winParams);
+        }
+      /*  if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            WindowManager.LayoutParams localLayoutParams = getWindow().getAttributes();
+            localLayoutParams.flags = (WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS | localLayoutParams.flags);
+        }*/
         setContentView(R.layout.activity_main);
 
 
@@ -50,6 +59,9 @@ public class MainActivity extends FragmentActivity {
 
     private void initView() {
 
+        /// 设置 toobar
+        setToobar();
+
         /// 初始化 tab 切换的 View 界面
         initViewPager();
 
@@ -58,23 +70,26 @@ public class MainActivity extends FragmentActivity {
 
         /// 初始化底部Tab
         mTabRadioGroup = findViewById(R.id.tabs_rg);
-      //  mTabRadioGroup.setOnCheckedChangeListener(mOnCheckedChangeListener);
+        //  mTabRadioGroup.setOnCheckedChangeListener(mOnCheckedChangeListener);
 
-         rb_order_tab = findViewById(R.id.order_tab);
-        rb_order_tab.setOnClickListener(new View.OnClickListener(){
+        rb_order_tab = findViewById(R.id.order_tab);
+        rb_order_tab.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                Log.e("x", "isChecked = " + rb_order_tab.isChecked() );
-                Log.e("x", "isSelected = " + rb_order_tab.isSelected() );
+                Log.e("x", "isChecked = " + rb_order_tab.isChecked());
+                Log.e("x", "isSelected = " + rb_order_tab.isSelected());
 
 
             }
         });
 
 
+    }
 
-
+    private void setToobar() {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
     }
 
     private void initViewTab() {
@@ -82,9 +97,9 @@ public class MainActivity extends FragmentActivity {
         //初始化TabHost容器
         tabHost.setup();
 
-        tabHost.addTab(tabHost.newTabSpec("tab1").setIndicator("BLUE").setContent(R.id.tab1));
-        tabHost.addTab(tabHost.newTabSpec("tab2").setIndicator("NFC").setContent(R.id.tab2));
-        tabHost.addTab(tabHost.newTabSpec("tab3").setIndicator("MAP").setContent(R.id.tab3));
+        tabHost.addTab(tabHost.newTabSpec("tab1").setIndicator("BLUE").setContent(R.id.tv_blue_tab1));
+        tabHost.addTab(tabHost.newTabSpec("tab2").setIndicator("NFC").setContent(R.id.tv_blue_tab2));
+        tabHost.addTab(tabHost.newTabSpec("tab3").setIndicator("MAP").setContent(R.id.tv_blue_tab3));
 
 
         //TabHost的监听事件
@@ -104,7 +119,6 @@ public class MainActivity extends FragmentActivity {
 
 
     }
-
 
 
     private void initViewPager() {

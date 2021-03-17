@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">单灯配置维护</string>
+    <!-- 单灯配置维护 -->
+    <string name="app_name">路灯维护客户端</string>
 </resources>

@@ -34,14 +34,17 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+  //  implementation  'com.android.support:appcompat-v7:26.+'
     /* Okhttp3*/
     implementation("com.squareup.okhttp3:okhttp:4.9.0")
     /* Gson */
-    compile 'com.google.code.gson:gson:2.8.4'
+    implementation 'com.google.code.gson:gson:2.8.4'
 
     implementation 'com.shizhefei:ViewPagerIndicator:1.1.9.androidx'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
+    /* 蓝牙 blelib */
+    implementation 'com.clj.fastble:FastBleLib:2.3.4'
 
 
 
