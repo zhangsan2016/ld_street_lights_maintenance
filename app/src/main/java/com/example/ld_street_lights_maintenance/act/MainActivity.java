@@ -4,10 +4,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager.widget.ViewPager;
 
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -40,19 +43,10 @@ public class MainActivity extends AppCompatActivity {
             winParams.flags |= bits;
             win.setAttributes(winParams);
         }
-      /*  if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            WindowManager.LayoutParams localLayoutParams = getWindow().getAttributes();
-            localLayoutParams.flags = (WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS | localLayoutParams.flags);
-        }*/
         setContentView(R.layout.activity_main);
 
 
         initView();
-
-        // 设置 getViewPager 添加适配器
-        MainTabAdapter adapter = new MainTabAdapter(this.getSupportFragmentManager(), 2);
-        viewPager.setAdapter(adapter);
-
 
     }
 
@@ -84,7 +78,18 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        // 设置 getViewPager 添加适配器
+        MainTabAdapter adapter = new MainTabAdapter(this.getSupportFragmentManager(), 2);
+        viewPager.setAdapter(adapter);
 
+
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.base_toolbar_menu,menu);
+        return super.onCreateOptionsMenu(menu);
     }
 
     private void setToobar() {
@@ -102,6 +107,14 @@ public class MainActivity extends AppCompatActivity {
         tabHost.addTab(tabHost.newTabSpec("tab3").setIndicator("MAP").setContent(R.id.tv_blue_tab3));
 
 
+        // 初始化 tabHost 颜色
+        for(int i=0;i<tabHost.getTabWidget().getChildCount();i++)
+        {
+            if (i == 0) tabHost.getTabWidget().getChildAt(i).setBackgroundColor(Color.parseColor("#039A9A"));
+            else tabHost.getTabWidget().getChildAt(i).setBackgroundColor(Color.parseColor("#41C7DB"));
+        }
+
+
         //TabHost的监听事件
         tabHost.setOnTabChangedListener(new TabHost.OnTabChangeListener() {
             @Override
@@ -114,6 +127,12 @@ public class MainActivity extends AppCompatActivity {
                 } else if (tabId.equals("tab3")) {
                     viewPager.setCurrentItem(2);
                 }
+
+                for(int i=0;i<tabHost.getTabWidget().getChildCount();i++)
+                {
+                    tabHost.getTabWidget().getChildAt(i).setBackgroundColor(getResources().getColor(R.color.cyan_039A9A)); //unselected
+                }
+                tabHost.getTabWidget().getChildAt(tabHost.getCurrentTab()).setBackgroundColor(Color.parseColor("#41C7DB")); // selected
             }
         });
 

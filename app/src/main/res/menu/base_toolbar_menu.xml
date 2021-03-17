@@ -1,0 +1,15 @@
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.carlos.myapplication.MainActivity">
+
+    <item
+        android:id="@+id/calendar"
+        android:icon="@mipmap/ic_blue_remote"
+        android:orderInCategory="90"
+        android:title="选择日期"
+        app:showAsAction="always" />
+
+
+</menu>

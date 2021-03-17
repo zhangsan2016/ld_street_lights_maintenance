@@ -5,7 +5,6 @@
            <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
            <item name="colorAccent">@color/colorAccent</item>
        </style>-->
-
      
 
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
@@ -13,6 +12,17 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
+
+<!--    &lt;!&ndash; titleBar style&ndash;&gt;
+    <style name="AppTheme.Base" parent="Theme.AppCompat.Light">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+    <style name="BaseAppTheme" parent="AppTheme.Base">
+        <item name="colorPrimary">@color/colorPrimary</item>    &lt;!&ndash; 状态栏 &ndash;&gt;
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item> &lt;!&ndash; toolbar &ndash;&gt;
+        <item name="colorAccent">@color/colorAccent</item>  &lt;!&ndash; 重点 &ndash;&gt;
+    </style>-->
 
 
     <!-- 自定义控件风格-->
