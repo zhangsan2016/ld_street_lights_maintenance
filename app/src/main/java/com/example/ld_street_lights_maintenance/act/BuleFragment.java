@@ -71,6 +71,7 @@ public class BuleFragment extends BaseFragment implements View.OnClickListener {
         btn_scan = (Button) rootView.findViewById(R.id.btn_scan);
         btn_scan.setOnClickListener(this);
         progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setCancelable(false);
 
         // 初始化蓝牙工具类
         BleManager.getInstance().init(getActivity().getApplication());
@@ -224,11 +225,14 @@ public class BuleFragment extends BaseFragment implements View.OnClickListener {
 
     private void startScan() {
         BleManager.getInstance().scan(new BleScanCallback() {
+
+            // 开始寻找蓝牙
             @Override
             public void onScanStarted(boolean success) {
                 mDeviceAdapter.clearScanDevice();
                 mDeviceAdapter.notifyDataSetChanged();
                 btn_scan.setText(getString(R.string.stop_scan));
+                progressDialog.show();
             }
 
             @Override
@@ -242,9 +246,11 @@ public class BuleFragment extends BaseFragment implements View.OnClickListener {
                 mDeviceAdapter.notifyDataSetChanged();
             }
 
+            // 扫描结束
             @Override
             public void onScanFinished(List<BleDevice> scanResultList) {
                 btn_scan.setText(getString(R.string.start_scan));
+                progressDialog.dismiss();
             }
         });
     }
