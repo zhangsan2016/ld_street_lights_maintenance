@@ -19,6 +19,7 @@ import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -259,4 +260,9 @@ public class BuleFragment extends BaseFragment implements View.OnClickListener {
     }
 
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.e("xx",">>>>>>>>>>>>>>>>>> onDestroyonDestroyonDestroyonDestroy");
+    }
 }

@@ -2,6 +2,7 @@ package com.example.ld_street_lights_maintenance.act;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import android.graphics.Color;
@@ -63,6 +64,12 @@ public class MainActivity extends AppCompatActivity {
         initViewTab();
 
         /// 初始化底部Tab
+        bottomTab();
+
+
+    }
+
+    private void bottomTab() {
         mTabRadioGroup = findViewById(R.id.tabs_rg);
         //  mTabRadioGroup.setOnCheckedChangeListener(mOnCheckedChangeListener);
 
@@ -74,12 +81,8 @@ public class MainActivity extends AppCompatActivity {
                 Log.e("x", "isChecked = " + rb_order_tab.isChecked());
                 Log.e("x", "isSelected = " + rb_order_tab.isSelected());
 
-
             }
         });
-
-
-
     }
 
     @Override
@@ -177,7 +180,8 @@ public class MainActivity extends AppCompatActivity {
 
 
         // 设置 getViewPager 添加适配器
-        MainTabAdapter adapter = new MainTabAdapter(this.getSupportFragmentManager(),3);
+        MainTabAdapter adapter = new MainTabAdapter(this.getSupportFragmentManager(), FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
+        viewPager.setOffscreenPageLimit(3);
         viewPager.setAdapter(adapter);
     }
 

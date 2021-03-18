@@ -1,11 +1,11 @@
 package com.example.ld_street_lights_maintenance.adapter;
 
 
-import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 
 import com.example.ld_street_lights_maintenance.act.BuleFragment;
@@ -16,7 +16,7 @@ import com.example.ld_street_lights_maintenance.base.BaseFragment;
 import java.util.ArrayList;
 
 
-public class MainTabAdapter extends FragmentStatePagerAdapter {
+public class MainTabAdapter extends FragmentPagerAdapter {
     private ArrayList<BaseFragment> fragments;
     private BaseFragment baseFragment = null;
 
