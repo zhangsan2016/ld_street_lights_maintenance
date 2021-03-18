@@ -10,13 +10,12 @@
         android:layout_height="wrap_content"
         android:text="map"></Button>
 
-    <ImageView
+    <!--<ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="fitXY"
         android:src="@drawable/catalog_lighting_bg"
         >
-
-    </ImageView>
+    </ImageView>-->
 
 </RelativeLayout>

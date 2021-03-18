@@ -28,8 +28,6 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
 
     private RadioGroup mTabRadioGroup;
-    private ArrayList<View> viewList;
-    private View blueView, nfcView, mapView;
     private ViewPager viewPager;
     private TabHost tabHost;
 
@@ -80,9 +78,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // 设置 getViewPager 添加适配器
-        MainTabAdapter adapter = new MainTabAdapter(this.getSupportFragmentManager(), 2);
-        viewPager.setAdapter(adapter);
 
 
     }
@@ -179,15 +174,11 @@ public class MainActivity extends AppCompatActivity {
                 Log.e("x", ">>>>>>>>>>>>>>>>>>>>>>>>>> onPageScrollStateChanged = " + state);
             }
         });
-        LayoutInflater inflater = LayoutInflater.from(this);
-        blueView = inflater.inflate(R.layout.layout_blue, null);
-        nfcView = inflater.inflate(R.layout.layout_nfc, null);
-        mapView = inflater.inflate(R.layout.layout_map, null);
 
-        viewList = new ArrayList<View>();
-        viewList.add(blueView);
-        viewList.add(nfcView);
-        viewList.add(mapView);
+
+        // 设置 getViewPager 添加适配器
+        MainTabAdapter adapter = new MainTabAdapter(this.getSupportFragmentManager(),3);
+        viewPager.setAdapter(adapter);
     }
 
     /**
