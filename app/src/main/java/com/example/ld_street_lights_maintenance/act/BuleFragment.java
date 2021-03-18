@@ -50,7 +50,6 @@ public class BuleFragment extends BaseFragment implements View.OnClickListener {
     private Button btn_scan;
     private DeviceAdapter mDeviceAdapter;
     private ProgressDialog progressDialog;
-    private TextView tv11111;
 
     @Nullable
     @Override
@@ -68,7 +67,6 @@ public class BuleFragment extends BaseFragment implements View.OnClickListener {
 
     private void initView(View rootView) {
 
-        tv11111 = (TextView) rootView.findViewById(R.id.tv11111);
 
         btn_scan = (Button) rootView.findViewById(R.id.btn_scan);
         btn_scan.setOnClickListener(this);
@@ -130,7 +128,8 @@ public class BuleFragment extends BaseFragment implements View.OnClickListener {
             @Override
             public void onConnectSuccess(BleDevice bleDevice, BluetoothGatt gatt, int status) {
                 progressDialog.dismiss();
-                mDeviceAdapter.addDevice(bleDevice);
+              //  mDeviceAdapter.addDevice(bleDevice);
+                mDeviceAdapter.addDeviceTop(bleDevice);
                 mDeviceAdapter.notifyDataSetChanged();
             }
 
@@ -157,7 +156,6 @@ public class BuleFragment extends BaseFragment implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_scan:
-                tv11111.setText("xsdfdsfsdf");
                 if (btn_scan.getText().equals(getString(R.string.start_scan))) {
                     checkPermissions();
                 } else if (btn_scan.getText().equals(getString(R.string.stop_scan))) {

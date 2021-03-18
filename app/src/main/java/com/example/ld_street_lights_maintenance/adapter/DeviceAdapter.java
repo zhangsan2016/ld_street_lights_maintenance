@@ -32,6 +32,13 @@ public class DeviceAdapter extends BaseAdapter {
         bleDeviceList.add(bleDevice);
     }
 
+    public void addDeviceTop(BleDevice bleDevice) {
+        removeDevice(bleDevice);
+        bleDeviceList.add(0,bleDevice);
+    }
+
+
+
     public void removeDevice(BleDevice bleDevice) {
         for (int i = 0; i < bleDeviceList.size(); i++) {
             BleDevice device = bleDeviceList.get(i);
