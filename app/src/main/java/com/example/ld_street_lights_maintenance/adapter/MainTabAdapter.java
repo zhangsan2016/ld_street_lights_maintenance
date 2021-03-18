@@ -16,7 +16,7 @@ import com.example.ld_street_lights_maintenance.base.BaseFragment;
 import java.util.ArrayList;
 
 
-public class MainTabAdapter extends FragmentStatePagerAdapter {
+public class MainTabAdapter extends FragmentPagerAdapter {
     private ArrayList<BaseFragment> fragments;
     private BaseFragment baseFragment = null;
 
