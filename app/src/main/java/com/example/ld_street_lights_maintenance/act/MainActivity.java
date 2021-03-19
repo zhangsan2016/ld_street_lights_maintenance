@@ -10,12 +10,14 @@ import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.PopupWindow;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TabHost;
@@ -23,6 +25,7 @@ import android.widget.TextView;
 
 import com.example.ld_street_lights_maintenance.R;
 import com.example.ld_street_lights_maintenance.adapter.MainTabAdapter;
+import com.example.ld_street_lights_maintenance.view.ChoosPhotoPopupUtils;
 
 import java.util.ArrayList;
 
@@ -80,6 +83,20 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Log.e("x", "isChecked = " + rb_order_tab.isChecked());
                 Log.e("x", "isSelected = " + rb_order_tab.isSelected());
+
+
+                ChoosPhotoPopupUtils mPop = new ChoosPhotoPopupUtils(MainActivity.this, 350, "");
+                mPop.setSoftInputMode(PopupWindow.INPUT_METHOD_NEEDED);
+                mPop.setClippingEnabled(false);
+                mPop.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+                mPop.setOnItemClickListener(new ChoosPhotoPopupUtils.OnItemClickListener() {
+                    @Override
+                    public void setOnItemClick(View v, int code, String path) {
+
+                    }
+                });
+                    // 设置PopupWindow中的位置
+                mPop.showAtLocation(rb_order_tab, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 350);//此处是具体展示的位置和界面的设置，在此偷个懒，具体自行百度咯。
 
             }
         });
@@ -203,6 +220,9 @@ public class MainActivity extends AppCompatActivity {
                     return;
                 }
             }*/
+
+
+
         }
     };
 

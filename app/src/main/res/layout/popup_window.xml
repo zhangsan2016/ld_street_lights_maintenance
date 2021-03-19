@@ -1,0 +1,15 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/ra_win">
+
+    <Button
+        android:id="@+id/bt_pop"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="弹出"></Button>
+
+
+
+
+</RelativeLayout>

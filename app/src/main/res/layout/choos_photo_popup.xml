@@ -1,0 +1,76 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <!-- 以上的background是遮罩层颜色，具体颜色可以自己设置，在此就不贴出来了-->
+    <!-- 以下的background才是底部弹窗的颜色，此处我新增了两个按钮，当点击已经选取的图片时提供删除和查看 -->
+    <LinearLayout
+        android:background="@color/white"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/id_pop_layout"
+        android:orientation="vertical" >
+
+
+        <Button
+            android:id="@+id/choos_photo_popup_ck"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:textColor="@color/white"
+            android:gravity="center"
+            android:text="查看"
+            android:textSize="14sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="2dp" />
+        <Button
+            android:id="@+id/choos_photo_popup_pz"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:textColor="@color/white"
+            android:gravity="center"
+            android:text="拍照"
+            android:textSize="14sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="2dp" />
+
+        <Button
+            android:id="@+id/choos_photo_popup_xc"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:textColor="@color/white"
+            android:gravity="center"
+            android:text="从相册选择"
+            android:textSize="14sp" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="2dp"/>
+
+        <Button
+            android:id="@+id/choos_photo_popup_sc"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:textColor="@color/white"
+            android:gravity="center"
+            android:text="删除"
+            android:textSize="14sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="6dp" />
+
+        <Button
+            android:id="@+id/choos_photo_popup_qx"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:text="取消"
+            android:textSize="14sp" />
+
+    </LinearLayout>
+
+</RelativeLayout>
