@@ -4,7 +4,7 @@
     <!-- 以上的background是遮罩层颜色，具体颜色可以自己设置，在此就不贴出来了-->
     <!-- 以下的background才是底部弹窗的颜色，此处我新增了两个按钮，当点击已经选取的图片时提供删除和查看 -->
     <LinearLayout
-        android:background="@color/white"
+        android:background="@color/blue_45a7ff"
         android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

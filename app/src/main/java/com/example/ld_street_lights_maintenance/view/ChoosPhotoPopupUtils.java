@@ -24,10 +24,9 @@ public class ChoosPhotoPopupUtils extends PopupWindow implements
     private String path;
     private Context mContext;
 
-    public ChoosPhotoPopupUtils(Context context, int code, String path) {
+    public ChoosPhotoPopupUtils(Context context) {
         super(context);
-        this.code = code;
-        this.path = path;
+
         this.mContext = context;
         init(context);
         setPopupWindow();
@@ -77,8 +76,9 @@ public class ChoosPhotoPopupUtils extends PopupWindow implements
         this.setContentView(mPopView);// 设置View
         this.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);// 设置弹出窗口的宽
         this.setHeight(500);// 设置弹出窗口的高
-        this.setFocusable(true);// 设置弹出窗口可
-        this.setAnimationStyle(R.style.mypopwindow_anim_style);// 设置动画
+        this.setFocusable(false);// 设置弹出窗口可
+        this.setOutsideTouchable(false);
+     //   this.setAnimationStyle(R.style.mypopwindow_anim_style);// 设置动画
         this.setBackgroundDrawable(new ColorDrawable(0x00000000));// 设置背景透明
         mPopView.setOnTouchListener(new View.OnTouchListener() {// 如果触摸位置在窗口外面则销毁
 
@@ -86,7 +86,7 @@ public class ChoosPhotoPopupUtils extends PopupWindow implements
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 // id是你需要点击的控件id之上的地方，来实现点击外围扩散的效果
-                int height = mPopView.findViewById(R.id.id_pop_layout).getTop();
+                int height = mPopView.findViewById(R.id.id_pop_layout).getTop() ;
                 int y = (int) event.getY();
                 if (event.getAction() == MotionEvent.ACTION_UP) {
                     if (y < height) {
@@ -98,7 +98,11 @@ public class ChoosPhotoPopupUtils extends PopupWindow implements
         });
     }
 
+    @Override
+    public void dismiss() {
+        super.dismiss();
 
+    }
 
     /**
      * 定义一个接口，公布出去 在Activity中操作按钮的单击事件

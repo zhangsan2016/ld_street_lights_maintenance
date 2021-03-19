@@ -5,6 +5,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Build;
@@ -35,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
     private ViewPager viewPager;
     private TabHost tabHost;
 
-    private RadioButton rb_order_tab;
+    private RadioButton rb_order_tab,rb_lighting_planning_tab,rb_settings_tab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,27 +80,85 @@ public class MainActivity extends AppCompatActivity {
         rb_order_tab = findViewById(R.id.order_tab);
         rb_order_tab.setOnClickListener(new View.OnClickListener() {
 
+            @SuppressLint("WrongConstant")
             @Override
             public void onClick(View v) {
                 Log.e("x", "isChecked = " + rb_order_tab.isChecked());
                 Log.e("x", "isSelected = " + rb_order_tab.isSelected());
 
 
-                ChoosPhotoPopupUtils mPop = new ChoosPhotoPopupUtils(MainActivity.this, 350, "");
+                final ChoosPhotoPopupUtils mPop = new ChoosPhotoPopupUtils(MainActivity.this);
                 mPop.setSoftInputMode(PopupWindow.INPUT_METHOD_NEEDED);
                 mPop.setClippingEnabled(false);
                 mPop.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
                 mPop.setOnItemClickListener(new ChoosPhotoPopupUtils.OnItemClickListener() {
                     @Override
                     public void setOnItemClick(View v, int code, String path) {
-
+                        mPop.dismiss();
                     }
                 });
+
                     // 设置PopupWindow中的位置
-                mPop.showAtLocation(rb_order_tab, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 350);//此处是具体展示的位置和界面的设置，在此偷个懒，具体自行百度咯。
+                mPop.showAtLocation(rb_order_tab, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, rb_order_tab.getMeasuredHeight());
 
             }
         });
+
+
+        rb_lighting_planning_tab = findViewById(R.id.lighting_planning_tab);
+        rb_lighting_planning_tab.setOnClickListener(new View.OnClickListener() {
+
+            @SuppressLint("WrongConstant")
+            @Override
+            public void onClick(View v) {
+                Log.e("x", "isChecked = " + rb_order_tab.isChecked());
+                Log.e("x", "isSelected = " + rb_order_tab.isSelected());
+
+
+                final ChoosPhotoPopupUtils mPop = new ChoosPhotoPopupUtils(MainActivity.this);
+                mPop.setSoftInputMode(PopupWindow.INPUT_METHOD_NEEDED);
+                mPop.setClippingEnabled(false);
+                mPop.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+                mPop.setOnItemClickListener(new ChoosPhotoPopupUtils.OnItemClickListener() {
+                    @Override
+                    public void setOnItemClick(View v, int code, String path) {
+                        mPop.dismiss();
+                    }
+                });
+
+                // 设置PopupWindow中的位置
+                mPop.showAtLocation(rb_order_tab, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, rb_order_tab.getMeasuredHeight());
+
+            }
+        });
+
+        rb_settings_tab = findViewById(R.id.settings_tab);
+        rb_settings_tab.setOnClickListener(new View.OnClickListener() {
+
+            @SuppressLint("WrongConstant")
+            @Override
+            public void onClick(View v) {
+                Log.e("x", "isChecked = " + rb_order_tab.isChecked());
+                Log.e("x", "isSelected = " + rb_order_tab.isSelected());
+
+
+                final ChoosPhotoPopupUtils mPop = new ChoosPhotoPopupUtils(MainActivity.this);
+                mPop.setSoftInputMode(PopupWindow.INPUT_METHOD_NEEDED);
+                mPop.setClippingEnabled(false);
+                mPop.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+                mPop.setOnItemClickListener(new ChoosPhotoPopupUtils.OnItemClickListener() {
+                    @Override
+                    public void setOnItemClick(View v, int code, String path) {
+                        mPop.dismiss();
+                    }
+                });
+
+                // 设置PopupWindow中的位置
+                mPop.showAtLocation(rb_order_tab, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, rb_order_tab.getMeasuredHeight());
+
+            }
+        });
+
     }
 
     @Override
@@ -129,11 +188,11 @@ public class MainActivity extends AppCompatActivity {
         {
             if (i == 0)
             {
-                tabHost.getTabWidget().getChildAt(i).setBackgroundColor(Color.parseColor("#039A9A"));
+                tabHost.getTabWidget().getChildAt(i).setBackgroundColor(Color.parseColor("#41C7DB"));
                 TextView tv =  tabHost.getTabWidget().getChildAt(i).findViewById(android.R.id.title);;//非选择的背景
                 tv.setTextColor(Color.parseColor("#000000"));
             } else {
-                tabHost.getTabWidget().getChildAt(i).setBackgroundColor(Color.parseColor("#41C7DB"));
+                tabHost.getTabWidget().getChildAt(i).setBackgroundColor(Color.parseColor("#039A9A"));
                 TextView tv =  tabHost.getTabWidget().getChildAt(i).findViewById(android.R.id.title);;//非选择的背景
                 tv.setTextColor(Color.parseColor("#ffffff"));
             }
