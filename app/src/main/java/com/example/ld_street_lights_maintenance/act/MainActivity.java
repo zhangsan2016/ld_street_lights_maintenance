@@ -7,18 +7,15 @@ import androidx.viewpager.widget.ViewPager;
 
 import android.annotation.SuppressLint;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.PopupWindow;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TabHost;
@@ -26,9 +23,10 @@ import android.widget.TextView;
 
 import com.example.ld_street_lights_maintenance.R;
 import com.example.ld_street_lights_maintenance.adapter.MainTabAdapter;
-import com.example.ld_street_lights_maintenance.view.ChoosPhotoPopupUtils;
+import com.example.ld_street_lights_maintenance.view.OrderPhotoPopupUtils;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -36,12 +34,14 @@ public class MainActivity extends AppCompatActivity {
     private ViewPager viewPager;
     private TabHost tabHost;
 
-    private RadioButton rb_order_tab,rb_lighting_planning_tab,rb_settings_tab;
+    private RadioButton rb_order_tab, rb_lighting_planning_tab, rb_settings_tab;
+    private OrderPhotoPopupUtils orderPop;
+    private List<OrderPhotoPopupUtils> popWindows = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-       if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             Window win = getWindow();
             WindowManager.LayoutParams winParams = win.getAttributes();
             final int bits = WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS;
@@ -77,6 +77,17 @@ public class MainActivity extends AppCompatActivity {
         mTabRadioGroup = findViewById(R.id.tabs_rg);
         //  mTabRadioGroup.setOnCheckedChangeListener(mOnCheckedChangeListener);
 
+
+        orderPop = new OrderPhotoPopupUtils(MainActivity.this);
+        orderPop.setOnItemClickListener(new OrderPhotoPopupUtils.OnItemClickListener() {
+            @Override
+            public void setOnItemClick(View v, int code, String path) {
+                orderPop.dismiss();
+            }
+        });
+        popWindows.add(orderPop);
+
+
         rb_order_tab = findViewById(R.id.order_tab);
         rb_order_tab.setOnClickListener(new View.OnClickListener() {
 
@@ -86,23 +97,19 @@ public class MainActivity extends AppCompatActivity {
                 Log.e("x", "isChecked = " + rb_order_tab.isChecked());
                 Log.e("x", "isSelected = " + rb_order_tab.isSelected());
 
-
-                final ChoosPhotoPopupUtils mPop = new ChoosPhotoPopupUtils(MainActivity.this);
-                mPop.setSoftInputMode(PopupWindow.INPUT_METHOD_NEEDED);
-                mPop.setClippingEnabled(false);
-                mPop.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-                mPop.setOnItemClickListener(new ChoosPhotoPopupUtils.OnItemClickListener() {
-                    @Override
-                    public void setOnItemClick(View v, int code, String path) {
-                        mPop.dismiss();
-                    }
-                });
-
-                    // 设置PopupWindow中的位置
-                mPop.showAtLocation(rb_order_tab, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, rb_order_tab.getMeasuredHeight());
+                showPopWindow(rb_order_tab,0);
 
             }
         });
+
+
+        OrderPhotoPopupUtils lighting_planning_Pop = new OrderPhotoPopupUtils(MainActivity.this);
+        lighting_planning_Pop.setOnItemClickListener(new OrderPhotoPopupUtils.OnItemClickListener() {
+            @Override
+            public void setOnItemClick(View v, int code, String path) {
+            }
+        });
+        popWindows.add(lighting_planning_Pop);
 
 
         rb_lighting_planning_tab = findViewById(R.id.lighting_planning_tab);
@@ -111,26 +118,20 @@ public class MainActivity extends AppCompatActivity {
             @SuppressLint("WrongConstant")
             @Override
             public void onClick(View v) {
-                Log.e("x", "isChecked = " + rb_order_tab.isChecked());
-                Log.e("x", "isSelected = " + rb_order_tab.isSelected());
-
-
-                final ChoosPhotoPopupUtils mPop = new ChoosPhotoPopupUtils(MainActivity.this);
-                mPop.setSoftInputMode(PopupWindow.INPUT_METHOD_NEEDED);
-                mPop.setClippingEnabled(false);
-                mPop.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-                mPop.setOnItemClickListener(new ChoosPhotoPopupUtils.OnItemClickListener() {
-                    @Override
-                    public void setOnItemClick(View v, int code, String path) {
-                        mPop.dismiss();
-                    }
-                });
-
-                // 设置PopupWindow中的位置
-                mPop.showAtLocation(rb_order_tab, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, rb_order_tab.getMeasuredHeight());
-
+                Log.e("x", "isChecked = " + rb_lighting_planning_tab.isChecked());
+                Log.e("x", "isSelected = " + rb_lighting_planning_tab.isSelected());
+                showPopWindow(rb_lighting_planning_tab,1);
             }
         });
+
+
+        OrderPhotoPopupUtils settingsPop = new OrderPhotoPopupUtils(MainActivity.this);
+        settingsPop.setOnItemClickListener(new OrderPhotoPopupUtils.OnItemClickListener() {
+            @Override
+            public void setOnItemClick(View v, int code, String path) {
+            }
+        });
+        popWindows.add(settingsPop);
 
         rb_settings_tab = findViewById(R.id.settings_tab);
         rb_settings_tab.setOnClickListener(new View.OnClickListener() {
@@ -138,33 +139,39 @@ public class MainActivity extends AppCompatActivity {
             @SuppressLint("WrongConstant")
             @Override
             public void onClick(View v) {
-                Log.e("x", "isChecked = " + rb_order_tab.isChecked());
-                Log.e("x", "isSelected = " + rb_order_tab.isSelected());
-
-
-                final ChoosPhotoPopupUtils mPop = new ChoosPhotoPopupUtils(MainActivity.this);
-                mPop.setSoftInputMode(PopupWindow.INPUT_METHOD_NEEDED);
-                mPop.setClippingEnabled(false);
-                mPop.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-                mPop.setOnItemClickListener(new ChoosPhotoPopupUtils.OnItemClickListener() {
-                    @Override
-                    public void setOnItemClick(View v, int code, String path) {
-                        mPop.dismiss();
-                    }
-                });
-
-                // 设置PopupWindow中的位置
-                mPop.showAtLocation(rb_order_tab, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, rb_order_tab.getMeasuredHeight());
-
+                Log.e("x", "isChecked = " + rb_settings_tab.isChecked());
+                Log.e("x", "isSelected = " + rb_settings_tab.isSelected());
+                showPopWindow(rb_settings_tab,2);
             }
         });
+
+    }
+
+    private void showPopWindow(RadioButton rb , int index) {
+
+
+        for (int i = 0; i < popWindows.size(); i++) {
+            OrderPhotoPopupUtils pop = popWindows.get(i);
+            if(index == i){
+                if (pop.isShowing()) {
+                    pop.dismiss();
+                } else {
+                    // 设置PopupWindow中的位置
+                    pop.showAtLocation(rb, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, rb.getMeasuredHeight());
+                }
+            }else{
+                if (pop.isShowing()) {
+                    pop.dismiss();
+                }
+            }
+        }
 
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.base_toolbar_menu,menu);
+        inflater.inflate(R.menu.base_toolbar_menu, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -184,16 +191,16 @@ public class MainActivity extends AppCompatActivity {
 
 
         // 初始化 tabHost 颜色
-        for(int i=0;i<tabHost.getTabWidget().getChildCount();i++)
-        {
-            if (i == 0)
-            {
+        for (int i = 0; i < tabHost.getTabWidget().getChildCount(); i++) {
+            if (i == 0) {
                 tabHost.getTabWidget().getChildAt(i).setBackgroundColor(Color.parseColor("#41C7DB"));
-                TextView tv =  tabHost.getTabWidget().getChildAt(i).findViewById(android.R.id.title);;//非选择的背景
+                TextView tv = tabHost.getTabWidget().getChildAt(i).findViewById(android.R.id.title);
+                ;//非选择的背景
                 tv.setTextColor(Color.parseColor("#000000"));
             } else {
                 tabHost.getTabWidget().getChildAt(i).setBackgroundColor(Color.parseColor("#039A9A"));
-                TextView tv =  tabHost.getTabWidget().getChildAt(i).findViewById(android.R.id.title);;//非选择的背景
+                TextView tv = tabHost.getTabWidget().getChildAt(i).findViewById(android.R.id.title);
+                ;//非选择的背景
                 tv.setTextColor(Color.parseColor("#ffffff"));
             }
         }
@@ -212,15 +219,15 @@ public class MainActivity extends AppCompatActivity {
                     viewPager.setCurrentItem(2);
                 }
 
-                for(int i=0;i<tabHost.getTabWidget().getChildCount();i++)
-                {
+                for (int i = 0; i < tabHost.getTabWidget().getChildCount(); i++) {
                     tabHost.getTabWidget().getChildAt(i).setBackgroundColor(getResources().getColor(R.color.cyan_039A9A)); //unselected
                     // 设置字体颜色
                     TextView tv = (TextView) tabHost.getTabWidget().getChildAt(i).findViewById(android.R.id.title);
                     tv.setTextColor(Color.parseColor("#ffffff"));
                 }
                 tabHost.getTabWidget().getChildAt(tabHost.getCurrentTab()).setBackgroundColor(Color.parseColor("#41C7DB")); // selected
-                TextView tv =  tabHost.getTabWidget().getChildAt(tabHost.getCurrentTab()).findViewById(android.R.id.title);;//非选择的背景
+                TextView tv = tabHost.getTabWidget().getChildAt(tabHost.getCurrentTab()).findViewById(android.R.id.title);
+                ;//非选择的背景
                 tv.setTextColor(Color.parseColor("#000000"));
 
             }
@@ -228,8 +235,6 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
-
-
 
 
     private void initViewPager() {
@@ -279,7 +284,6 @@ public class MainActivity extends AppCompatActivity {
                     return;
                 }
             }*/
-
 
 
         }

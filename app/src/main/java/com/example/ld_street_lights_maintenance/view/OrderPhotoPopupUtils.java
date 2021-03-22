@@ -7,13 +7,14 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.PopupWindow;
 
 import com.example.ld_street_lights_maintenance.R;
 
 
-public class ChoosPhotoPopupUtils extends PopupWindow implements
+public class OrderPhotoPopupUtils extends PopupWindow implements
         View.OnClickListener {
     private Button btnTakePhoto, btnSelect, btnCancel, btnDel, btnLook;
     private View mPopView;
@@ -24,7 +25,7 @@ public class ChoosPhotoPopupUtils extends PopupWindow implements
     private String path;
     private Context mContext;
 
-    public ChoosPhotoPopupUtils(Context context) {
+    public OrderPhotoPopupUtils(Context context) {
         super(context);
 
         this.mContext = context;
@@ -70,8 +71,11 @@ public class ChoosPhotoPopupUtils extends PopupWindow implements
     /**
      * 设置窗口的相关属性
      */
-    @SuppressLint("InlinedApi")
+    @SuppressLint({"InlinedApi", "WrongConstant"})
     private void setPopupWindow() {
+        this.setSoftInputMode(PopupWindow.INPUT_METHOD_NEEDED);
+        this.setClippingEnabled(false);
+        this.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
 
         this.setContentView(mPopView);// 设置View
         this.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);// 设置弹出窗口的宽
