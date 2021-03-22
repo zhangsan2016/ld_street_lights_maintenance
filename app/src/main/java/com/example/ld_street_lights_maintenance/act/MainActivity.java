@@ -16,6 +16,7 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.PopupWindow;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TabHost;
@@ -23,7 +24,9 @@ import android.widget.TextView;
 
 import com.example.ld_street_lights_maintenance.R;
 import com.example.ld_street_lights_maintenance.adapter.MainTabAdapter;
+import com.example.ld_street_lights_maintenance.view.LightingPlanningPopupUtils;
 import com.example.ld_street_lights_maintenance.view.OrderPhotoPopupUtils;
+import com.example.ld_street_lights_maintenance.view.SettingsPopupUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
 
     private RadioButton rb_order_tab, rb_lighting_planning_tab, rb_settings_tab;
     private OrderPhotoPopupUtils orderPop;
-    private List<OrderPhotoPopupUtils> popWindows = new ArrayList<>();
+    private List<PopupWindow> popWindows = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,8 +106,8 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-        OrderPhotoPopupUtils lighting_planning_Pop = new OrderPhotoPopupUtils(MainActivity.this);
-        lighting_planning_Pop.setOnItemClickListener(new OrderPhotoPopupUtils.OnItemClickListener() {
+        LightingPlanningPopupUtils  lighting_planning_Pop = new LightingPlanningPopupUtils(MainActivity.this);
+        lighting_planning_Pop.setOnItemClickListener(new LightingPlanningPopupUtils.OnItemClickListener() {
             @Override
             public void setOnItemClick(View v, int code, String path) {
             }
@@ -125,10 +128,11 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-        OrderPhotoPopupUtils settingsPop = new OrderPhotoPopupUtils(MainActivity.this);
-        settingsPop.setOnItemClickListener(new OrderPhotoPopupUtils.OnItemClickListener() {
+        SettingsPopupUtils settingsPop = new SettingsPopupUtils(MainActivity.this);
+        settingsPop.setOnItemClickListener(new SettingsPopupUtils.OnItemClickListener() {
             @Override
             public void setOnItemClick(View v, int code, String path) {
+
             }
         });
         popWindows.add(settingsPop);
@@ -149,9 +153,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void showPopWindow(RadioButton rb , int index) {
 
-
         for (int i = 0; i < popWindows.size(); i++) {
-            OrderPhotoPopupUtils pop = popWindows.get(i);
+            PopupWindow pop = popWindows.get(i);
             if(index == i){
                 if (pop.isShowing()) {
                     pop.dismiss();

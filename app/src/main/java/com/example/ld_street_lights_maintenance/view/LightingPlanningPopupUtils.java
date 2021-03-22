@@ -14,9 +14,8 @@ import android.widget.PopupWindow;
 import com.example.ld_street_lights_maintenance.R;
 
 
-public class OrderPhotoPopupUtils extends PopupWindow implements
+public class LightingPlanningPopupUtils extends PopupWindow implements
         View.OnClickListener {
-    private Button btnTakePhoto, btnSelect, btnCancel, btnDel, btnLook;
     private View mPopView;
     private OnItemClickListener mListener;
     // 点击的是已添加的图片或者是新增加“+”图片的标识来控制是否显示删除和查看按钮
@@ -25,17 +24,12 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
     private String path;
     private Context mContext;
 
-    public OrderPhotoPopupUtils(Context context) {
+    public LightingPlanningPopupUtils(Context context) {
         super(context);
 
         this.mContext = context;
         init(context);
         setPopupWindow();
-        btnTakePhoto.setOnClickListener(this);
-        btnSelect.setOnClickListener(this);
-        btnCancel.setOnClickListener(this);
-        btnDel.setOnClickListener(this);
-        btnLook.setOnClickListener(this);
 
     }
 
@@ -50,10 +44,10 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
     private void init(Context context) {
         LayoutInflater inflater = LayoutInflater.from(context);
         // 绑定布局
-        mPopView = inflater.inflate(R.layout.oder_popup, null);
+        mPopView = inflater.inflate(R.layout.lighting_planning_popup, null);
 
 
-        btnTakePhoto = (Button) mPopView
+    /*    btnTakePhoto = (Button) mPopView
                 .findViewById(R.id.choos_photo_popup_pz);
         btnSelect = (Button) mPopView.findViewById(R.id.choos_photo_popup_xc);
         btnCancel = (Button) mPopView.findViewById(R.id.choos_photo_popup_qx);
@@ -65,7 +59,7 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
         } else {
             btnDel.setVisibility(View.VISIBLE);
             btnLook.setVisibility(View.VISIBLE);
-        }
+        }*/
     }
 
     /**
