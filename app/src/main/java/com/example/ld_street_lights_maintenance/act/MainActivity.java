@@ -198,7 +198,7 @@ public class MainActivity extends AppCompatActivity {
             if (i == 0) {
                 tabHost.getTabWidget().getChildAt(i).setBackgroundColor(Color.parseColor("#41C7DB"));
                 TextView tv = tabHost.getTabWidget().getChildAt(i).findViewById(android.R.id.title);
-                ;//非选择的背景
+                //非选择的背景
                 tv.setTextColor(Color.parseColor("#000000"));
             } else {
                 tabHost.getTabWidget().getChildAt(i).setBackgroundColor(Color.parseColor("#039A9A"));

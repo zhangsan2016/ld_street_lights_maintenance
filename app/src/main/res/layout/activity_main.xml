@@ -8,26 +8,26 @@
 
 
     <androidx.appcompat.widget.Toolbar
-        android:minHeight="48sp"
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_gravity="center"
         android:layout_height="76dp"
+        android:layout_gravity="center"
         android:background="#617FDE"
-        app:title=" "
         android:fitsSystemWindows="true"
-        app:titleTextColor="@android:color/white" >
+        android:minHeight="48sp"
+        app:title=" "
+        app:titleTextColor="@android:color/white">
 
-       <TextView
+        <TextView
             android:id="@+id/toolbar_title"
             style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-           android:gravity="center"
+            android:gravity="center"
             android:text="@string/app_name"
             android:textColor="@android:color/white"
-            android:textSize="18sp"/>-
+            android:textSize="18sp" />-
 
     </androidx.appcompat.widget.Toolbar>
 
@@ -162,6 +162,9 @@
             android:drawableTop="@drawable/tab_setting_selector"
             android:text="设置" />
     </RadioGroup>
+
+
+
 
 
 </LinearLayout>

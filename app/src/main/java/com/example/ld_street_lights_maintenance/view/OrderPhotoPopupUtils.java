@@ -3,6 +3,7 @@ package com.example.ld_street_lights_maintenance.view;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -31,11 +32,8 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
         this.mContext = context;
         init(context);
         setPopupWindow();
-        btnTakePhoto.setOnClickListener(this);
-        btnSelect.setOnClickListener(this);
-        btnCancel.setOnClickListener(this);
-        btnDel.setOnClickListener(this);
-        btnLook.setOnClickListener(this);
+
+     //   btnTakePhoto.setOnClickListener(this);
 
     }
 
@@ -53,19 +51,6 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
         mPopView = inflater.inflate(R.layout.oder_popup, null);
 
 
-        btnTakePhoto = (Button) mPopView
-                .findViewById(R.id.choos_photo_popup_pz);
-        btnSelect = (Button) mPopView.findViewById(R.id.choos_photo_popup_xc);
-        btnCancel = (Button) mPopView.findViewById(R.id.choos_photo_popup_qx);
-        btnDel = (Button) mPopView.findViewById(R.id.choos_photo_popup_sc);
-        btnLook = (Button) mPopView.findViewById(R.id.choos_photo_popup_ck);
-        if (code == 0) {
-            btnDel.setVisibility(View.GONE);
-            btnLook.setVisibility(View.GONE);
-        } else {
-            btnDel.setVisibility(View.VISIBLE);
-            btnLook.setVisibility(View.VISIBLE);
-        }
     }
 
     /**
@@ -79,7 +64,7 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
 
         this.setContentView(mPopView);// 设置View
         this.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);// 设置弹出窗口的宽
-        this.setHeight(500);// 设置弹出窗口的高
+        this.setHeight(8000);// 设置弹出窗口的高
         this.setFocusable(false);// 设置弹出窗口可
         this.setOutsideTouchable(false);
      //   this.setAnimationStyle(R.style.mypopwindow_anim_style);// 设置动画
@@ -90,7 +75,7 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 // id是你需要点击的控件id之上的地方，来实现点击外围扩散的效果
-                int height = mPopView.findViewById(R.id.id_pop_layout).getTop() ;
+                int height = mPopView.findViewById(R.id.id_pop_layout).getTop();
                 int y = (int) event.getY();
                 if (event.getAction() == MotionEvent.ACTION_UP) {
                     if (y < height) {

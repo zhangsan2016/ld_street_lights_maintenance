@@ -38,6 +38,7 @@ import com.example.ld_street_lights_maintenance.R;
 import com.example.ld_street_lights_maintenance.adapter.DeviceAdapter;
 import com.example.ld_street_lights_maintenance.base.BaseFragment;
 import com.example.ld_street_lights_maintenance.comm.ObserverManager;
+import com.example.ld_street_lights_maintenance.view.MyRadioGroup;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,6 +60,7 @@ public class BuleFragment extends BaseFragment implements View.OnClickListener {
                 container, false);
 
         initView(rootView);
+
 
 
 
