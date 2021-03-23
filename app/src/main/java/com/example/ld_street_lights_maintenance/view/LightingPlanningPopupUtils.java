@@ -9,11 +9,20 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.PopupWindow;
 
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.viewpager.widget.ViewPager;
+
 import com.example.ld_street_lights_maintenance.R;
-import com.flyco.tablayout.SegmentTabLayout;
+import com.example.ld_street_lights_maintenance.act.MainActivity;
+import com.example.ld_street_lights_maintenance.fragment.popwindow.SimpleCardFragment;
+import com.flyco.tablayout.SlidingTabLayout;
+
+import java.util.ArrayList;
 
 
 public class LightingPlanningPopupUtils extends PopupWindow implements
@@ -22,12 +31,14 @@ public class LightingPlanningPopupUtils extends PopupWindow implements
     private OnItemClickListener mListener;
     // 点击的是已添加的图片或者是新增加“+”图片的标识来控制是否显示删除和查看按钮
     private int code;
+    private String[] mTitles = {"日落优先", "照度优先", "时间优先","流量优先"};
     // 传入的图片地址
     private String path;
     private Context mContext;
-    private String[] mTitles = {"日落优先", "照度优先", "时间优先","流量优先"};
 
-    public LightingPlanningPopupUtils(Context context) {
+
+
+    public LightingPlanningPopupUtils( Context context) {
         super(context);
 
         this.mContext = context;
@@ -50,13 +61,27 @@ public class LightingPlanningPopupUtils extends PopupWindow implements
         mPopView = inflater.inflate(R.layout.lighting_planning_popup, null);
 
 
+        // 优先级别
         MySegmentTabLayout tabLayout_2 = mPopView.findViewById(R.id.tl_2);
         tabLayout_2.setTabData(mTitles);
         tabLayout_2.setTextSelectColor(Color.BLACK);
-        tabLayout_2.setTextUnselectColor(Color.GRAY);
+        tabLayout_2.setTextUnselectColor(Color.WHITE);
+
+
+        // 日常照度选择
+     /*   for (String title : luxoptionss) {
+            mFragments.add(SimpleCardFragment.getInstance(title));
+        }
+        ViewPager vp = mPopView.findViewById( R.id.vp);
+        mAdapter = new MyPagerAdapter(mainActivity.getSupportFragmentManager(),0);
+        vp.setAdapter(mAdapter);
+        SlidingTabLayout tabLayout_10 = mPopView.findViewById( R.id.tl_10);
+        tabLayout_10.setViewPager(vp);*/
+
 
 
     }
+
 
     /**
      * 设置窗口的相关属性
@@ -69,7 +94,7 @@ public class LightingPlanningPopupUtils extends PopupWindow implements
 
         this.setContentView(mPopView);// 设置View
         this.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);// 设置弹出窗口的宽
-        this.setHeight(500);// 设置弹出窗口的高
+        this.setHeight(8000);// 设置弹出窗口的高
         this.setFocusable(false);// 设置弹出窗口可
         this.setOutsideTouchable(false);
      //   this.setAnimationStyle(R.style.mypopwindow_anim_style);// 设置动画

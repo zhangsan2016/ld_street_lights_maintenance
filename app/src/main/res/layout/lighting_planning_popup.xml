@@ -1,31 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tl="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
 
-    <TextView
+    <LinearLayout
+        android:id="@+id/id_pop_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:gravity="center"
-        android:text="lighting_planning_popup"
-        android:textColor="@color/colorPrimary"
-        android:textSize="48sp"></TextView>
+        android:layout_height="300dp"
+        android:layout_alignParentBottom="true"
+        android:background="#039A9A"
+        android:orientation="vertical"
+        android:paddingBottom="15dp">
 
-    <com.example.ld_street_lights_maintenance.view.MySegmentTabLayout
-        android:id="@+id/tl_2"
-        android:layout_width="wrap_content"
-        android:layout_height="26dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="10dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        tl:tl_indicator_anim_enable="true"
-        tl:tl_indicator_bounce_enable="false"
-        tl:tl_indicator_color="#FFCC66"
-        tl:tl_tab_padding="5dp" />
+        <com.example.ld_street_lights_maintenance.view.MySegmentTabLayout
+            android:id="@+id/tl_2"
+            android:layout_width="wrap_content"
+            android:layout_height="26dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            tl:tl_indicator_anim_enable="true"
+            tl:tl_indicator_bounce_enable="false"
+            tl:tl_indicator_color="#FFCC66"
+            tl:tl_tab_padding="5dp" />
 
-</LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+       <!--     <com.flyco.tablayout.SlidingTabLayout
+                android:id="@+id/tl_10"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:background="#222831"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                tl:tl_indicator_color="#393E46"
+                tl:tl_indicator_corner_radius="5dp"
+                tl:tl_indicator_margin_left="2dp"
+                tl:tl_indicator_margin_right="2dp"
+                tl:tl_indicator_style="BLOCK" />-->
+
+            <fragment
+                android:id="@+id/first_fragment"
+                android:layout_width="match_parent"
+                android:name="com.example.ld_street_lights_maintenance.fragment.popwindow.PopWindosFragment"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+
+
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+</RelativeLayout>
