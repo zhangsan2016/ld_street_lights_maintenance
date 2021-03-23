@@ -13,6 +13,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.example.ld_street_lights_maintenance.R;
 import com.flyco.tablayout.SlidingTabLayout;
+import com.flyco.tablayout.listener.OnTabSelectListener;
 
 import java.util.ArrayList;
 
@@ -27,21 +28,24 @@ public class PopWindosFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fr_popwindos, null);
-     //   initView();
+        initView();
         return rootView;
     }
 
+    ViewPager vp;
 
     private void initView() {
         // 日常照度选择
         for (String title : luxoptionss) {
             mFragments.add(SimpleCardFragment.getInstance(title));
         }
-        ViewPager vp = rootView.findViewById(R.id.vp);
-        mAdapter = new MyPagerAdapter(getFragmentManager(), 0);
+        vp = rootView.findViewById(R.id.vp_line_chart);
+        mAdapter = new MyPagerAdapter(getChildFragmentManager(),3);
         vp.setAdapter(mAdapter);
         SlidingTabLayout tabLayout_10 = rootView.findViewById(R.id.tl_10);
         tabLayout_10.setViewPager(vp);
+
+        vp.setCurrentItem(0);
     }
 
 
