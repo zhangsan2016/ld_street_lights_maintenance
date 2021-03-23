@@ -24,7 +24,7 @@
             android:paddingRight="10dp"
             tl:tl_indicator_anim_enable="true"
             tl:tl_indicator_bounce_enable="false"
-            tl:tl_indicator_color="#FFCC66"
+            tl:tl_indicator_color="@color/tab_golden_bg"
             tl:tl_tab_padding="5dp" />
 
         <LinearLayout
