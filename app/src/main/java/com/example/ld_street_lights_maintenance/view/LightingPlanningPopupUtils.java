@@ -2,6 +2,7 @@ package com.example.ld_street_lights_maintenance.view;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -12,6 +13,7 @@ import android.widget.Button;
 import android.widget.PopupWindow;
 
 import com.example.ld_street_lights_maintenance.R;
+import com.flyco.tablayout.SegmentTabLayout;
 
 
 public class LightingPlanningPopupUtils extends PopupWindow implements
@@ -23,6 +25,7 @@ public class LightingPlanningPopupUtils extends PopupWindow implements
     // 传入的图片地址
     private String path;
     private Context mContext;
+    private String[] mTitles = {"日落优先", "照度优先", "时间优先","流量优先"};
 
     public LightingPlanningPopupUtils(Context context) {
         super(context);
@@ -47,19 +50,12 @@ public class LightingPlanningPopupUtils extends PopupWindow implements
         mPopView = inflater.inflate(R.layout.lighting_planning_popup, null);
 
 
-    /*    btnTakePhoto = (Button) mPopView
-                .findViewById(R.id.choos_photo_popup_pz);
-        btnSelect = (Button) mPopView.findViewById(R.id.choos_photo_popup_xc);
-        btnCancel = (Button) mPopView.findViewById(R.id.choos_photo_popup_qx);
-        btnDel = (Button) mPopView.findViewById(R.id.choos_photo_popup_sc);
-        btnLook = (Button) mPopView.findViewById(R.id.choos_photo_popup_ck);
-        if (code == 0) {
-            btnDel.setVisibility(View.GONE);
-            btnLook.setVisibility(View.GONE);
-        } else {
-            btnDel.setVisibility(View.VISIBLE);
-            btnLook.setVisibility(View.VISIBLE);
-        }*/
+        MySegmentTabLayout tabLayout_2 = mPopView.findViewById(R.id.tl_2);
+        tabLayout_2.setTabData(mTitles);
+        tabLayout_2.setTextSelectColor(Color.BLACK);
+        tabLayout_2.setTextUnselectColor(Color.GRAY);
+
+
     }
 
     /**
@@ -73,7 +69,7 @@ public class LightingPlanningPopupUtils extends PopupWindow implements
 
         this.setContentView(mPopView);// 设置View
         this.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);// 设置弹出窗口的宽
-        this.setHeight(8000);// 设置弹出窗口的高
+        this.setHeight(500);// 设置弹出窗口的高
         this.setFocusable(false);// 设置弹出窗口可
         this.setOutsideTouchable(false);
      //   this.setAnimationStyle(R.style.mypopwindow_anim_style);// 设置动画

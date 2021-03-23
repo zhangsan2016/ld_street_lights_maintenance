@@ -45,8 +45,8 @@ dependencies {
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
     /* 蓝牙 blelib */
     implementation 'com.clj.fastble:FastBleLib:2.3.4'
-
-
+     /* tab */
+    implementation 'com.flyco.tablayout:FlycoTabLayout_Lib:2.1.2@aar'
 
 
 }
