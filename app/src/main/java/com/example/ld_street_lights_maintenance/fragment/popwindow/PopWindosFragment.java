@@ -12,6 +12,7 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.ld_street_lights_maintenance.R;
+import com.example.ld_street_lights_maintenance.view.MySlidingTabLayout;
 import com.flyco.tablayout.SlidingTabLayout;
 import com.flyco.tablayout.listener.OnTabSelectListener;
 
@@ -42,7 +43,7 @@ public class PopWindosFragment extends Fragment {
         vp = rootView.findViewById(R.id.vp_line_chart);
         mAdapter = new MyPagerAdapter(getChildFragmentManager(),3);
         vp.setAdapter(mAdapter);
-        SlidingTabLayout tabLayout_10 = rootView.findViewById(R.id.tl_10);
+        MySlidingTabLayout tabLayout_10 = rootView.findViewById(R.id.tl_10);
         tabLayout_10.setViewPager(vp);
 
         vp.setCurrentItem(0);

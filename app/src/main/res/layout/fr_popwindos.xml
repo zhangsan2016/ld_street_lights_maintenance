@@ -24,19 +24,33 @@
                tl:tl_indicator_width="0dp"
                tl:tl_indicator_style="BLOCK"/>-->
 
-        <com.flyco.tablayout.SlidingTabLayout
+       <!-- <com.flyco.tablayout.SlidingTabLayout
             android:id="@+id/tl_10"
             android:layout_width="wrap_content"
             android:layout_height="26dp"
             android:layout_marginTop="10dp"
-            android:background="#222831"
+            android:background="@color/tab_select_bg"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
-            tl:tl_textSelectColor="@color/tab_golden_bg"
             tl:tl_indicator_color="#393E46"
             tl:tl_indicator_corner_radius="0dp"
             tl:tl_indicator_style="BLOCK"
-            tl:tl_tab_padding="5dp" />
+            tl:tl_tab_padding="5dp"
+            tl:tl_textSelectColor="@color/tab_golden_bg" />-->
+
+        <com.example.ld_street_lights_maintenance.view.MySlidingTabLayout
+            android:id="@+id/tl_10"
+            android:layout_width="wrap_content"
+            android:layout_height="26dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/tab_select_bg"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            tl:tl_indicator_color="#393E46"
+            tl:tl_indicator_corner_radius="0dp"
+            tl:tl_indicator_style="BLOCK"
+            tl:tl_tab_padding="5dp"
+            tl:tl_textSelectColor="@color/tab_golden_bg" />
 
 
     </LinearLayout>
@@ -44,6 +58,6 @@
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/vp_line_chart"
         android:layout_width="match_parent"
-        android:layout_height="84dp" />
+        android:layout_height="200dp" />
 
 </LinearLayout>
