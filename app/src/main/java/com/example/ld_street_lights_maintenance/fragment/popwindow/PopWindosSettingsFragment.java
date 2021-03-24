@@ -38,8 +38,8 @@ public class PopWindosSettingsFragment extends Fragment {
        /* for (String title : luxoptionss) {
             mFragments.add(SimpleCardFragment.getInstance(title));
         }*/
-        mFragments.add(PeacetimeLuxFragment.getInstance(luxoptionss[0]));
-        mFragments.add(HolidayLuxFragment.getInstance(luxoptionss[1]));
+        mFragments.add(BasicsSettingsFragment.getInstance(luxoptionss[0]));
+        mFragments.add(DetailSettingsFragment.getInstance(luxoptionss[1]));
 
         vp = rootView.findViewById(R.id.vp_line_chart);
         mAdapter = new MyPagerAdapter(getChildFragmentManager(),3);
