@@ -48,7 +48,7 @@
             <fragment
                 android:id="@+id/first_fragment"
                 android:layout_width="match_parent"
-                android:name="com.example.ld_street_lights_maintenance.fragment.popwindow.PopWindosFragment"
+                android:name="com.example.ld_street_lights_maintenance.fragment.popwindow.PopWindosLightingPlanningFragment"
                 android:layout_height="wrap_content"
                 android:layout_weight="1" />
 

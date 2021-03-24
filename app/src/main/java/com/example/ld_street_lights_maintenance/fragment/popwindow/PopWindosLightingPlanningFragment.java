@@ -18,7 +18,7 @@ import com.flyco.tablayout.listener.OnTabSelectListener;
 
 import java.util.ArrayList;
 
-public class PopWindosFragment extends Fragment {
+public class PopWindosLightingPlanningFragment extends Fragment {
 
 
     private final String[] luxoptionss = {"平时照度", "节假照度"};

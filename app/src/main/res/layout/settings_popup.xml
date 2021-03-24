@@ -9,23 +9,56 @@
     <LinearLayout
         android:id="@+id/id_pop_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="300dp"
         android:layout_alignParentBottom="true"
         android:background="#039A9A"
         android:orientation="vertical"
         android:padding="5dp"
         android:paddingBottom="15dp">
 
-        <TextView
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:gravity="center"
-            android:text="settings"
-            android:textColor="@color/colorPrimary"
-            android:textSize="48sp"/>
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:text="姿态校准" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
+
+            <Button
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:text="保存激活" />
+
+        </LinearLayout>
+
+
+       <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <fragment
+                android:id="@+id/settings_fragment"
+                android:layout_width="match_parent"
+                android:name="com.example.ld_street_lights_maintenance.fragment.popwindow.PopWindosSettingsFragment"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+        </LinearLayout>
 
     </LinearLayout>
+
+
 
 
 

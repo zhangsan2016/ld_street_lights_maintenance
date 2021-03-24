@@ -1,0 +1,38 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tl="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+
+        <com.example.ld_street_lights_maintenance.view.MySlidingTabLayout
+            android:id="@+id/tl_10"
+            android:layout_width="wrap_content"
+            android:layout_height="26dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/tab_select_bg"
+            android:paddingLeft="0dp"
+            android:paddingRight="0dp"
+            tl:tl_indicator_color="#393E4608"
+            tl:tl_indicator_corner_radius="0dp"
+            tl:tl_indicator_margin_bottom="0dp"
+            tl:tl_indicator_margin_top="0dp"
+            tl:tl_indicator_style="BLOCK"
+            tl:tl_tab_padding="5dp"
+            tl:tl_textSelectColor="@color/tab_golden_bg" />
+
+
+    </LinearLayout>
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/vp_line_chart"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>
