@@ -39,9 +39,6 @@
             tl:tl_textSelectColor="@color/tab_golden_bg" />-->
 
 
-
-
-
         <com.example.ld_street_lights_maintenance.view.MySlidingTabLayout
             android:id="@+id/tl_10"
             android:layout_width="wrap_content"

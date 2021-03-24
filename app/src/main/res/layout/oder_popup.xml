@@ -114,7 +114,9 @@
                         android:layout_width="120dp"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/cd_electricity"
-                        android:text="报警清除"></Button>
+                        android:background="@color/tab_violet_bg"
+                        android:text="报警清除"
+                        android:textColor="@color/white"></Button>
 
                 </RelativeLayout>
 
@@ -145,7 +147,9 @@
                     android:layout_width="120dp"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/cd_electricity"
-                    android:text="亮灯开关"></Button>
+                    android:background="@color/tab_violet_bg"
+                    android:text="亮灯开关"
+                    android:textColor="@color/white"></Button>
 
             </LinearLayout>
 

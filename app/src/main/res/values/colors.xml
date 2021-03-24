@@ -15,6 +15,9 @@
     <color name="tab_select_bg">#41C7DB</color>
     <color name="tab_bg">#039A9A</color>
     <color name="tab_golden_bg">#FFCC66</color>
+    <color name="tab_violet_bg">#BD617FDE</color>
+    <color name="tab_bt_bg">#316F70</color>
+
 
 
 
