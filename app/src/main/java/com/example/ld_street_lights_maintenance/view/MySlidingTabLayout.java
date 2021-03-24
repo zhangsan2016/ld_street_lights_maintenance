@@ -482,7 +482,8 @@ public class MySlidingTabLayout extends HorizontalScrollView implements ViewPage
             }
         } else if (mIndicatorStyle == STYLE_BLOCK) {
             if (mIndicatorHeight < 0) {
-                mIndicatorHeight = height - mIndicatorMarginTop - mIndicatorMarginBottom;
+               mIndicatorHeight = height - mIndicatorMarginTop - mIndicatorMarginBottom;
+             //   mIndicatorHeight = height;
             } else {
 
             }

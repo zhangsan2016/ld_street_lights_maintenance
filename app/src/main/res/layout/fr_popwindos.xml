@@ -38,16 +38,22 @@
             tl:tl_tab_padding="5dp"
             tl:tl_textSelectColor="@color/tab_golden_bg" />-->
 
+
+
+
+
         <com.example.ld_street_lights_maintenance.view.MySlidingTabLayout
             android:id="@+id/tl_10"
             android:layout_width="wrap_content"
             android:layout_height="26dp"
             android:layout_marginTop="10dp"
             android:background="@color/tab_select_bg"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            tl:tl_indicator_color="#393E46"
+            android:paddingLeft="0dp"
+            android:paddingRight="0dp"
+            tl:tl_indicator_color="#393E4608"
             tl:tl_indicator_corner_radius="0dp"
+            tl:tl_indicator_margin_bottom="0dp"
+            tl:tl_indicator_margin_top="0dp"
             tl:tl_indicator_style="BLOCK"
             tl:tl_tab_padding="5dp"
             tl:tl_textSelectColor="@color/tab_golden_bg" />
