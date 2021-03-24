@@ -24,6 +24,7 @@ import android.widget.TextView;
 
 import com.example.ld_street_lights_maintenance.R;
 import com.example.ld_street_lights_maintenance.adapter.MainTabAdapter;
+import com.example.ld_street_lights_maintenance.util.DensityUtil;
 import com.example.ld_street_lights_maintenance.view.LightingPlanningPopupUtils;
 import com.example.ld_street_lights_maintenance.view.OrderPhotoPopupUtils;
 import com.example.ld_street_lights_maintenance.view.SettingsPopupUtils;
@@ -79,7 +80,6 @@ public class MainActivity extends AppCompatActivity {
     private void bottomTab() {
         mTabRadioGroup = findViewById(R.id.tabs_rg);
         //  mTabRadioGroup.setOnCheckedChangeListener(mOnCheckedChangeListener);
-
 
         orderPop = new OrderPhotoPopupUtils(MainActivity.this);
         orderPop.setOnItemClickListener(new OrderPhotoPopupUtils.OnItemClickListener() {

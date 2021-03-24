@@ -47,6 +47,8 @@ dependencies {
     implementation 'com.clj.fastble:FastBleLib:2.3.4'
      /* tab */
     implementation 'com.flyco.tablayout:FlycoTabLayout_Lib:2.1.2@aar'
+    /* 图表库*/
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
 
 
 }

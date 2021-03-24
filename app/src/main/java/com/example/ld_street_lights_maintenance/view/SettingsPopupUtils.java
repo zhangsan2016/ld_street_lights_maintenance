@@ -1,8 +1,11 @@
 package com.example.ld_street_lights_maintenance.view;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
+import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -12,6 +15,7 @@ import android.widget.Button;
 import android.widget.PopupWindow;
 
 import com.example.ld_street_lights_maintenance.R;
+import com.example.ld_street_lights_maintenance.util.DensityUtil;
 
 
 public class SettingsPopupUtils extends PopupWindow implements
@@ -31,6 +35,7 @@ public class SettingsPopupUtils extends PopupWindow implements
         this.mContext = context;
         init(context);
         setPopupWindow();
+
 
     }
 
@@ -74,7 +79,7 @@ public class SettingsPopupUtils extends PopupWindow implements
 
         this.setContentView(mPopView);// 设置View
         this.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);// 设置弹出窗口的宽
-        this.setHeight(2000);// 设置弹出窗口的高
+        this.setHeight(DensityUtil.getScreenHeight(mContext));// 设置弹出窗口的高
         this.setFocusable(false);// 设置弹出窗口可
         this.setOutsideTouchable(false);
      //   this.setAnimationStyle(R.style.mypopwindow_anim_style);// 设置动画
@@ -96,6 +101,9 @@ public class SettingsPopupUtils extends PopupWindow implements
             }
         });
     }
+
+
+
 
     @Override
     public void dismiss() {

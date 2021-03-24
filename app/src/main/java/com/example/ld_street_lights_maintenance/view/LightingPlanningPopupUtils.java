@@ -20,6 +20,7 @@ import androidx.viewpager.widget.ViewPager;
 import com.example.ld_street_lights_maintenance.R;
 import com.example.ld_street_lights_maintenance.act.MainActivity;
 import com.example.ld_street_lights_maintenance.fragment.popwindow.SimpleCardFragment;
+import com.example.ld_street_lights_maintenance.util.DensityUtil;
 import com.flyco.tablayout.SlidingTabLayout;
 
 import java.util.ArrayList;
@@ -94,7 +95,7 @@ public class LightingPlanningPopupUtils extends PopupWindow implements
 
         this.setContentView(mPopView);// 设置View
         this.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);// 设置弹出窗口的宽
-        this.setHeight(2000);// 设置弹出窗口的高
+        this.setHeight(DensityUtil.getScreenHeight(mContext));// 设置弹出窗口的高
         this.setFocusable(false);// 设置弹出窗口可
         this.setOutsideTouchable(false);
      //   this.setAnimationStyle(R.style.mypopwindow_anim_style);// 设置动画
