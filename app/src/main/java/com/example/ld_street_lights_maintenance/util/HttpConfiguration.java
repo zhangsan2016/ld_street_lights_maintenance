@@ -54,6 +54,10 @@ public class HttpConfiguration {
     public    static final String CONTENT_TYPE_USER_TOKEN = "user/checkToken";
     // content-type 设备列表（包含当前项目下的所有设备）
     public   static final String CONTENT_TYPE_DEVICE_LIST = "device/list";
+    // content-type 汇报设备配置
+    public   static final String CONTENT_DEVICE_REPORTCONFIG = "device/reportConfig";
+    // content-type 设备编辑
+    public   static final String CONTENT_DEVICE_EDIT = "device_lamp/edit";
 
 
 }

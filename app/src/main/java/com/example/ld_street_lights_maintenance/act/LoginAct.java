@@ -1,14 +1,11 @@
 package com.example.ld_street_lights_maintenance.act;
 
 
+import android.Manifest;
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.os.AsyncTask;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -19,16 +16,24 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+
+import com.amap.api.location.AMapLocation;
+import com.amap.api.location.AMapLocationClient;
+import com.amap.api.location.AMapLocationListener;
 import com.example.ld_street_lights_maintenance.R;
 import com.example.ld_street_lights_maintenance.entity.LoginInfo;
-import com.example.ld_street_lights_maintenance.util.CustomUtils;
 import com.example.ld_street_lights_maintenance.util.HttpConfiguration;
 import com.example.ld_street_lights_maintenance.util.HttpUtil;
 import com.example.ld_street_lights_maintenance.util.LogUtil;
 import com.example.ld_street_lights_maintenance.util.SpUtils;
 import com.google.gson.Gson;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
+import org.json.JSONStringer;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -39,7 +44,6 @@ import okhttp3.FormBody;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 import okhttp3.Response;
-
 
 
 public class LoginAct extends Activity {
@@ -60,7 +64,7 @@ public class LoginAct extends Activity {
     private int newVersionCode;
     private String newVersionName;
 
-    String username,password,serviceAddress;
+    String username, password, serviceAddress;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,12 +73,11 @@ public class LoginAct extends Activity {
         this.setContentView(R.layout.login);
 
 
-
         username = (String) SpUtils.getValue("username", "");
         password = (String) SpUtils.getValue("password", "");
 
-        if(!TextUtils.isEmpty(username) &&
-                !TextUtils.isEmpty(password)){
+        if (!TextUtils.isEmpty(username) &&
+                !TextUtils.isEmpty(password)) {
             ((EditText) findViewById(R.id.txt_user_name)).setText(username);
             ((EditText) findViewById(R.id.txt_pass_word)).setText(password);
         }
@@ -90,12 +93,11 @@ public class LoginAct extends Activity {
             public void onClick(View v) {
 
 
-
                 username = ((EditText) findViewById(R.id.txt_user_name))
                         .getText().toString().trim();
                 password = ((EditText) findViewById(R.id.txt_pass_word))
                         .getText().toString().trim();
-                serviceAddress =((EditText) findViewById(R.id.txt_service_address))
+                serviceAddress = ((EditText) findViewById(R.id.txt_service_address))
                         .getText().toString().trim();
 
 
@@ -119,8 +121,6 @@ public class LoginAct extends Activity {
         });
 
 
-
-
     }
 
     private void makeSampleHttpRequest() {
@@ -130,14 +130,14 @@ public class LoginAct extends Activity {
             public void run() {
 
                 //String url = "http://" + "121.40.194.91" + ":8080/ldsight/clientAction";
-               // String url = "http://47.99.168.98:9001/API/CommonFn.asmx/Login";
+                // String url = "http://47.99.168.98:9001/API/CommonFn.asmx/Login";
 
-                String url = serviceAddress + HttpConfiguration.PROFILE + HttpConfiguration.CONTENT_TYPE_USER_LOGIN;;
+                String url = serviceAddress + HttpConfiguration.PROFILE + HttpConfiguration.CONTENT_TYPE_USER_LOGIN;
 
                 RequestBody requestBody = new FormBody.Builder()
                         .add("strTemplate", "{\"ischeck\":$data.rows}")
                         .add("username", username)
-                        .add("password", password )
+                        .add("password", password)
                         .add("strVerify", "[admin]")
                         .build();
 
@@ -167,10 +167,10 @@ public class LoginAct extends Activity {
 						/*Log.e("xxx", "成功 json = " + json);
 						stopProgress();*/
 
-						// {"errno":0,"errmsg":"","data":{"grantedActions":null}}
+                        // {"errno":0,"errmsg":"","data":{"grantedActions":null}}
                         Gson gson = new Gson();
                         LoginInfo loginInfo = gson.fromJson(json, LoginInfo.class);
-                        if(loginInfo.getErrno() == 0){
+                        if (loginInfo.getErrno() == 0) {
 
                             Log.e("xxx", "成功 json = " + json);
                             // cookie持久化
@@ -187,14 +187,21 @@ public class LoginAct extends Activity {
                 intent.putExtras(bundle);
                 startActivity(intent);*/
 
-                            Intent intent = new Intent(LoginAct.this, MainActivity.class);
+                            try {
+                                  Check();
+
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+
+                         /*   Intent intent = new Intent(LoginAct.this, MainActivity.class);
                             startActivity(intent);
 
 
                             stopProgress();
-                            LoginAct.this.finish();
+                            LoginAct.this.finish();*/
 
-                        }else{
+                        } else {
                             Log.e("xxx", "失败" + json);
                             LoginAct.this.runOnUiThread(new Runnable() {
                                 @Override
@@ -217,7 +224,70 @@ public class LoginAct extends Activity {
 
 
 
+    private void Check() throws JSONException {
 
+
+
+
+
+
+     /*   String url = serviceAddress + HttpConfiguration.PROFILE + HttpConfiguration.CONTENT_TYPE_DEVICE_LAMP_LIST;
+        String postBody = "{\"where\":{\"UUID\":\"" + "83140000862285035977697" + "\"},\"size\":2000}";
+        RequestBody requestBody = FormBody.create( postBody,MediaType.parse("application/json"));*/
+
+/*
+        String url = serviceAddress + HttpConfiguration.PROFILE + HttpConfiguration.CONTENT_DEVICE_EDIT + "?upsert=1&id=77497";
+            RequestBody requestBody = new FormBody.Builder()
+                .add("LNG", "666.58")
+                .build();*/
+
+
+        String url = serviceAddress + HttpConfiguration.PROFILE + HttpConfiguration.CONTENT_DEVICE_EDIT;
+
+        // String postBody = "{\"data\":{ \"LNG\":"+"106.541652"+",\"\"LAT:" +"29.803828" +"},\"where\":{ \"UUID\":"+"000000000000000000000022" +"} }";
+        JSONStringer jsonstr = new JSONStringer()
+                .object().key("data")
+                .object().key("LNG").value("106.541654")
+                .key("LAT").value("29.803827")
+                .endObject()
+                .key("where").object().key("UUID").value("000000000000000000000022")
+                .endObject().endObject();
+        //  String postBody = "{\"data\":{ \"LNG\":\"106.541654\",\"LAT\":\"29.803828\"},\"where\":{ \"UUID\":\"000000000000000000000022\"} }";
+        RequestBody requestBody = FormBody.create(jsonstr.toString(), MediaType.parse("application/json"));
+
+
+        HttpUtil.sendHttpRequest(url, new Callback() {
+
+
+            @Override
+            public void onFailure(Call call, IOException e) {
+                LoginAct.this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        showToast("连接服务器异常！");
+                    }
+                });
+            }
+
+            @Override
+            public void onResponse(Call call, final Response response) throws IOException {
+                LoginAct.this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            System.out.println(">>>>>>>>>>>>>>>>>>>>>> " + response.body().string());
+                            //       showToast("请求成功！" + response.body().string());
+
+                            stopProgress();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+
+            }
+        }, "7650a440-8e01-11eb-bb68-2f7d714262b3", requestBody);
+    }
 
 
     private void showProgress() {
@@ -232,11 +302,11 @@ public class LoginAct extends Activity {
         Toast.makeText(LoginAct.this, msg, Toast.LENGTH_LONG).show();
     }
 
-    private String uuidToString(byte[] a){
+    private String uuidToString(byte[] a) {
         StringBuilder b = new StringBuilder();
         for (int i = 0; i < a.length; i++) {
             b.append(a[i]);
-            if(i != a.length-1){
+            if (i != a.length - 1) {
                 b.append(",");
             }
         }
@@ -245,32 +315,33 @@ public class LoginAct extends Activity {
 
 
     /**
-     *  根据用户名转换为ascii码，拼接成uuid
-     * @param username  用户名
+     * 根据用户名转换为ascii码，拼接成uuid
+     *
+     * @param username 用户名
      * @return
      */
-    public static boolean getAppUuid(String username){
-        byte[] result =  new byte[username.length()];
+    public static boolean getAppUuid(String username) {
+        byte[] result = new byte[username.length()];
         int max = username.length();
-        for (int i=0; i<max; i++){
+        for (int i = 0; i < max; i++) {
             char c = username.charAt(i);
-            int b = (int)c;
-            result[i] =  (byte) b;
+            int b = (int) c;
+            result[i] = (byte) b;
         }
         // 拼接appuuid
         byte[] uuidScript = getByteUuid(HttpConfiguration.UUID_SCRIPT);
-        System.arraycopy(result, 0, uuidScript,uuidScript.length - result.length, result.length);
+        System.arraycopy(result, 0, uuidScript, uuidScript.length - result.length, result.length);
 
         // 判断uuid是否正确生成
         int sum = 0;
         for (int i = 0; i < uuidScript.length; i++) {
             sum += uuidScript[i];
         }
-        if(sum > 1){
+        if (sum > 1) {
             String appUuid = Arrays.toString(uuidScript);
-            appUuid =  appUuid.substring(1, appUuid.length()-1);
+            appUuid = appUuid.substring(1, appUuid.length() - 1);
             HttpConfiguration._Clientuuid = appUuid;
-            LogUtil.e("uuidScript = " +HttpConfiguration._Clientuuid);
+            LogUtil.e("uuidScript = " + HttpConfiguration._Clientuuid);
             return true;
         }
 
@@ -279,7 +350,8 @@ public class LoginAct extends Activity {
 
 
     /**
-     *  String uuid 转 byte uuid
+     * String uuid 转 byte uuid
+     *
      * @param uuid
      * @return
      */
