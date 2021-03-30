@@ -258,7 +258,6 @@ public class LoginAct extends Activity {
 
         HttpUtil.sendHttpRequest(url, new Callback() {
 
-
             @Override
             public void onFailure(Call call, IOException e) {
                 LoginAct.this.runOnUiThread(new Runnable() {
@@ -276,9 +275,7 @@ public class LoginAct extends Activity {
                     public void run() {
                         try {
                             System.out.println(">>>>>>>>>>>>>>>>>>>>>> " + response.body().string());
-                            //       showToast("请求成功！" + response.body().string());
 
-                            stopProgress();
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
