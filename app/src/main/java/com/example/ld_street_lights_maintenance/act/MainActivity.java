@@ -214,6 +214,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onTabChanged(String tabId) {
                 Log.e("x", ">>>>>>>>>>>>>>>>>>>>>>>>>> onTabChanged tabId = " + tabId);
+
+
                 if (tabId.equals("tab1")) {
                     viewPager.setCurrentItem(0);
                 } else if (tabId.equals("tab2")) {

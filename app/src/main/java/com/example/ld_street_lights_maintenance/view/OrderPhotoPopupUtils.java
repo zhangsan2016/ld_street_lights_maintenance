@@ -34,7 +34,10 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
         init(context);
         setPopupWindow();
 
-     //   btnTakePhoto.setOnClickListener(this);
+  //      ((DemoActivity)getActivity()).getmTitle();
+
+
+        //   btnTakePhoto.setOnClickListener(this);
 
     }
 

@@ -62,8 +62,6 @@ public class BuleFragment extends BaseFragment implements View.OnClickListener {
         initView(rootView);
 
 
-
-
         return rootView;
     }
 
@@ -73,6 +71,8 @@ public class BuleFragment extends BaseFragment implements View.OnClickListener {
         btn_scan = (Button) rootView.findViewById(R.id.btn_scan);
         btn_scan.setOnClickListener(this);
         progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setMessage("正在扫描");
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER ); //设置进度条样式环形精度条
         progressDialog.setCancelable(false);
 
         // 初始化蓝牙工具类
@@ -86,10 +86,12 @@ public class BuleFragment extends BaseFragment implements View.OnClickListener {
 
         mDeviceAdapter = new DeviceAdapter(getActivity());
         mDeviceAdapter.setOnDeviceClickListener(new DeviceAdapter.OnDeviceClickListener() {
+
+            // 连接当前蓝牙设备
             @Override
             public void onConnect(BleDevice bleDevice) {
                 if (!BleManager.getInstance().isConnected(bleDevice)) {
-                    BleManager.getInstance().cancelScan();
+                    BleManager.getInstance().cancelScan(); // 关闭蓝牙扫描
                     connect(bleDevice);
                 }
             }
@@ -128,6 +130,7 @@ public class BuleFragment extends BaseFragment implements View.OnClickListener {
                 Toast.makeText(getActivity(), getString(R.string.connect_fail), Toast.LENGTH_LONG).show();
             }
 
+            // 连接成功
             @Override
             public void onConnectSuccess(BleDevice bleDevice, BluetoothGatt gatt, int status) {
                 progressDialog.dismiss();
@@ -244,8 +247,11 @@ public class BuleFragment extends BaseFragment implements View.OnClickListener {
 
             @Override
             public void onScanning(BleDevice bleDevice) {
-                mDeviceAdapter.addDevice(bleDevice);
-                mDeviceAdapter.notifyDataSetChanged();
+
+                if(bleDevice.getDevice().toString().contains("84:C2:E4")){
+                    mDeviceAdapter.addDevice(bleDevice);
+                    mDeviceAdapter.notifyDataSetChanged();
+                }
             }
 
             // 扫描结束
@@ -269,6 +275,12 @@ public class BuleFragment extends BaseFragment implements View.OnClickListener {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Log.e("xx",">>>>>>>>>>>>>>>>>> onDestroyonDestroyonDestroyonDestroy");
+        Log.e("xx",">>>>>>>>>>>>>>>>>> BuleFragment onDestroy");
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.e("xx",">>>>>>>>>>>>>>>>>> BuleFragment onResume");
     }
 }

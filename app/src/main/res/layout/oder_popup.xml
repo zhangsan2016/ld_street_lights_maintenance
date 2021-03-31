@@ -83,8 +83,8 @@
                         android:id="@+id/cd_voltage"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginRight="20dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_toRightOf="@id/cd_electric_leakage"
                         android:text="电压报警" />
 
 
@@ -105,8 +105,8 @@
                         android:id="@+id/cd_electricity"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginRight="20dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_toRightOf="@id/cd_topple_over"
                         android:text="电流报警"></CheckBox>
 
 
