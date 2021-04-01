@@ -52,6 +52,7 @@ public class BuleFragment extends BaseFragment implements View.OnClickListener {
     private DeviceAdapter mDeviceAdapter;
     private ProgressDialog progressDialog;
 
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -92,6 +93,7 @@ public class BuleFragment extends BaseFragment implements View.OnClickListener {
             public void onConnect(BleDevice bleDevice) {
                 if (!BleManager.getInstance().isConnected(bleDevice)) {
                     BleManager.getInstance().cancelScan(); // 关闭蓝牙扫描
+                    BleManager.getInstance().disconnectAllDevice();  // 清空所有已连接列表
                     connect(bleDevice);
                 }
             }
@@ -137,6 +139,10 @@ public class BuleFragment extends BaseFragment implements View.OnClickListener {
               //  mDeviceAdapter.addDevice(bleDevice);
                 mDeviceAdapter.addDeviceTop(bleDevice);
                 mDeviceAdapter.notifyDataSetChanged();
+                // 将连接成功的蓝牙设备更新到 MainActivity 中
+                MainActivity mainActivity = (MainActivity) getActivity();
+                mainActivity.setBleDevice(bleDevice);
+
             }
 
             @Override
@@ -275,12 +281,12 @@ public class BuleFragment extends BaseFragment implements View.OnClickListener {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Log.e("xx",">>>>>>>>>>>>>>>>>> BuleFragment onDestroy");
+        // 销毁时清空所有蓝牙连接
+        BleManager.getInstance().disconnectAllDevice();
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        Log.e("xx",">>>>>>>>>>>>>>>>>> BuleFragment onResume");
     }
 }

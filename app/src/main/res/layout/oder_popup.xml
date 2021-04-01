@@ -111,6 +111,7 @@
 
 
                     <Button
+                        android:id="@+id/bt_alarm_clear"
                         android:layout_width="120dp"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/cd_electricity"

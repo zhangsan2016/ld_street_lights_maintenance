@@ -1,6 +1,7 @@
 package com.example.ld_street_lights_maintenance.view;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.util.Log;
@@ -12,8 +13,13 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.PopupWindow;
 
+import com.clj.fastble.BleManager;
+import com.clj.fastble.data.BleDevice;
 import com.example.ld_street_lights_maintenance.R;
+import com.example.ld_street_lights_maintenance.act.MainActivity;
 import com.example.ld_street_lights_maintenance.util.DensityUtil;
+
+import java.util.List;
 
 
 public class OrderPhotoPopupUtils extends PopupWindow implements
@@ -35,8 +41,6 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
         setPopupWindow();
 
   //      ((DemoActivity)getActivity()).getmTitle();
-
-
         //   btnTakePhoto.setOnClickListener(this);
 
     }
@@ -53,6 +57,24 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
         LayoutInflater inflater = LayoutInflater.from(context);
         // 绑定布局
         mPopView = inflater.inflate(R.layout.oder_popup, null);
+
+
+        Button bt_alarm_clear = mPopView.findViewById(R.id.bt_alarm_clear);
+
+                bt_alarm_clear.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+
+
+                        // disconnectAllDevice 关闭所有链接设备
+                        List<BleDevice>  bleDevices = BleManager.getInstance().getAllConnectedDevice();
+
+                        StringBuffer sb = new StringBuffer();
+                        sb.append("isBlueEnable =" + bleDevices);
+                        Log.e("xxx","  >>>>>>>>>>>>>> " + sb.toString()  + v.getId());
+                    }
+                });
 
 
     }

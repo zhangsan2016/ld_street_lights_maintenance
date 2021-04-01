@@ -22,6 +22,7 @@ import android.widget.RadioGroup;
 import android.widget.TabHost;
 import android.widget.TextView;
 
+import com.clj.fastble.data.BleDevice;
 import com.example.ld_street_lights_maintenance.R;
 import com.example.ld_street_lights_maintenance.adapter.MainTabAdapter;
 import com.example.ld_street_lights_maintenance.util.DensityUtil;
@@ -41,6 +42,9 @@ public class MainActivity extends AppCompatActivity {
     private RadioButton rb_order_tab, rb_lighting_planning_tab, rb_settings_tab;
     private OrderPhotoPopupUtils orderPop;
     private List<PopupWindow> popWindows = new ArrayList<>();
+
+    // 当前蓝牙设备
+    private BleDevice bleDevice = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -289,10 +293,19 @@ public class MainActivity extends AppCompatActivity {
                     return;
                 }
             }*/
-
-
         }
     };
+
+
+    public BleDevice getBleDevice() {
+        return bleDevice;
+    }
+
+    public void setBleDevice(BleDevice bleDevice) {
+        this.bleDevice = bleDevice;
+    }
+
+
 
 
 }
