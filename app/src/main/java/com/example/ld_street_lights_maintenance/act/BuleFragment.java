@@ -140,8 +140,7 @@ public class BuleFragment extends BaseFragment implements View.OnClickListener {
                 mDeviceAdapter.addDeviceTop(bleDevice);
                 mDeviceAdapter.notifyDataSetChanged();
                 // 将连接成功的蓝牙设备更新到 MainActivity 中
-                MainActivity mainActivity = (MainActivity) getActivity();
-                mainActivity.setBleDevice(bleDevice);
+                ((MainActivity) getActivity()).setBleDevice(bleDevice);
 
             }
 
