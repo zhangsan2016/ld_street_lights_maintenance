@@ -3,13 +3,11 @@ package com.example.ld_street_lights_maintenance.util;
 import android.annotation.TargetApi;
 import android.bluetooth.BluetoothGatt;
 import android.bluetooth.BluetoothGattCharacteristic;
-import android.bluetooth.BluetoothGattDescriptor;
 import android.bluetooth.BluetoothGattService;
 import android.os.Build;
 
-import androidx.annotation.RequiresApi;
-
 import com.clj.fastble.BleManager;
+import com.clj.fastble.callback.BleReadCallback;
 import com.clj.fastble.callback.BleWriteCallback;
 import com.clj.fastble.data.BleDevice;
 import com.clj.fastble.exception.BleException;
@@ -19,7 +17,7 @@ import java.util.List;
 import java.util.UUID;
 
 @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
-public class Pusher {
+public class BlePusher {
     // 服务 uuid 和特征 uuid
     private static String serviceUuid = "0000ffa0-0000-1000-8000-00805f9b34fb";
     private static String characteristicUuidA = "0000ffa1-0000-1000-8000-00805f9b34fb";
@@ -29,12 +27,12 @@ public class Pusher {
     private static byte tail = -17;
 
 
-    public static Pusher getInstance() {
-        return Pusher.BleManagerHolder.sBleManager;
+    public static BlePusher getInstance() {
+        return BlePusher.BleManagerHolder.sBleManager;
     }
 
     private static class BleManagerHolder {
-        private static final Pusher sBleManager = new Pusher();
+        private static final BlePusher sBleManager = new BlePusher();
     }
 
 
@@ -55,8 +53,8 @@ public class Pusher {
 
             BleManager.getInstance().write(
                     bleDevices.get(0),
-                    gattCharacteristicA2.getService().getUuid().toString(),
-                    gattCharacteristicA2.getUuid().toString(),
+                    gattCharacteristicA1.getService().getUuid().toString(),
+                    gattCharacteristicA1.getUuid().toString(),
                     data,
                     callback);
         } else {
@@ -122,6 +120,37 @@ public class Pusher {
             throw new Exception("请先连接蓝牙设备");
         }
     }
+
+
+
+
+    public static void readSpliceOrder(final BleReadCallback callback){
+
+        List<BleDevice> bleDevices = BleManager.getInstance().getAllConnectedDevice();
+
+        if(bleDevices.size() > 0){
+
+            // 获取服务
+            BluetoothGatt mBluetoothGatt = BleManager.getInstance().getBluetoothGatt(bleDevices.get(0));
+            BluetoothGattService service = mBluetoothGatt.getService(UUID.fromString(serviceUuid));
+            BluetoothGattCharacteristic gattCharacteristicA1 = service.getCharacteristic(UUID.fromString(characteristicUuidA));
+            BluetoothGattCharacteristic gattCharacteristicA2 = service.getCharacteristic(UUID.fromString(characteristicUuidB));
+
+            BleManager.getInstance().read(
+                    bleDevices.get(0),
+                    gattCharacteristicA1.getService().getUuid().toString(),
+                    gattCharacteristicA1.getUuid().toString(),
+                    callback);
+        }
+
+
+
+    }
+
+
+
+
+
 
 
 }

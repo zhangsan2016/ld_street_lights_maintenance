@@ -95,6 +95,7 @@
 
             <Button
                 android:id="@+id/btn_detail"
+                android:visibility="gone"
                 android:layout_width="50dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"

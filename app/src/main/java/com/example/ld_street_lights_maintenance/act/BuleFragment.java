@@ -74,7 +74,7 @@ public class BuleFragment extends BaseFragment implements View.OnClickListener {
         progressDialog = new ProgressDialog(getActivity());
         progressDialog.setMessage("正在扫描");
         progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER ); //设置进度条样式环形精度条
-        progressDialog.setCancelable(false);
+      //  progressDialog.setCancelable(false);
 
         // 初始化蓝牙工具类
         BleManager.getInstance().init(getActivity().getApplication());
@@ -93,7 +93,6 @@ public class BuleFragment extends BaseFragment implements View.OnClickListener {
             public void onConnect(BleDevice bleDevice) {
                 if (!BleManager.getInstance().isConnected(bleDevice)) {
                     BleManager.getInstance().cancelScan(); // 关闭蓝牙扫描
-                    BleManager.getInstance().disconnectAllDevice();  // 清空所有已连接列表
                     connect(bleDevice);
                 }
             }
@@ -122,7 +121,11 @@ public class BuleFragment extends BaseFragment implements View.OnClickListener {
         BleManager.getInstance().connect(bleDevice, new BleGattCallback() {
             @Override
             public void onStartConnect() {
+
                 progressDialog.show();
+                BleManager.getInstance().disconnectAllDevice();  // 清空所有已连接列表
+
+
             }
 
             @Override

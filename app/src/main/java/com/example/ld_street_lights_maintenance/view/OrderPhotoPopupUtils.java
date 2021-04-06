@@ -14,11 +14,16 @@ import android.widget.Button;
 import android.widget.PopupWindow;
 
 import com.clj.fastble.BleManager;
+import com.clj.fastble.callback.BleReadCallback;
+import com.clj.fastble.callback.BleWriteCallback;
 import com.clj.fastble.data.BleDevice;
+import com.clj.fastble.exception.BleException;
 import com.example.ld_street_lights_maintenance.R;
 import com.example.ld_street_lights_maintenance.act.MainActivity;
+import com.example.ld_street_lights_maintenance.util.BlePusher;
 import com.example.ld_street_lights_maintenance.util.DensityUtil;
 
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -40,11 +45,10 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
         init(context);
         setPopupWindow();
 
-  //      ((DemoActivity)getActivity()).getmTitle();
+        //      ((DemoActivity)getActivity()).getmTitle();
         //   btnTakePhoto.setOnClickListener(this);
 
     }
-
 
 
     /**
@@ -61,23 +65,54 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
 
         Button bt_alarm_clear = mPopView.findViewById(R.id.bt_alarm_clear);
 
-                bt_alarm_clear.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
+        bt_alarm_clear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+/*
+                // disconnectAllDevice 关闭所有链接设备
+                List<BleDevice> bleDevices = BleManager.getInstance().getAllConnectedDevice();
+                StringBuffer sb = new StringBuffer();
+                sb.append("isBlueEnable =" + bleDevices);
+                Log.e("xxx", "  >>>>>>>>>>>>>> " + sb.toString() + v.getId());*/
+
+
+                Log.e("xxx", ">>>>>>>>>>>>>>>>>>> bt_alarm_clear");
+
+                try {
+                    BlePusher.writeOrder("ee00050001503516ef", new BleWriteCallback() {
+                        @Override
+                        public void onWriteSuccess(int current, int total, byte[] justWrite) {
+                            BlePusher.readSpliceOrder(new BleReadCallback() {
+                                @Override
+                                public void onReadSuccess(byte[] data) {
+
+
+                                    Log.e("xx",">>>>>>>>>>>>>>>>>>> " + Arrays.toString(data));
+                                }
+
+                                @Override
+                                public void onReadFailure(BleException exception) {
+                                    Log.e("xxx", ">>>>>>>>>>>>>>>>>>> onReadFailure2");
+                                }
+                            });
+                        }
+
+                        @Override
+                        public void onWriteFailure(BleException exception) {
+                            Log.e("xxx", ">>>>>>>>>>>>>>>>>>> onWriteFailure1" +exception.toString());
+                        }
+                    });
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 
 
 
-                        // disconnectAllDevice 关闭所有链接设备
-                        List<BleDevice>  bleDevices = BleManager.getInstance().getAllConnectedDevice();
-
-                        StringBuffer sb = new StringBuffer();
-                        sb.append("isBlueEnable =" + bleDevices);
-                        Log.e("xxx","  >>>>>>>>>>>>>> " + sb.toString()  + v.getId());
-                    }
-                });
-
-
+            }
+        });
     }
+
 
     /**
      * 设置窗口的相关属性
@@ -93,7 +128,7 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
         this.setHeight(DensityUtil.getScreenHeight(mContext));// 设置弹出窗口的高
         this.setFocusable(false);// 设置弹出窗口可
         this.setOutsideTouchable(false);
-     //   this.setAnimationStyle(R.style.mypopwindow_anim_style);// 设置动画
+        //   this.setAnimationStyle(R.style.mypopwindow_anim_style);// 设置动画
         this.setBackgroundDrawable(new ColorDrawable(0x00000000));// 设置背景透明
         mPopView.setOnTouchListener(new View.OnTouchListener() {// 如果触摸位置在窗口外面则销毁
 
