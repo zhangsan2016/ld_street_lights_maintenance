@@ -164,7 +164,8 @@ public class MainActivity extends AppCompatActivity {
                     pop.dismiss();
                 } else {
                     // 设置PopupWindow中的位置
-                    pop.showAtLocation(rb, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, rb.getMeasuredHeight());
+                   // pop.showAtLocation(rb, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, rb.getMeasuredHeight());
+                    pop.showAtLocation(rb, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, DensityUtil.getNavigationBarHeight(this) + rb.getMeasuredHeight());
                 }
             }else{
                 if (pop.isShowing()) {

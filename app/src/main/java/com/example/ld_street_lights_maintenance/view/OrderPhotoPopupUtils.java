@@ -3,7 +3,9 @@ package com.example.ld_street_lights_maintenance.view;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -119,13 +121,17 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
      */
     @SuppressLint({"InlinedApi", "WrongConstant"})
     private void setPopupWindow() {
+
+
         this.setSoftInputMode(PopupWindow.INPUT_METHOD_NEEDED);
         this.setClippingEnabled(false);
         this.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
 
         this.setContentView(mPopView);// 设置View
+//        this.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);// 设置弹出窗口的宽
+//        this.setHeight(DensityUtil.getScreenHeight(mContext));// 设置弹出窗口的高
         this.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);// 设置弹出窗口的宽
-        this.setHeight(DensityUtil.getScreenHeight(mContext));// 设置弹出窗口的高
+        this.setHeight(ViewGroup.LayoutParams.MATCH_PARENT);// 设置弹出窗口的高
         this.setFocusable(false);// 设置弹出窗口可
         this.setOutsideTouchable(false);
         //   this.setAnimationStyle(R.style.mypopwindow_anim_style);// 设置动画
@@ -147,6 +153,20 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
             }
         });
     }
+
+
+    @Override
+    public void showAsDropDown(View anchor) {
+        super.showAsDropDown(anchor);
+        if(Build.VERSION.SDK_INT >= 24){
+            Rect visibleFrame = new Rect();
+            anchor.getGlobalVisibleRect(visibleFrame);
+            int height = anchor.getResources().getDisplayMetrics().heightPixels - visibleFrame.bottom;
+            setHeight(height);
+        }
+        super.showAsDropDown(anchor);
+    }
+
 
     @Override
     public void dismiss() {
