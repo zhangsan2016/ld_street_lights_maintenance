@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.PopupWindow;
+import android.widget.Toast;
 
 import com.clj.fastble.BleManager;
 import com.clj.fastble.callback.BleReadCallback;
@@ -81,7 +82,26 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
 
                 Log.e("xxx", ">>>>>>>>>>>>>>>>>>> bt_alarm_clear");
 
+                byte[] funCode = new byte[]{0,05};
+                byte[] data = new byte[]{100};
                 try {
+                    BlePusher.writeSpliceOrder(funCode, data, new BleWriteCallback() {
+                        @Override
+                        public void onWriteSuccess(int current, int total, byte[] justWrite) {
+
+                        }
+
+                        @Override
+                        public void onWriteFailure(BleException exception) {
+
+                        }
+                    });
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Log.e("xxx", ">>>>>>>>>>>>>>>>>>> Exception " +e.getMessage().toString());
+                }
+
+                /*try {
                     BlePusher.writeOrder("ee00050001503516ef", new BleWriteCallback() {
                         @Override
                         public void onWriteSuccess(int current, int total, byte[] justWrite) {
@@ -89,8 +109,19 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
                                 @Override
                                 public void onReadSuccess(byte[] data) {
 
+                                    BlePusher.readSpliceOrder(new BleReadCallback() {
+                                        @Override
+                                        public void onReadSuccess(byte[] data) {
 
-                                    Log.e("xx",">>>>>>>>>>>>>>>>>>> " + Arrays.toString(data));
+                                            Log.e("xxx", "读取返回 " + Arrays.toString(data));
+
+                                        }
+
+                                        @Override
+                                        public void onReadFailure(BleException exception) {
+
+                                        }
+                                    });
                                 }
 
                                 @Override
@@ -107,12 +138,17 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
                     });
                 } catch (Exception e) {
                     e.printStackTrace();
-                }
+                    showToast(e.toString());
+                }*/
 
 
 
             }
         });
+    }
+
+    private void showToast(String str){
+        Toast.makeText(mContext,str,Toast.LENGTH_SHORT).show();
     }
 
 
