@@ -11,11 +11,12 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentActivity;
 
+import com.amap.api.maps.MapView;
 import com.example.ld_street_lights_maintenance.R;
 import com.example.ld_street_lights_maintenance.base.BaseFragment;
 
 public class MapFragment extends BaseFragment {
-
+    MapView mMapView = null;
 
 
     @Nullable
@@ -24,6 +25,11 @@ public class MapFragment extends BaseFragment {
 
         View rootView = inflater.inflate(R.layout.layout_map,
                 container, false);
+
+        //获取地图控件引用
+        mMapView = (MapView)rootView.findViewById(R.id.map);
+        //在activity执行onCreate时执行mMapView.onCreate(savedInstanceState)，创建地图
+        mMapView.onCreate(savedInstanceState);
 
         return rootView;
     }
