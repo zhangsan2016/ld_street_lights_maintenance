@@ -71,45 +71,67 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
             @Override
             public void onClick(View v) {
 
-                byte[] funCode = new byte[]{0,05};
-                byte[] data = new byte[]{100};
-                try {
-                    BlePusher.writeSpliceOrder(funCode, data, new BleWriteCallback() {
-                        @Override
-                        public void onWriteSuccess(int current, int total, byte[] justWrite) {
-
-                            BlePusher.readSpliceOrder(new BleReadCallback() {
-                                @Override
-                                public void onReadSuccess(byte[] data) {
-                                    Log.e("xxx", ">>>>>>>>>>>>>>>>>>> 当前返回数据成功 " + Arrays.toString(data));
-                                    if(data[2] == 6 ){
-                                        showToast("写入成功~");
-                                    }
-                                }
-
-                                @Override
-                                public void onReadFailure(BleException exception) {
-                                     showToast("数据读取失败，请靠近蓝牙设备，或重新连接蓝牙~");
-                                }
-                            });
-                        }
-
-                        @Override
-                        public void onWriteFailure(BleException exception) {
-                            showToast("写入失败" +exception.toString());
-                        }
-                    });
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    showToast(e.getMessage().toString());
-                }
+               /* byte[] funCode = new byte[]{0, 05};
+                byte[] data = new byte[]{100};*/
+                byte[] funCode = new byte[]{0, 21};
+                byte[] data = null;;
+                sendOrder(funCode, data);
 
             }
         });
     }
 
-    private void showToast(String str){
-        Toast.makeText(mContext,str,Toast.LENGTH_SHORT).show();
+
+    /**
+     * 发送蓝牙通讯指令
+     *
+     * @param funCode 功能码
+     * @param data    指令
+     */
+    private void sendOrder(byte[] funCode, byte[] data) {
+
+        try {
+            BlePusher.writeSpliceOrder(funCode, data, new BleWriteCallback() {
+                @Override
+                public void onWriteSuccess(int current, int total, byte[] justWrite) {
+
+                    BlePusher.readSpliceOrder(new BleReadCallback() {
+                        @Override
+                        public void onReadSuccess(byte[] data) {
+                            showToast("写入成功~");
+                            Log.e("xxx", ">>>>>>>>>>>>>>>>>>> 当前读取返回数据成功 " + Arrays.toString(data));
+                            // 解析数据
+                            parseDatas(data);
+                        }
+
+                        @Override
+                        public void onReadFailure(BleException exception) {
+                            showToast("数据读取失败，请靠近蓝牙设备，或重新连接蓝牙~");
+                        }
+                    });
+                }
+
+                @Override
+                public void onWriteFailure(BleException exception) {
+                    showToast("写入失败" + exception.toString());
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+            showToast(e.getMessage().toString());
+        }
+    }
+
+    /**
+     *  解析数据
+     * @param data
+     */
+    private void parseDatas(byte[] data) {
+
+    }
+
+    private void showToast(String str) {
+        Toast.makeText(mContext, str, Toast.LENGTH_SHORT).show();
     }
 
 
@@ -155,7 +177,7 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
     @Override
     public void showAsDropDown(View anchor) {
         super.showAsDropDown(anchor);
-        if(Build.VERSION.SDK_INT >= 24){
+        if (Build.VERSION.SDK_INT >= 24) {
             Rect visibleFrame = new Rect();
             anchor.getGlobalVisibleRect(visibleFrame);
             int height = anchor.getResources().getDisplayMetrics().heightPixels - visibleFrame.bottom;

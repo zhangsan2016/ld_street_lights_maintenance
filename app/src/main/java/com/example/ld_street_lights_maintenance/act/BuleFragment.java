@@ -285,10 +285,21 @@ public class BuleFragment extends BaseFragment implements View.OnClickListener {
         super.onDestroy();
         // 销毁时清空所有蓝牙连接
         BleManager.getInstance().disconnectAllDevice();
+        BleManager.getInstance().destroy();
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        showConnectedDevice();
+    }
+
+    private void showConnectedDevice() {
+        List<BleDevice> deviceList = BleManager.getInstance().getAllConnectedDevice();
+        mDeviceAdapter.clearConnectedDevice();
+        for (BleDevice bleDevice : deviceList) {
+            mDeviceAdapter.addDevice(bleDevice);
+        }
+        mDeviceAdapter.notifyDataSetChanged();
     }
 }

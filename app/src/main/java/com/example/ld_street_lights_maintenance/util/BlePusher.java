@@ -107,6 +107,7 @@ public class BlePusher {
 
         // 协议拼接
         final byte[] spliceData = spliceOder(funCode, data);
+        Log.e("xxx", ">>>>>>>>>>>>>>>>>>> 发送的数据 " + Arrays.toString(spliceData));
 
         final List<BleDevice> bleDevices = BleManager.getInstance().getAllConnectedDevice();
         if (bleDevices.size() > 0) {
@@ -161,11 +162,18 @@ public class BlePusher {
 
         //  协议组成：帧头 - 功能码 - 数据长度 - 数据 - crc - 帧尾部
         byte[] cBytes = BytesUtil.concat(new byte[]{head}, funCode);
-        // 帧头 - 功能码 - 数据长度
-        byte[] leng = BytesUtil.intBytesHL(data.length, 2);
-        cBytes = BytesUtil.concat(cBytes, leng);
-        // 帧头 - 功能码 - 数据长度 - 数据
-        cBytes = BytesUtil.concat(cBytes, data);
+        // 判断数据是否为空,为空不携带数据
+        if(data != null){
+            // 帧头 - 功能码 - 数据长度
+            byte[] leng = BytesUtil.intBytesHL(data.length, 2);
+            cBytes = BytesUtil.concat(cBytes, leng);
+            // 帧头 - 功能码 - 数据长度 - 数据
+            cBytes = BytesUtil.concat(cBytes, data);
+        }else{
+            // 帧头 - 功能码 - 数据长度
+            byte[] leng = new byte[2];
+            cBytes = BytesUtil.concat(cBytes, leng);
+        }
         // 帧头 - 功能码 - 数据长度 - 数据 - crc
         cBytes = CopyOfcheckCRC.crc(cBytes);
         // 帧头 - 功能码 - 数据长度 - 数据 - crc - 帧尾部
