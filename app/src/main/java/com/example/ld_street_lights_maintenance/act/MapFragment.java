@@ -5,12 +5,14 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.amap.api.maps.AMap;
 import com.amap.api.maps.MapView;
+import com.amap.api.maps.UiSettings;
 import com.example.ld_street_lights_maintenance.R;
 import com.example.ld_street_lights_maintenance.base.BaseFragment;
 
@@ -44,6 +46,8 @@ public class MapFragment extends BaseFragment {
 
         if (aMap == null) {
             aMap = mMapView.getMap();
+            aMap.getUiSettings().setZoomControlsEnabled(false);
+            aMap.getUiSettings().setLogoBottomMargin(-150);//隐藏logo
         }
         // 设置地图样式
         aMap.setCustomMapStyle(
@@ -52,6 +56,7 @@ public class MapFragment extends BaseFragment {
                         .setStyleData(getAssetsStyle(mContext,"style.data"))
                         .setStyleExtraData(getAssetsStyle(mContext,"style_extra.data"))
         );
+
 
     }
 

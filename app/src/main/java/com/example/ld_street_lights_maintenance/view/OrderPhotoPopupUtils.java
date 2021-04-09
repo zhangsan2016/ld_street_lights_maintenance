@@ -79,7 +79,6 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
                 sb.append("isBlueEnable =" + bleDevices);
                 Log.e("xxx", "  >>>>>>>>>>>>>> " + sb.toString() + v.getId());*/
 
-
                 Log.e("xxx", ">>>>>>>>>>>>>>>>>>> bt_alarm_clear");
 
                 byte[] funCode = new byte[]{0,05};
@@ -88,16 +87,33 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
                     BlePusher.writeSpliceOrder(funCode, data, new BleWriteCallback() {
                         @Override
                         public void onWriteSuccess(int current, int total, byte[] justWrite) {
+                            Log.e("xxx", ">>>>>>>>>>>>>>>>>>> 写入成功 " );
 
+                            BlePusher.readSpliceOrder(new BleReadCallback() {
+                                @Override
+                                public void onReadSuccess(byte[] data) {
+                                    Log.e("xxx", ">>>>>>>>>>>>>>>>>>> 当前返回数据成功 " + Arrays.toString(data));
+                                    if(data[2] == 6 ){
+                                        showToast("写入成功~");
+                                    }
+                                }
+
+                                @Override
+                                public void onReadFailure(BleException exception) {
+                                     showToast("数据读取失败，请靠近蓝牙设备，或重新连接蓝牙~");
+                                }
+                            });
                         }
 
                         @Override
                         public void onWriteFailure(BleException exception) {
-
+                            showToast("写入失败" +exception.toString());
+                            Log.e("xxx", ">>>>>>>>>>>>>>>>>>> 写入失败 " +exception.toString());
                         }
                     });
                 } catch (Exception e) {
                     e.printStackTrace();
+                    showToast(e.getMessage().toString());
                     Log.e("xxx", ">>>>>>>>>>>>>>>>>>> Exception " +e.getMessage().toString());
                 }
 

@@ -4,18 +4,12 @@
     android:layout_height="match_parent">
 
 
-    <com.amap.api.maps.MapView
+  <com.amap.api.maps.MapView
         android:id="@+id/map"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
 
-    <!--<ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scaleType="fitXY"
-        android:src="@drawable/catalog_lighting_bg"
-        >
-    </ImageView>-->
+
 
 </RelativeLayout>

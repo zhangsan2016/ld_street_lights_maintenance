@@ -111,14 +111,13 @@ public class BlePusher {
         final List<BleDevice> bleDevices = BleManager.getInstance().getAllConnectedDevice();
         if (bleDevices.size() > 0) {
 
-
             // 长度大于20需要分包
             if (spliceData.length < 20) {
                 BluetoothGatt mBluetoothGatt = BleManager.getInstance().getBluetoothGatt(bleDevices.get(0));
                 // 获取服务
                 BluetoothGattService service = mBluetoothGatt.getService(UUID.fromString(serviceUuid));
                 // 获取特征 获取一个描述符 84:C2:E4:03:02:04    0000ffa1-0000-1000-8000-00805f9b34fb
-                BluetoothGattCharacteristic gattCharacteristicA1 = service.getCharacteristic(UUID.fromString(characteristicUuidA));
+                final BluetoothGattCharacteristic gattCharacteristicA1 = service.getCharacteristic(UUID.fromString(characteristicUuidA));
                 final BluetoothGattCharacteristic gattCharacteristicA2 = service.getCharacteristic(UUID.fromString(characteristicUuidB));
 
                 BleManager.getInstance().write(
@@ -132,8 +131,8 @@ public class BlePusher {
                             public void onWriteSuccess(final int current, final int total, final byte[] justWrite) {
                                 BleManager.getInstance().write(
                                         bleDevices.get(0),
-                                        gattCharacteristicA2.getService().getUuid().toString(),
-                                        gattCharacteristicA2.getUuid().toString(),
+                                        gattCharacteristicA1.getService().getUuid().toString(),
+                                        gattCharacteristicA1.getUuid().toString(),
                                         spliceData,
                                         callback);
                             }
