@@ -67,19 +67,9 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
 
 
         Button bt_alarm_clear = mPopView.findViewById(R.id.bt_alarm_clear);
-
         bt_alarm_clear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-/*
-                // disconnectAllDevice 关闭所有链接设备
-                List<BleDevice> bleDevices = BleManager.getInstance().getAllConnectedDevice();
-                StringBuffer sb = new StringBuffer();
-                sb.append("isBlueEnable =" + bleDevices);
-                Log.e("xxx", "  >>>>>>>>>>>>>> " + sb.toString() + v.getId());*/
-
-                Log.e("xxx", ">>>>>>>>>>>>>>>>>>> bt_alarm_clear");
 
                 byte[] funCode = new byte[]{0,05};
                 byte[] data = new byte[]{100};
@@ -87,7 +77,6 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
                     BlePusher.writeSpliceOrder(funCode, data, new BleWriteCallback() {
                         @Override
                         public void onWriteSuccess(int current, int total, byte[] justWrite) {
-                            Log.e("xxx", ">>>>>>>>>>>>>>>>>>> 写入成功 " );
 
                             BlePusher.readSpliceOrder(new BleReadCallback() {
                                 @Override
@@ -108,56 +97,12 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
                         @Override
                         public void onWriteFailure(BleException exception) {
                             showToast("写入失败" +exception.toString());
-                            Log.e("xxx", ">>>>>>>>>>>>>>>>>>> 写入失败 " +exception.toString());
                         }
                     });
                 } catch (Exception e) {
                     e.printStackTrace();
                     showToast(e.getMessage().toString());
-                    Log.e("xxx", ">>>>>>>>>>>>>>>>>>> Exception " +e.getMessage().toString());
                 }
-
-                /*try {
-                    BlePusher.writeOrder("ee00050001503516ef", new BleWriteCallback() {
-                        @Override
-                        public void onWriteSuccess(int current, int total, byte[] justWrite) {
-                            BlePusher.readSpliceOrder(new BleReadCallback() {
-                                @Override
-                                public void onReadSuccess(byte[] data) {
-
-                                    BlePusher.readSpliceOrder(new BleReadCallback() {
-                                        @Override
-                                        public void onReadSuccess(byte[] data) {
-
-                                            Log.e("xxx", "读取返回 " + Arrays.toString(data));
-
-                                        }
-
-                                        @Override
-                                        public void onReadFailure(BleException exception) {
-
-                                        }
-                                    });
-                                }
-
-                                @Override
-                                public void onReadFailure(BleException exception) {
-                                    Log.e("xxx", ">>>>>>>>>>>>>>>>>>> onReadFailure2");
-                                }
-                            });
-                        }
-
-                        @Override
-                        public void onWriteFailure(BleException exception) {
-                            Log.e("xxx", ">>>>>>>>>>>>>>>>>>> onWriteFailure1" +exception.toString());
-                        }
-                    });
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    showToast(e.toString());
-                }*/
-
-
 
             }
         });
