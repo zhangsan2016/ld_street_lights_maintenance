@@ -6,11 +6,10 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.fragment.app.FragmentStatePagerAdapter;
 
-import com.example.ld_street_lights_maintenance.act.BuleFragment;
-import com.example.ld_street_lights_maintenance.act.MapFragment;
-import com.example.ld_street_lights_maintenance.act.NfcFragment;
+import com.example.ld_street_lights_maintenance.fragment.mainfragment.BuleFragment;
+import com.example.ld_street_lights_maintenance.fragment.mainfragment.MapFragment;
+import com.example.ld_street_lights_maintenance.fragment.mainfragment.NfcFragment;
 import com.example.ld_street_lights_maintenance.base.BaseFragment;
 
 import java.util.ArrayList;

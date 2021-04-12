@@ -1,4 +1,4 @@
-package com.example.ld_street_lights_maintenance.act;
+package com.example.ld_street_lights_maintenance.fragment.mainfragment;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

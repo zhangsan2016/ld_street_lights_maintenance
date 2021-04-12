@@ -1,4 +1,4 @@
-package com.example.ld_street_lights_maintenance.act;
+package com.example.ld_street_lights_maintenance.fragment.mainfragment;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -35,6 +35,7 @@ import com.clj.fastble.callback.BleScanCallback;
 import com.clj.fastble.data.BleDevice;
 import com.clj.fastble.exception.BleException;
 import com.example.ld_street_lights_maintenance.R;
+import com.example.ld_street_lights_maintenance.act.MainActivity;
 import com.example.ld_street_lights_maintenance.adapter.DeviceAdapter;
 import com.example.ld_street_lights_maintenance.base.BaseFragment;
 import com.example.ld_street_lights_maintenance.comm.ObserverManager;
