@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.amap.api.maps.AMap;
+import com.amap.api.maps.CameraUpdateFactory;
 import com.amap.api.maps.MapView;
 import com.amap.api.maps.UiSettings;
 import com.example.ld_street_lights_maintenance.R;
@@ -48,6 +49,8 @@ public class MapFragment extends BaseFragment {
             aMap = mMapView.getMap();
             aMap.getUiSettings().setZoomControlsEnabled(false);
             aMap.getUiSettings().setLogoBottomMargin(-150);//隐藏logo
+            // 设置地图缩放比例
+            aMap.moveCamera(CameraUpdateFactory.zoomTo(5f));
         }
         // 设置地图样式
         aMap.setCustomMapStyle(

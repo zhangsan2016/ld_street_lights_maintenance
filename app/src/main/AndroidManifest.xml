@@ -36,7 +36,13 @@
             android:name="com.amap.api.v2.apikey"
             android:value="8a6f1dbe996e9438dca8c34caabf7c0d" />
 
-        <activity android:name=".act.LoginAct" />
+        <activity android:name=".act.LoginAct" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
 
         <activity
             android:name=".act.MainActivity2"
@@ -48,11 +54,7 @@
         <activity
             android:name=".act.MainActivity"
             android:screenOrientation="portrait">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
         <service android:name="com.amap.api.location.APSService" />

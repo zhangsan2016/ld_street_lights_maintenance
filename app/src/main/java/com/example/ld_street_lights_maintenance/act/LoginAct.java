@@ -187,19 +187,13 @@ public class LoginAct extends Activity {
                 intent.putExtras(bundle);
                 startActivity(intent);*/
 
-                            try {
-                                  Check();
 
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-
-                         /*   Intent intent = new Intent(LoginAct.this, MainActivity.class);
+                            Intent intent = new Intent(LoginAct.this, MainActivity.class);
                             startActivity(intent);
 
 
                             stopProgress();
-                            LoginAct.this.finish();*/
+                            LoginAct.this.finish();
 
                         } else {
                             Log.e("xxx", "失败" + json);
@@ -225,11 +219,6 @@ public class LoginAct extends Activity {
 
 
     private void Check() throws JSONException {
-
-
-
-
-
 
      /*   String url = serviceAddress + HttpConfiguration.PROFILE + HttpConfiguration.CONTENT_TYPE_DEVICE_LAMP_LIST;
         String postBody = "{\"where\":{\"UUID\":\"" + "83140000862285035977697" + "\"},\"size\":2000}";
