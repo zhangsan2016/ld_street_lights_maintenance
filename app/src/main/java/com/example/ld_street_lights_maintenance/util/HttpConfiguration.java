@@ -59,12 +59,15 @@ public class HttpConfiguration {
     public   static final String CONTENT_DEVICE_EDIT = "device_lamp/edit";
     // base 地址
     static String _urlBase = "https://iot2.sz-luoding.com:2888" + PROFILE;
+    // content-type 设备列表（包含当前项目下的所有设备）
 
 
     // 获取项目列表地址
     public static String  PROJECT_LIST_URL = _urlBase + CONTENT_TYPE_PROJECT_LIST;
     // 获取项目下路灯地址
     public static String DEVICE_LAMP_LIST_URL = _urlBase + CONTENT_TYPE_DEVICE_LAMP_LIST;
+    // 获取当前项目下的所有设备信息
+    public static String  DEVICE_LIST_URL =_urlBase + CONTENT_TYPE_DEVICE_LIST;
 
 
 

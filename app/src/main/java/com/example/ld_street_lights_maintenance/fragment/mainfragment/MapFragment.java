@@ -26,7 +26,9 @@ import com.example.ld_street_lights_maintenance.cluster.Cluster;
 import com.example.ld_street_lights_maintenance.cluster.ClusterClickListener;
 import com.example.ld_street_lights_maintenance.cluster.ClusterItem;
 import com.example.ld_street_lights_maintenance.cluster.ClusterRender;
+import com.example.ld_street_lights_maintenance.cluster.RegionItem;
 import com.example.ld_street_lights_maintenance.common.MyApplication;
+import com.example.ld_street_lights_maintenance.entity.DeviceLampJson;
 import com.example.ld_street_lights_maintenance.entity.LoginInfo;
 import com.example.ld_street_lights_maintenance.entity.ProjectInfo;
 import com.example.ld_street_lights_maintenance.util.HttpConfiguration;
@@ -146,14 +148,13 @@ public class MapFragment extends BaseFragment implements ClusterRender, AMap.OnM
 
 
 
-                String url = HttpConfiguration.DEVICE_LAMP_LIST_URL;
+                String url = HttpConfiguration.DEVICE_LIST_URL;
 
                 // 创建请求的参数body
                 //   String postBody = "{\"where\":{\"PROJECT\":" + title + "},\"size\":5000}";
-                String postBody = "{\"where\":{\"PROJECT\":\"" + title + "\"},\"size\":5000}";
+               // String postBody = "{\"where\":{\"PROJECT\":\"" + title + "\"},\"size\":5000}";
+                String postBody = "{\"size\":1000}";
                 RequestBody body = FormBody.create(MediaType.parse("application/json"), postBody);
-
-                LogUtil.e("xxx postBody = " + postBody);
 
                 HttpUtil.sendHttpRequest(url, new Callback() {
 
@@ -172,14 +173,13 @@ public class MapFragment extends BaseFragment implements ClusterRender, AMap.OnM
 
                         String json = response.body().string();
 
-                        System.out.println("xxx 》》》》》》》》》》》》》》" + "成功" + json);
 
-                       /* // 解析返回过来的json
+                        // 解析返回过来的json
                         Gson gson = new Gson();
                         DeviceLampJson deviceLampJson = gson.fromJson(json, DeviceLampJson.class);
-                        List<DeviceLampJson.DataBeanX.DeviceLamp> projectList = deviceLampJson.getData().getData();
+                        List<DeviceLampJson.DataBean> projectList = deviceLampJson.getData();
 
-                        for (DeviceLampJson.DataBeanX.DeviceLamp deviceLamp : projectList) {
+                        for (DeviceLampJson.DataBean deviceLamp : projectList) {
 
                             if (deviceLamp.getLAT().equals("") || deviceLamp.getLNG().equals("")) {
                                 break;
@@ -194,17 +194,8 @@ public class MapFragment extends BaseFragment implements ClusterRender, AMap.OnM
                             cluster.addClusterItem(regionItem);
                         }
 
-                        // 获取该项目的电箱
-                        final CountDownLatch latch2 = new CountDownLatch(1);
-                        getDeviceEbox(title, token, cluster, latch2);
 
-                        try {
-                            latch2.await();
-                            //让latch中的数值减一
-                            latch.countDown();
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }*/
+                        latch.countDown();
 
                     }
                 }, token, body);
