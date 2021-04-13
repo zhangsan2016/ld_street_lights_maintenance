@@ -173,6 +173,7 @@ public class MapFragment extends BaseFragment implements ClusterRender, AMap.OnM
 
                         String json = response.body().string();
 
+                        System.out.println(">>>>>>>>>> json = " + json);
 
                         // 解析返回过来的json
                         Gson gson = new Gson();
