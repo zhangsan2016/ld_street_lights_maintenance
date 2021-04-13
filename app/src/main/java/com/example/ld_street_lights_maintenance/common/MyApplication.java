@@ -5,10 +5,12 @@ import android.app.Application;
 import androidx.multidex.MultiDex;
 
 import com.example.ld_street_lights_maintenance.util.SpUtils;
+import com.google.gson.Gson;
 
 public class MyApplication  extends Application {
 
     private static MyApplication instance;
+    public static Gson gson = new Gson();
 
     @Override
     public void onCreate() {

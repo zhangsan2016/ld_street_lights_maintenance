@@ -1,7 +1,9 @@
 package com.example.ld_street_lights_maintenance.fragment.mainfragment;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,16 +16,43 @@ import com.amap.api.maps.AMap;
 import com.amap.api.maps.CameraUpdateFactory;
 import com.amap.api.maps.MapView;
 import com.amap.api.maps.UiSettings;
+import com.amap.api.maps.model.LatLng;
+import com.amap.api.maps.model.LatLngBounds;
+import com.amap.api.maps.model.Marker;
 import com.example.ld_street_lights_maintenance.R;
+import com.example.ld_street_lights_maintenance.act.LoginAct;
 import com.example.ld_street_lights_maintenance.base.BaseFragment;
+import com.example.ld_street_lights_maintenance.cluster.Cluster;
+import com.example.ld_street_lights_maintenance.cluster.ClusterClickListener;
+import com.example.ld_street_lights_maintenance.cluster.ClusterItem;
+import com.example.ld_street_lights_maintenance.cluster.ClusterRender;
+import com.example.ld_street_lights_maintenance.common.MyApplication;
+import com.example.ld_street_lights_maintenance.entity.LoginInfo;
+import com.example.ld_street_lights_maintenance.entity.ProjectInfo;
+import com.example.ld_street_lights_maintenance.util.HttpConfiguration;
+import com.example.ld_street_lights_maintenance.util.HttpUtil;
+import com.example.ld_street_lights_maintenance.util.LogUtil;
+import com.example.ld_street_lights_maintenance.util.SpUtils;
+import com.google.gson.Gson;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
+import java.util.concurrent.CountDownLatch;
 
-public class MapFragment extends BaseFragment {
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.FormBody;
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+
+public class MapFragment extends BaseFragment implements ClusterRender, AMap.OnMapLoadedListener, ClusterClickListener {
     MapView mMapView = null;
     private AMap aMap;
     private Context mContext;
+
+
 
     @Nullable
     @Override
@@ -33,9 +62,164 @@ public class MapFragment extends BaseFragment {
                 container, false);
         mContext = this.getActivity();
 
+        // 初始化地图
         initAMap(savedInstanceState,rootView);
+        // 获取项目
+        getProject();
+
+
 
         return rootView;
+    }
+
+    private void getProject() {
+
+        String param = "{\"size\":1000}";
+        String url =  HttpConfiguration.PROJECT_LIST_URL;
+
+        RequestBody requestBody = FormBody.create(param, MediaType.parse("application/json"));
+        HttpUtil.sendHttpRequest(url, new Callback() {
+
+            @Override
+            public void onFailure(Call call, IOException e) {
+                showToast("连接服务器异常！");
+            }
+
+            @Override
+            public void onResponse(Call call, final Response response) throws IOException {
+                try {
+
+                    ProjectInfo project =   MyApplication.gson.fromJson( response.body().string(), ProjectInfo.class);
+
+                    List<ProjectInfo.DataBeanX.DataBean> projectList =  project.getData().getData();
+
+                    if(projectList == null || projectList.size() == 0){
+                        return;
+                    }
+
+
+                    LatLngBounds.Builder builder = new LatLngBounds.Builder();
+                    for (ProjectInfo.DataBeanX.DataBean projectInfo : projectList) {
+
+                        try {
+                            // 用于同步线程
+                            final CountDownLatch latch = new CountDownLatch(1);
+
+                            // 用于计算当前显示范围
+                            LatLng ll = new LatLng(Double.parseDouble(projectInfo.getLat()), Double.parseDouble(projectInfo.getLng()));
+                            Cluster cluster = new Cluster(ll, projectInfo.getTitle());
+                            builder.include(ll);
+
+                            // 获取当前项目下的所有路灯
+                            getDeviceLampList(projectInfo.getTitle(), getToken(), cluster, latch);
+
+                            //阻塞当前线程直到latch中数值为零才执行
+                            latch.await();
+
+                          //  mClusterOverlay.addClusterGroup(cluster);
+
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+
+            }
+        }, getToken(), requestBody);
+    }
+
+
+    /**
+     * 获取设备下管理的所有路灯
+     */
+    public void getDeviceLampList(final String title, final String token, final Cluster cluster, final CountDownLatch latch) {
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+
+
+                String url = HttpConfiguration.DEVICE_LAMP_LIST_URL;
+
+                // 创建请求的参数body
+                //   String postBody = "{\"where\":{\"PROJECT\":" + title + "},\"size\":5000}";
+                String postBody = "{\"where\":{\"PROJECT\":\"" + title + "\"},\"size\":5000}";
+                RequestBody body = FormBody.create(MediaType.parse("application/json"), postBody);
+
+                LogUtil.e("xxx postBody = " + postBody);
+
+                HttpUtil.sendHttpRequest(url, new Callback() {
+
+                    @Override
+                    public void onFailure(Call call, IOException e) {
+                        LogUtil.e("xxx" + "失败" + e.toString());
+                        showToast("连接服务器异常！");
+                        stopProgress();
+
+                        //让latch中的数值减一
+                        latch.countDown();
+                    }
+
+                    @Override
+                    public void onResponse(Call call, Response response) throws IOException {
+
+                        String json = response.body().string();
+
+                        System.out.println("xxx 》》》》》》》》》》》》》》" + "成功" + json);
+
+                       /* // 解析返回过来的json
+                        Gson gson = new Gson();
+                        DeviceLampJson deviceLampJson = gson.fromJson(json, DeviceLampJson.class);
+                        List<DeviceLampJson.DataBeanX.DeviceLamp> projectList = deviceLampJson.getData().getData();
+
+                        for (DeviceLampJson.DataBeanX.DeviceLamp deviceLamp : projectList) {
+
+                            if (deviceLamp.getLAT().equals("") || deviceLamp.getLNG().equals("")) {
+                                break;
+                            }
+                            if (deviceLamp.getNAME().contains("米泉路")) {
+                                LogUtil.e("xxx 米泉路" + deviceLamp.getLAT() + "  " + deviceLamp.getLNG());
+                                break;
+                            }
+
+                            LatLng ll = new LatLng(Double.parseDouble(deviceLamp.getLAT()), Double.parseDouble(deviceLamp.getLNG()), false);
+                            RegionItem regionItem = new RegionItem(ll, deviceLamp);
+                            cluster.addClusterItem(regionItem);
+                        }
+
+                        // 获取该项目的电箱
+                        final CountDownLatch latch2 = new CountDownLatch(1);
+                        getDeviceEbox(title, token, cluster, latch2);
+
+                        try {
+                            latch2.await();
+                            //让latch中的数值减一
+                            latch.countDown();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }*/
+
+                    }
+                }, token, body);
+            }
+        }).start();
+
+    }
+
+
+
+    private String getToken(){
+
+        Gson gson = new Gson();
+        LoginInfo loginInfo =  gson.fromJson((String) SpUtils.getValue(SpUtils.LOGIN_INFO, ""), LoginInfo.class);
+        return loginInfo.getData().getToken().getToken();
     }
 
     private void initAMap(Bundle savedInstanceState, View rootView) {
@@ -117,4 +301,18 @@ public class MapFragment extends BaseFragment {
     }
 
 
+    @Override
+    public void onMapLoaded() {
+
+    }
+
+    @Override
+    public void onClick(Marker marker, List<ClusterItem> clusterItems) {
+
+    }
+
+    @Override
+    public Drawable getDrawAble(int clusterNum) {
+        return null;
+    }
 }

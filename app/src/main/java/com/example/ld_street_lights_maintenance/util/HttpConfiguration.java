@@ -26,8 +26,7 @@ public class HttpConfiguration {
 
 
 
-    // base 地址
-    String _urlBase = "https://iot2.sz-luoding.com:2888" + PROFILE;
+
     // 后文件夹
     public   static String  PROFILE = "/api/";
     // content-type 用户登录
@@ -58,6 +57,15 @@ public class HttpConfiguration {
     public   static final String CONTENT_DEVICE_REPORTCONFIG = "device/reportConfig";
     // content-type 设备编辑
     public   static final String CONTENT_DEVICE_EDIT = "device_lamp/edit";
+    // base 地址
+    static String _urlBase = "https://iot2.sz-luoding.com:2888" + PROFILE;
+
+
+    // 获取项目列表地址
+    public static String  PROJECT_LIST_URL = _urlBase + CONTENT_TYPE_PROJECT_LIST;
+    // 获取项目下路灯地址
+    public static String DEVICE_LAMP_LIST_URL = _urlBase + CONTENT_TYPE_DEVICE_LAMP_LIST;
+
 
 
 }
