@@ -158,14 +158,15 @@ public class BuleFragment extends BaseFragment implements View.OnClickListener {
                 if (isActiveDisConnected) {
                     showToast(getString(R.string.active_disconnected));
                     
-                    Intent intent = new Intent();
-                    intent.setAction(DATA_REFRESH_FILTER);
-                    BuleFragment.this.getActivity().sendBroadcast(intent);
-
                 } else {
                     showToast(getString(R.string.disconnected));
                     ObserverManager.getInstance().notifyObserver(bleDevice);
                 }
+
+                // 发送蓝牙状态广播
+                Intent intent = new Intent();
+                intent.setAction(DATA_REFRESH_FILTER);
+                BuleFragment.this.getActivity().sendBroadcast(intent);
 
             }
         });
