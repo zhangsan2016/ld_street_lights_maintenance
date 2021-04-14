@@ -25,6 +25,7 @@ import com.example.ld_street_lights_maintenance.base.BaseFragment;
 import com.example.ld_street_lights_maintenance.cluster.Cluster;
 import com.example.ld_street_lights_maintenance.cluster.ClusterClickListener;
 import com.example.ld_street_lights_maintenance.cluster.ClusterItem;
+import com.example.ld_street_lights_maintenance.cluster.ClusterOverlay;
 import com.example.ld_street_lights_maintenance.cluster.ClusterRender;
 import com.example.ld_street_lights_maintenance.cluster.RegionItem;
 import com.example.ld_street_lights_maintenance.common.MyApplication;
@@ -39,7 +40,9 @@ import com.google.gson.Gson;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CountDownLatch;
 
 import okhttp3.Call;
@@ -53,8 +56,8 @@ public class MapFragment extends BaseFragment implements ClusterRender, AMap.OnM
     MapView mMapView = null;
     private AMap aMap;
     private Context mContext;
-
-
+    private ClusterOverlay mClusterOverlay;
+    private Map<Integer, Drawable> mBackDrawAbles = new HashMap<Integer, Drawable>();
 
     @Nullable
     @Override
@@ -118,7 +121,7 @@ public class MapFragment extends BaseFragment implements ClusterRender, AMap.OnM
                             //阻塞当前线程直到latch中数值为零才执行
                             latch.await();
 
-                          //  mClusterOverlay.addClusterGroup(cluster);
+                            mClusterOverlay.addClusterGroup(cluster);
 
                         } catch (InterruptedException e) {
                             e.printStackTrace();
@@ -221,6 +224,7 @@ public class MapFragment extends BaseFragment implements ClusterRender, AMap.OnM
         //在activity执行onCreate时执行mMapView.onCreate(savedInstanceState)，创建地图
         mMapView.onCreate(savedInstanceState);
 
+
         if (aMap == null) {
             aMap = mMapView.getMap();
             aMap.getUiSettings().setZoomControlsEnabled(false);
@@ -228,6 +232,12 @@ public class MapFragment extends BaseFragment implements ClusterRender, AMap.OnM
             // 设置地图缩放比例
             aMap.moveCamera(CameraUpdateFactory.zoomTo(5f));
         }
+
+        // 通过网络获取项目列表
+        mClusterOverlay = new ClusterOverlay(aMap, dp2px(mContext.getApplicationContext(), 0), mContext.getApplicationContext());
+        mClusterOverlay.setClusterRenderer(this);
+        mClusterOverlay.setOnClusterClickListener(this);
+
         // 设置地图样式
         aMap.setCustomMapStyle(
                 new com.amap.api.maps.model.CustomMapStyleOptions()
@@ -237,9 +247,19 @@ public class MapFragment extends BaseFragment implements ClusterRender, AMap.OnM
         );
 
 
+
+
+
     }
 
 
+    /**
+     * 根据手机的分辨率从 dp 的单位 转成为 px(像素)
+     */
+    public int dp2px(Context context, float dpValue) {
+        final float scale = context.getResources().getDisplayMetrics().density;
+        return (int) (dpValue * scale + 0.5f);
+    }
 
     private static byte[] getAssetsStyle(Context context,String pathName){
         byte[]  buffer1 = null;
@@ -300,11 +320,67 @@ public class MapFragment extends BaseFragment implements ClusterRender, AMap.OnM
 
     @Override
     public void onClick(Marker marker, List<ClusterItem> clusterItems) {
+        if (clusterItems.size() != 1) {
+            marker.setInfoWindowEnable(false);
+            LatLngBounds.Builder builder = new LatLngBounds.Builder();
+            for (ClusterItem clusterItem : clusterItems) {
+                if (clusterItem.getPosition().equals("") || clusterItem.getPosition() == null) {
+                    LogUtil.e("onClick  clusterItem.getPosition() = null ");
+                    builder.include(clusterItem.getPosition());
 
+                }
+                builder.include(clusterItem.getPosition());
+            }
+            LatLngBounds latLngBounds = builder.build();
+            aMap.moveCamera(CameraUpdateFactory.newLatLngBounds(latLngBounds, 100));
+        } else {
+            marker.setInfoWindowEnable(true);
+            marker.showInfoWindow();
+              /*  // 将marker所在的经纬度的信息转化成屏幕上的坐标
+            Point p = mBaiduMap.getProjection().toScreenLocation(
+                    position);
+            p.y -= 120;
+            LatLng llInfo = mBaiduMap.getProjection()
+                    .fromScreenLocation(p);
+            View location = View.inflate(BaiduMapActivity.this,
+                    R.layout.baidu_map_marker_info_item, null);
+            mInfoWindow = new InfoWindow(location, llInfo, 0);
+            // 显示InfoWindow
+            mBaiduMap.showInfoWindow(mInfoWindow);*/
+
+        }
     }
 
     @Override
     public Drawable getDrawAble(int clusterNum) {
-        return null;
+        int radius = dp2px(mContext, 80);
+
+        Drawable bitmapDrawable = null;
+        if (clusterNum == 1) {
+            bitmapDrawable = mBackDrawAbles.get(clusterNum);
+            if (bitmapDrawable == null) {
+                bitmapDrawable = mContext.getApplicationContext().getResources().getDrawable(
+                        R.drawable.bian);
+                mBackDrawAbles.put(1, bitmapDrawable);
+            }
+
+        } else if (clusterNum == 2) {
+            bitmapDrawable = mBackDrawAbles.get(clusterNum);
+            if (bitmapDrawable == null) {
+                // bitmapDrawable = getApplication().getResources().getDrawable(R.drawable.icon_openmap_mark);
+                bitmapDrawable = mContext.getApplicationContext().getResources().getDrawable(R.drawable.icon_gcoding);
+                mBackDrawAbles.put(2, bitmapDrawable);
+            }
+
+        } else if (clusterNum == 3) {
+            bitmapDrawable = mBackDrawAbles.get(clusterNum);
+            if (bitmapDrawable == null) {
+                // bitmapDrawable = getApplication().getResources().getDrawable(R.drawable.icon_openmap_mark);
+                bitmapDrawable = mContext.getApplicationContext().getResources().getDrawable(R.drawable.amap_ebox);
+                mBackDrawAbles.put(3, bitmapDrawable);
+            }
+
+        }
+        return bitmapDrawable;
     }
 }
