@@ -16,6 +16,7 @@ import com.amap.api.maps.AMap;
 import com.amap.api.maps.CameraUpdateFactory;
 import com.amap.api.maps.MapView;
 import com.amap.api.maps.UiSettings;
+import com.amap.api.maps.model.CameraPosition;
 import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.LatLngBounds;
 import com.amap.api.maps.model.Marker;
@@ -129,6 +130,11 @@ public class MapFragment extends BaseFragment implements ClusterRender, AMap.OnM
 
                     }
 
+                    LatLngBounds bounds = builder.build();
+                    // 设置显示在屏幕中的地图地理范围
+                    aMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 100));
+                    aMap.moveCamera(CameraUpdateFactory.zoomTo(5f));
+
 
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -156,7 +162,10 @@ public class MapFragment extends BaseFragment implements ClusterRender, AMap.OnM
                 // 创建请求的参数body
                 //   String postBody = "{\"where\":{\"PROJECT\":" + title + "},\"size\":5000}";
                // String postBody = "{\"where\":{\"PROJECT\":\"" + title + "\"},\"size\":5000}";
-                String postBody = "{\"size\":1000}";
+              //  String postBody = "{\"size\":1000}";
+                String postBody =   "{\"where\":{\"PROJECT\":\"" + title + "\"},\"size\":1000}";
+
+
                 RequestBody body = FormBody.create(MediaType.parse("application/json"), postBody);
 
                 HttpUtil.sendHttpRequest(url, new Callback() {
@@ -186,18 +195,19 @@ public class MapFragment extends BaseFragment implements ClusterRender, AMap.OnM
                         for (DeviceLampJson.DataBean deviceLamp : projectList) {
 
                             if (deviceLamp.getLAT().equals("") || deviceLamp.getLNG().equals("")) {
-                                break;
+                                LogUtil.e("xxx 》》》》》》》》》》》》》》》》》 为空" + deviceLamp.getNAME());
+                                continue;
                             }
                             if (deviceLamp.getNAME().contains("米泉路")) {
                                 LogUtil.e("xxx 米泉路" + deviceLamp.getLAT() + "  " + deviceLamp.getLNG());
-                                break;
+                                continue;
                             }
 
                             LatLng ll = new LatLng(Double.parseDouble(deviceLamp.getLAT()), Double.parseDouble(deviceLamp.getLNG()), false);
                             RegionItem regionItem = new RegionItem(ll, deviceLamp);
                             cluster.addClusterItem(regionItem);
                         }
-
+                        LogUtil.e("xxx 》》》》》》》》》》》》》》》》》 cout =" +cluster.getClusterCount());
 
                         latch.countDown();
 
@@ -228,15 +238,13 @@ public class MapFragment extends BaseFragment implements ClusterRender, AMap.OnM
         if (aMap == null) {
             aMap = mMapView.getMap();
             aMap.getUiSettings().setZoomControlsEnabled(false);
+            aMap.getUiSettings().setRotateGesturesEnabled(false);
             aMap.getUiSettings().setLogoBottomMargin(-150);//隐藏logo
             // 设置地图缩放比例
             aMap.moveCamera(CameraUpdateFactory.zoomTo(5f));
+            aMap.setOnMapLoadedListener(this);
         }
 
-        // 通过网络获取项目列表
-        mClusterOverlay = new ClusterOverlay(aMap, dp2px(mContext.getApplicationContext(), 0), mContext.getApplicationContext());
-        mClusterOverlay.setClusterRenderer(this);
-        mClusterOverlay.setOnClusterClickListener(this);
 
         // 设置地图样式
         aMap.setCustomMapStyle(
@@ -316,6 +324,11 @@ public class MapFragment extends BaseFragment implements ClusterRender, AMap.OnM
     @Override
     public void onMapLoaded() {
 
+        // 通过网络获取项目列表
+        mClusterOverlay = new ClusterOverlay(aMap, dp2px(mContext.getApplicationContext(), 0), mContext.getApplicationContext());
+        mClusterOverlay.setClusterRenderer(this);
+        mClusterOverlay.setOnClusterClickListener(this);
+
     }
 
     @Override
@@ -323,16 +336,32 @@ public class MapFragment extends BaseFragment implements ClusterRender, AMap.OnM
         if (clusterItems.size() != 1) {
             marker.setInfoWindowEnable(false);
             LatLngBounds.Builder builder = new LatLngBounds.Builder();
+
+         /*   StringBuilder sb = new StringBuilder();
             for (ClusterItem clusterItem : clusterItems) {
                 if (clusterItem.getPosition().equals("") || clusterItem.getPosition() == null) {
                     LogUtil.e("onClick  clusterItem.getPosition() = null ");
                     builder.include(clusterItem.getPosition());
-
+                    sb.append(clusterItem.getPosition().toString() + "\n");
                 }
                 builder.include(clusterItem.getPosition());
+                sb.append(clusterItem.getPosition().toString() + "\n");
             }
             LatLngBounds latLngBounds = builder.build();
             aMap.moveCamera(CameraUpdateFactory.newLatLngBounds(latLngBounds, 100));
+
+            System.out.println("sb >>>>> = " + sb.toString());*/
+
+        /*    LatLngBounds latLngBounds = builder.build();
+            builder.include(clusterItems.get(0).getPosition());
+            aMap.moveCamera(CameraUpdateFactory.newLatLngBounds(latLngBounds, 100));*/
+
+
+
+            aMap.moveCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition( clusterItems.get(0).getPosition(),18, 30, 30)));
+
+
+
         } else {
             marker.setInfoWindowEnable(true);
             marker.showInfoWindow();

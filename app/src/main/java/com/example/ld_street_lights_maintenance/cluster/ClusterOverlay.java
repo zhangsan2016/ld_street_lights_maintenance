@@ -260,7 +260,7 @@ public class ClusterOverlay implements AMap.OnCameraChangeListener,
     /**
      * 将聚合元素添加至地图上
      */
-    private void addClusterToMap(List<Cluster> clusters) {
+    private  void addClusterToMap(List<Cluster> clusters)  {
 
         ArrayList<Marker> removeMarkers = new ArrayList<>();
         removeMarkers.addAll(mAddMarkers);
@@ -315,7 +315,6 @@ public class ClusterOverlay implements AMap.OnCameraChangeListener,
 
     }
 
-
     private void calculateClusters() {
         mIsCanceled = false;
         //  mClusters.clear();
@@ -333,7 +332,7 @@ public class ClusterOverlay implements AMap.OnCameraChangeListener,
 
     }
 
-    private void upView(List<Cluster> clusters) {
+    private synchronized void upView(List<Cluster> clusters) {
         Message message = Message.obtain();
         message.what = MarkerHandler.ADD_CLUSTER_LIST;
         message.obj = clusters;
@@ -411,9 +410,6 @@ public class ClusterOverlay implements AMap.OnCameraChangeListener,
      * 获取每个聚合点的绘制样式
      */
     private BitmapDescriptor getBitmapDes(int type,int num,String title) {
-        if(title == null){
-            LogUtil.e("xxxxxxxxxxxxxxxxxx");
-        }
         BitmapDescriptor bitmapDescriptor = mLruCache.get(title);
         if (bitmapDescriptor == null) {
             TextView textView = new TextView(mContext);
