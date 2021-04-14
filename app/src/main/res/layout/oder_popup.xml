@@ -146,6 +146,7 @@
                     android:text="辅灯调光" />
 
                 <Button
+                    android:id="@+id/bt_light"
                     android:layout_width="120dp"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/cd_electricity"

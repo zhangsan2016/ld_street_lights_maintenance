@@ -2,10 +2,15 @@ package com.example.ld_street_lights_maintenance.view;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
+import android.os.Message;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -13,7 +18,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.PopupWindow;
+import android.widget.SeekBar;
 import android.widget.Toast;
 
 import com.clj.fastble.BleManager;
@@ -23,6 +30,7 @@ import com.clj.fastble.data.BleDevice;
 import com.clj.fastble.exception.BleException;
 import com.example.ld_street_lights_maintenance.R;
 import com.example.ld_street_lights_maintenance.act.MainActivity;
+import com.example.ld_street_lights_maintenance.fragment.mainfragment.BuleFragment;
 import com.example.ld_street_lights_maintenance.util.BlePusher;
 import com.example.ld_street_lights_maintenance.util.DensityUtil;
 
@@ -40,17 +48,52 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
     // 传入的图片地址
     private String path;
     private Context mContext;
+    private CheckBox cd_main_dimming,cd_auxiliary_dimming;
+
+    private ProgressDialog mProgress;
 
     public OrderPhotoPopupUtils(Context context) {
         super(context);
 
         this.mContext = context;
+
         init(context);
         setPopupWindow();
+        initBroadCast();
 
         //      ((DemoActivity)getActivity()).getmTitle();
         //   btnTakePhoto.setOnClickListener(this);
 
+    }
+
+    /**
+     * 动态注册广播
+     */
+    private void initBroadCast() {
+
+        // 动态注册通知 - 监听蓝牙是否关闭
+        IntentFilter filter = new IntentFilter(BuleFragment.DATA_REFRESH_FILTER);
+        mContext.registerReceiver(singleLightSettingActReceiver, filter);
+
+    }
+
+    private BroadcastReceiver singleLightSettingActReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            // 根据action过滤广播内容
+            if (BuleFragment.DATA_REFRESH_FILTER.equals(intent.getAction())) {
+                stopProgress();
+            }
+        }
+    };
+
+
+    private void showProgress(String meg) {
+            mProgress = ProgressDialog.show(mContext, "", meg);
+    }
+
+    private void stopProgress() {
+        mProgress.cancel();
     }
 
 
@@ -65,20 +108,70 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
         // 绑定布局
         mPopView = inflater.inflate(R.layout.oder_popup, null);
 
+         cd_main_dimming = mPopView.findViewById(R.id.cd_main_dimming);
+         cd_auxiliary_dimming = mPopView.findViewById(R.id.cd_auxiliary_dimming);
+
+
 
         Button bt_alarm_clear = mPopView.findViewById(R.id.bt_alarm_clear);
         bt_alarm_clear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-               /* byte[] funCode = new byte[]{0, 05};
-                byte[] data = new byte[]{100};*/
-                byte[] funCode = new byte[]{0, 21};
+              /*  byte[] funCode = new byte[]{0, 21};
                 byte[] data = null;;
+                sendOrder(funCode, data);*/
+
+                showProgress("正在写入...");
+                byte[] funCode = new byte[]{0, 2};
+                byte[] data = new byte[]{05,-86};;
                 sendOrder(funCode, data);
 
             }
         });
+
+        SeekBar seekbar =  mPopView.findViewById(R.id.seekbar);
+        seekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                Log.i("TAG","onProgressChanged=" +progress + "  fromUser = " +fromUser);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                Log.i("TAG","onStartTrackingTouch=");
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                showProgress("正在写入...");
+
+                byte[] funCode = new byte[]{0, 05};
+                byte[] data = new byte[]{(byte) seekBar.getProgress(),3};;
+                sendOrder(funCode, data);
+                Log.i("TAG","onStopTrackingTouch=" +seekBar.getProgress());
+
+
+            }
+        });
+
+        Button bt_light  =  mPopView.findViewById(R.id.bt_light);
+        bt_light.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showProgress("正在写入...");
+
+               /* cd_main_dimming.isChecked();
+                cd_auxiliary_dimming.isChecked();*/
+
+               /* byte[] funCode = new byte[]{0, 05};
+                byte[] data = new byte[]{(byte) seekBar.getProgress()};;
+                sendOrder(funCode, data);
+                Log.i("TAG","onStopTrackingTouch=" +seekBar.getProgress());*/
+            }
+        });
+
+
     }
 
 
@@ -102,11 +195,13 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
                             Log.e("xxx", ">>>>>>>>>>>>>>>>>>> 当前读取返回数据成功 " + Arrays.toString(data));
                             // 解析数据
                             parseDatas(data);
+                            stopProgress();
                         }
 
                         @Override
                         public void onReadFailure(BleException exception) {
                             showToast("数据读取失败，请靠近蓝牙设备，或重新连接蓝牙~");
+                            stopProgress();
                         }
                     });
                 }
@@ -114,11 +209,13 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
                 @Override
                 public void onWriteFailure(BleException exception) {
                     showToast("写入失败" + exception.toString());
+                    stopProgress();
                 }
             });
         } catch (Exception e) {
             e.printStackTrace();
             showToast(e.getMessage().toString());
+            stopProgress();
         }
     }
 

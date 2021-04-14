@@ -48,6 +48,7 @@ public class BuleFragment extends BaseFragment implements View.OnClickListener {
 
     private static final int REQUEST_CODE_OPEN_GPS = 1;
     private static final int REQUEST_CODE_PERMISSION_LOCATION = 2;
+    public static final String DATA_REFRESH_FILTER = "street_lights_maintenance_blestart";
 
     private Button btn_scan;
     private DeviceAdapter mDeviceAdapter;
@@ -126,7 +127,6 @@ public class BuleFragment extends BaseFragment implements View.OnClickListener {
                 progressDialog.show();
                 BleManager.getInstance().disconnectAllDevice();  // 清空所有已连接列表
 
-
             }
 
             @Override
@@ -157,6 +157,11 @@ public class BuleFragment extends BaseFragment implements View.OnClickListener {
 
                 if (isActiveDisConnected) {
                     showToast(getString(R.string.active_disconnected));
+                    
+                    Intent intent = new Intent();
+                    intent.setAction(DATA_REFRESH_FILTER);
+                    BuleFragment.this.getActivity().sendBroadcast(intent);
+
                 } else {
                     showToast(getString(R.string.disconnected));
                     ObserverManager.getInstance().notifyObserver(bleDevice);
