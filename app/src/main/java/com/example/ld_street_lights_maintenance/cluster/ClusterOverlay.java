@@ -33,8 +33,6 @@ import com.example.ld_street_lights_maintenance.util.LogUtil;
 import java.util.ArrayList;
 import java.util.List;
 
-
-
 /**
  * Created by yiyi.qi on 16/10/10.
  * 整体设计采用了两个线程,一个线程用于计算组织聚合数据,一个线程负责处理Marker相关操作
@@ -62,8 +60,15 @@ public class ClusterOverlay implements AMap.OnCameraChangeListener,
 
     // 当前点击的 marker
     private Marker currentMarker;
+    // 当前聚合状态
+    private ClusterStart clusterStart = ClusterStart.ON;
 
-    /**
+    private enum ClusterStart {
+        ON,
+        OFF
+    }
+
+        /**
      * 构造函数
      *
      * @param amap
@@ -216,7 +221,6 @@ public class ClusterOverlay implements AMap.OnCameraChangeListener,
     }
 
     private int preRoom = 0;
-    private boolean gatherState = true;
     @Override
     public void onCameraChangeFinish(CameraPosition arg0) {
         // 获取当前缩放级别下，地图上1像素点对应的长度，单位米。
@@ -230,11 +234,11 @@ public class ClusterOverlay implements AMap.OnCameraChangeListener,
             preRoom = zoom;
 
             if(preRoom < 7){
-                if(!gatherState){
+                if(clusterStart != ClusterStart.ON){
                     assignClusters();
                 }
             }else{
-                if(gatherState){
+                if(clusterStart != ClusterStart.OFF){
                     assignClusters();
                 }
             }
@@ -275,7 +279,7 @@ public class ClusterOverlay implements AMap.OnCameraChangeListener,
      */
     private  void addClusterToMap(List<Cluster> clusters)  {
 
-        ArrayList<Marker> removeMarkers = new ArrayList<>();
+   /*     ArrayList<Marker> removeMarkers = new ArrayList<>();
         removeMarkers.addAll(mAddMarkers);
         AlphaAnimation alphaAnimation = new AlphaAnimation(1, 0);
         MyAnimationListener myAnimationListener = new MyAnimationListener(removeMarkers);
@@ -283,7 +287,7 @@ public class ClusterOverlay implements AMap.OnCameraChangeListener,
             marker.setAnimation(alphaAnimation);
             marker.setAnimationListener(myAnimationListener);
             marker.startAnimation();
-        }
+        }*/
 
         for (Cluster cluster : clusters) {
             addSingleClusterToMap(cluster);
@@ -335,11 +339,11 @@ public class ClusterOverlay implements AMap.OnCameraChangeListener,
 
         LogUtil.e("xxx mAMap.getCameraPosition().zoom  = " + mAMap.getCameraPosition().zoom);
         if (mAMap.getCameraPosition().zoom < 7) {
-
+            clusterStart = ClusterStart.ON;
             upView(mClusters);
 
         } else {
-
+            clusterStart = ClusterStart.OFF;
             upView(mClustersBulk);
         }
 

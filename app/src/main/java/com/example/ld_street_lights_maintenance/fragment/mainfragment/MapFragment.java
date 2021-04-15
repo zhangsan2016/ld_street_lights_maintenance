@@ -140,7 +140,6 @@ public class MapFragment extends BaseFragment implements ClusterRender, AMap.OnM
                     e.printStackTrace();
                 }
 
-
             }
         }, getToken(), requestBody);
     }
@@ -351,7 +350,7 @@ public class MapFragment extends BaseFragment implements ClusterRender, AMap.OnM
 
 
 
-         //   aMap.moveCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition( clusterItems.get(0).getPosition(),18, 30, 30)));
+            aMap.moveCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition( clusterItems.get(0).getPosition(),18, 30, 30)));
 
 
 
