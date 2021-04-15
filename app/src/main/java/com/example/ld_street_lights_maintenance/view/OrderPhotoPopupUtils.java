@@ -123,10 +123,14 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
                 byte[] data = null;;
                 sendOrder(funCode, data);*/
 
-                showProgress("正在写入...");
+               /* showProgress("正在写入...");
                 byte[] funCode = new byte[]{0, 2};
                 byte[] data = new byte[]{05, -86};
-                ;
+                sendOrder(funCode, data);*/
+
+                showProgress("正在写入...");
+                byte[] funCode = new byte[]{0, 27};
+                byte[] data = new byte[]{85, -86};
                 sendOrder(funCode, data);
 
             }

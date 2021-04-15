@@ -145,7 +145,7 @@ public class BlePusher {
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 }
-                                ;
+
                             }
                         });
             }{
@@ -186,20 +186,59 @@ public class BlePusher {
 
     public static void readSpliceOrder(final BleReadCallback callback) {
 
-        List<BleDevice> bleDevices = BleManager.getInstance().getAllConnectedDevice();
+        final List<BleDevice> bleDevices = BleManager.getInstance().getAllConnectedDevice();
 
         if (bleDevices.size() > 0) {
 
             // 获取服务
             BluetoothGatt mBluetoothGatt = BleManager.getInstance().getBluetoothGatt(bleDevices.get(0));
             BluetoothGattService service = mBluetoothGatt.getService(UUID.fromString(serviceUuid));
-            BluetoothGattCharacteristic gattCharacteristicA1 = service.getCharacteristic(UUID.fromString(characteristicUuidA));
+            final BluetoothGattCharacteristic gattCharacteristicA1 = service.getCharacteristic(UUID.fromString(characteristicUuidA));
+            BluetoothGattCharacteristic gattCharacteristicA2 = service.getCharacteristic(UUID.fromString(characteristicUuidB));
 
-            BleManager.getInstance().read(
+
+
+            /*BleManager.getInstance().read(
                     bleDevices.get(0),
                     gattCharacteristicA1.getService().getUuid().toString(),
                     gattCharacteristicA1.getUuid().toString(),
-                    callback);
+                    callback);*/
+
+            // 先获数据长度服务，判断读取次数
+            BleManager.getInstance().read(
+                    bleDevices.get(0),
+                    gattCharacteristicA2.getService().getUuid().toString(),
+                    gattCharacteristicA2.getUuid().toString(),
+                    new BleReadCallback() {
+                        @Override
+                        public void onReadSuccess(byte[] data) {
+
+                            Log.e("xxx", ">>>>>>>>>>>>>>>>>>> read data = " + Arrays.toString(data));
+
+                            if (data[1] == 1){
+                                BleManager.getInstance().read(
+                                        bleDevices.get(0),
+                                        gattCharacteristicA1.getService().getUuid().toString(),
+                                        gattCharacteristicA1.getUuid().toString(),
+                                        callback);
+                            }else{
+                                // 分包获取
+                            }
+
+                        }
+
+                        @Override
+                        public void onReadFailure(BleException exception) {
+                            try {
+                                throw  new Exception(exception.toString());
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+
+
+
         }
 
 
