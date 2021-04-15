@@ -163,7 +163,7 @@ public class ClusterOverlay implements AMap.OnCameraChangeListener,
         for (int i = 0; i < clusterItems.size(); i++) {
             RegionItem regionItem = (RegionItem) clusterItems.get(i);
             Cluster clusterItem = new Cluster(regionItem.getPosition());
-       String name =    regionItem.getDeviceLamp().getNAME();
+            String name =    regionItem.getDeviceLamp().getNAME();
             if(name == null){
                 LogUtil.e("xxxxxxxxxxxxxxxxxx");
             }
@@ -216,17 +216,30 @@ public class ClusterOverlay implements AMap.OnCameraChangeListener,
     }
 
     private int preRoom = 0;
-
+    private boolean gatherState = true;
     @Override
     public void onCameraChangeFinish(CameraPosition arg0) {
         // 获取当前缩放级别下，地图上1像素点对应的长度，单位米。
         mPXInMeters = mAMap.getScalePerPixel();
         mClusterDistance = mPXInMeters * mClusterSize;
 
+        System.out.println(">>>>>>>>>>>>>>>>>>> onCameraChangeFinish = " + arg0.zoom  + " : " + mAMap.getCameraPosition().zoom);
+
         int zoom = (int) mAMap.getCameraPosition().zoom;
         if (preRoom != zoom) {
             preRoom = zoom;
-            assignClusters();
+
+            if(preRoom < 7){
+                if(!gatherState){
+                    assignClusters();
+                }
+            }else{
+                if(gatherState){
+                    assignClusters();
+                }
+            }
+
+
         }
     }
 
