@@ -48,7 +48,7 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
     // 传入的图片地址
     private String path;
     private Context mContext;
-    private CheckBox cd_main_dimming,cd_auxiliary_dimming;
+    private CheckBox cd_main_dimming, cd_auxiliary_dimming;
 
     private ProgressDialog mProgress;
 
@@ -89,11 +89,13 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
 
 
     private void showProgress(String meg) {
-            mProgress = ProgressDialog.show(mContext, "", meg);
+        mProgress = ProgressDialog.show(mContext, "", meg);
     }
 
     private void stopProgress() {
-        mProgress.cancel();
+        if (mProgress != null) {
+            mProgress.cancel();
+        }
     }
 
 
@@ -108,9 +110,8 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
         // 绑定布局
         mPopView = inflater.inflate(R.layout.oder_popup, null);
 
-         cd_main_dimming = mPopView.findViewById(R.id.cd_main_dimming);
-         cd_auxiliary_dimming = mPopView.findViewById(R.id.cd_auxiliary_dimming);
-
+        cd_main_dimming = mPopView.findViewById(R.id.cd_main_dimming);
+        cd_auxiliary_dimming = mPopView.findViewById(R.id.cd_auxiliary_dimming);
 
 
         Button bt_alarm_clear = mPopView.findViewById(R.id.bt_alarm_clear);
@@ -124,22 +125,23 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
 
                 showProgress("正在写入...");
                 byte[] funCode = new byte[]{0, 2};
-                byte[] data = new byte[]{05,-86};;
+                byte[] data = new byte[]{05, -86};
+                ;
                 sendOrder(funCode, data);
 
             }
         });
 
-        SeekBar seekbar =  mPopView.findViewById(R.id.seekbar);
+        SeekBar seekbar = mPopView.findViewById(R.id.seekbar);
         seekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                Log.i("TAG","onProgressChanged=" +progress + "  fromUser = " +fromUser);
+                Log.i("TAG", "onProgressChanged=" + progress + "  fromUser = " + fromUser);
             }
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-                Log.i("TAG","onStartTrackingTouch=");
+                Log.i("TAG", "onStartTrackingTouch=");
             }
 
             @Override
@@ -147,15 +149,16 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
                 showProgress("正在写入...");
 
                 byte[] funCode = new byte[]{0, 05};
-                byte[] data = new byte[]{(byte) seekBar.getProgress(),3};;
+                byte[] data = new byte[]{(byte) seekBar.getProgress(), 3};
+                ;
                 sendOrder(funCode, data);
-                Log.i("TAG","onStopTrackingTouch=" +seekBar.getProgress());
+                Log.i("TAG", "onStopTrackingTouch=" + seekBar.getProgress());
 
 
             }
         });
 
-        Button bt_light  =  mPopView.findViewById(R.id.bt_light);
+        Button bt_light = mPopView.findViewById(R.id.bt_light);
         bt_light.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -220,7 +223,8 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
     }
 
     /**
-     *  解析数据
+     * 解析数据
+     *
      * @param data
      */
     private void parseDatas(byte[] data) {

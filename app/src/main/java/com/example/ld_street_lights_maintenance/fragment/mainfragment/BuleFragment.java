@@ -68,15 +68,32 @@ public class BuleFragment extends BaseFragment implements View.OnClickListener {
         return rootView;
     }
 
+
+    public void showProgress(String meg) {
+
+        if (progressDialog == null) {
+            progressDialog = new ProgressDialog(getActivity());
+            progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER); //设置进度条样式环形精度条
+        }
+        progressDialog.setMessage(meg);
+        progressDialog.show();
+
+    }
+
+    public void stopProgress() {
+        if (progressDialog != null) {
+            progressDialog.cancel();
+        }
+    }
+
+
     private void initView(View rootView) {
 
 
         btn_scan = (Button) rootView.findViewById(R.id.btn_scan);
         btn_scan.setOnClickListener(this);
-        progressDialog = new ProgressDialog(getActivity());
-        progressDialog.setMessage("正在扫描");
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER ); //设置进度条样式环形精度条
-      //  progressDialog.setCancelable(false);
+
+        //  progressDialog.setCancelable(false);
 
         // 初始化蓝牙工具类
         BleManager.getInstance().init(getActivity().getApplication());
@@ -124,23 +141,23 @@ public class BuleFragment extends BaseFragment implements View.OnClickListener {
             @Override
             public void onStartConnect() {
 
-                progressDialog.show();
                 BleManager.getInstance().disconnectAllDevice();  // 清空所有已连接列表
+                showProgress("正在连接中...");
 
             }
 
             @Override
             public void onConnectFail(BleDevice bleDevice, BleException exception) {
                 btn_scan.setText(getString(R.string.start_scan));
-                progressDialog.dismiss();
+                stopProgress();
                 Toast.makeText(getActivity(), getString(R.string.connect_fail), Toast.LENGTH_LONG).show();
             }
 
             // 连接成功
             @Override
             public void onConnectSuccess(BleDevice bleDevice, BluetoothGatt gatt, int status) {
-                progressDialog.dismiss();
-              //  mDeviceAdapter.addDevice(bleDevice);
+                stopProgress();
+                //  mDeviceAdapter.addDevice(bleDevice);
                 mDeviceAdapter.addDeviceTop(bleDevice);
                 mDeviceAdapter.notifyDataSetChanged();
                 // 将连接成功的蓝牙设备更新到 MainActivity 中
@@ -150,14 +167,13 @@ public class BuleFragment extends BaseFragment implements View.OnClickListener {
 
             @Override
             public void onDisConnected(boolean isActiveDisConnected, BleDevice bleDevice, BluetoothGatt gatt, int status) {
-                progressDialog.dismiss();
 
                 mDeviceAdapter.removeDevice(bleDevice);
                 mDeviceAdapter.notifyDataSetChanged();
 
                 if (isActiveDisConnected) {
                     showToast(getString(R.string.active_disconnected));
-                    
+
                 } else {
                     showToast(getString(R.string.disconnected));
                     ObserverManager.getInstance().notifyObserver(bleDevice);
@@ -252,7 +268,7 @@ public class BuleFragment extends BaseFragment implements View.OnClickListener {
                 mDeviceAdapter.clearScanDevice();
                 mDeviceAdapter.notifyDataSetChanged();
                 btn_scan.setText(getString(R.string.stop_scan));
-                progressDialog.show();
+                showProgress("正在扫描...");
             }
 
             @Override
@@ -263,7 +279,7 @@ public class BuleFragment extends BaseFragment implements View.OnClickListener {
             @Override
             public void onScanning(BleDevice bleDevice) {
 
-                if(bleDevice.getDevice().toString().contains("84:C2:E4")){
+                if (bleDevice.getDevice().toString().contains("84:C2:E4")) {
                     mDeviceAdapter.addDevice(bleDevice);
                     mDeviceAdapter.notifyDataSetChanged();
                 }
@@ -273,7 +289,7 @@ public class BuleFragment extends BaseFragment implements View.OnClickListener {
             @Override
             public void onScanFinished(List<BleDevice> scanResultList) {
                 btn_scan.setText(getString(R.string.start_scan));
-                progressDialog.dismiss();
+                stopProgress();
             }
         });
     }
