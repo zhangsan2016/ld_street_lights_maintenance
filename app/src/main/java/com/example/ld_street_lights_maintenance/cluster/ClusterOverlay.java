@@ -288,7 +288,7 @@ public class ClusterOverlay implements AMap.OnCameraChangeListener,
             marker.setAnimationListener(myAnimationListener);
             marker.startAnimation();
         }*/
-
+        mAMap.clear();
         for (Cluster cluster : clusters) {
             addSingleClusterToMap(cluster);
         }
@@ -302,6 +302,7 @@ public class ClusterOverlay implements AMap.OnCameraChangeListener,
      * @param cluster
      */
     private void addSingleClusterToMap(Cluster cluster) {
+
         LatLng latlng = cluster.getCenterLatLng();
         MarkerOptions markerOptions = new MarkerOptions();
 

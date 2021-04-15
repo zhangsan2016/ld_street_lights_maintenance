@@ -235,7 +235,8 @@ public class MapFragment extends BaseFragment implements ClusterRender, AMap.OnM
         if (aMap == null) {
             aMap = mMapView.getMap();
             aMap.getUiSettings().setZoomControlsEnabled(false);
-            aMap.getUiSettings().setRotateGesturesEnabled(false);
+            aMap.getUiSettings().setRotateGesturesEnabled(false);  // 旋转手势
+            aMap.getUiSettings().setTiltGesturesEnabled(false);  // 倾斜手势
             aMap.getUiSettings().setLogoBottomMargin(-150);//隐藏logo
             // 设置地图缩放比例
             aMap.moveCamera(CameraUpdateFactory.zoomTo(5f));
@@ -289,6 +290,7 @@ public class MapFragment extends BaseFragment implements ClusterRender, AMap.OnM
         super.onDestroy();
         //在activity执行onDestroy时执行mMapView.onDestroy()，销毁地图
         mMapView.onDestroy();
+        mClusterOverlay.onDestroy();
     }
 
     @Override
@@ -350,7 +352,7 @@ public class MapFragment extends BaseFragment implements ClusterRender, AMap.OnM
 
 
 
-            aMap.moveCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition( clusterItems.get(0).getPosition(),18, 30, 30)));
+            aMap.moveCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition( clusterItems.get(0).getPosition(),15, 30, 30)));
 
 
 
