@@ -24,6 +24,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -36,6 +37,7 @@ import com.clj.fastble.data.BleDevice;
 import com.clj.fastble.exception.BleException;
 import com.example.ld_street_lights_maintenance.R;
 import com.example.ld_street_lights_maintenance.act.MainActivity;
+import com.example.ld_street_lights_maintenance.act.OperationAct;
 import com.example.ld_street_lights_maintenance.adapter.DeviceAdapter;
 import com.example.ld_street_lights_maintenance.base.BaseFragment;
 import com.example.ld_street_lights_maintenance.comm.ObserverManager;
@@ -53,7 +55,7 @@ public class BuleFragment extends BaseFragment implements View.OnClickListener {
     private Button btn_scan;
     private DeviceAdapter mDeviceAdapter;
     private ProgressDialog progressDialog;
-
+    private Context mContext;
 
     @Nullable
     @Override
@@ -61,6 +63,8 @@ public class BuleFragment extends BaseFragment implements View.OnClickListener {
 
         View rootView = inflater.inflate(R.layout.layout_blue,
                 container, false);
+
+        mContext =  getActivity();
 
         initView(rootView);
 
@@ -129,11 +133,15 @@ public class BuleFragment extends BaseFragment implements View.OnClickListener {
                    /* Intent intent = new Intent(getActivity(), OperationActivity.class);
                     intent.putExtra(OperationActivity.KEY_DATA, bleDevice);
                     startActivity(intent);*/
+                    Intent intent = new Intent(mContext, OperationAct.class);
+                    mContext.startActivity(intent);
                 }
             }
         });
+
         ListView listView_device = (ListView) rootView.findViewById(R.id.list_device);
         listView_device.setAdapter(mDeviceAdapter);
+
     }
 
     private void connect(final BleDevice bleDevice) {
@@ -314,7 +322,7 @@ public class BuleFragment extends BaseFragment implements View.OnClickListener {
     @Override
     public void onResume() {
         super.onResume();
-        showConnectedDevice();
+        // showConnectedDevice();
     }
 
     private void showConnectedDevice() {
