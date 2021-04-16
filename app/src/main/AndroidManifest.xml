@@ -31,7 +31,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".act.OperationAct"></activity>
+        <activity
+            android:name=".act.OperationAct"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
 
         <meta-data
             android:name="com.amap.api.v2.apikey"

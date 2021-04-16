@@ -4,7 +4,33 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".act.OperationAct">
+
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="76dp"
+        android:layout_gravity="center"
+        android:background="#617FDE"
+        android:fitsSystemWindows="true"
+        android:minHeight="48sp"
+        app:title=" "
+        app:titleTextColor="@android:color/white">
+
+        <TextView
+            android:id="@+id/toolbar_title"
+            style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="路灯维护控制界面"
+            android:textColor="@android:color/white"
+            android:textSize="18sp" />-
+
+    </androidx.appcompat.widget.Toolbar>
 
 
     <RelativeLayout
@@ -12,7 +38,7 @@
         android:layout_height="wrap_content">
 
         <Button
-            android:id="@+id/btn"
+            android:id="@+id/btn_write"
             android:layout_width="70dp"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
@@ -25,12 +51,12 @@
         <!-- ee00050001503516ef ee0005000164e217ef  -->
 
         <EditText
-            android:id="@+id/et"
+            android:id="@+id/et_writedata"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_toLeftOf="@id/btn"
-            android:digits="0123456789ABCDEFabcdef"
+            android:layout_toLeftOf="@id/btn_write"
+            android:digits="0123456789ABCDEFabcd ef"
             android:gravity="center_vertical"
             android:hint="请输入HEX格式指令"
             android:inputType="text"

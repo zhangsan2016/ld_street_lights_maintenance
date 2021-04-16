@@ -154,7 +154,7 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
 
                 byte[] funCode = new byte[]{0, 05};
                 byte[] data = new byte[]{(byte) seekBar.getProgress(), 3};
-                ;
+
                 sendOrder(funCode, data);
                 Log.i("TAG", "onStopTrackingTouch=" + seekBar.getProgress());
 
