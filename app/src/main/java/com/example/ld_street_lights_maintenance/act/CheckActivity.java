@@ -23,7 +23,7 @@ import android.widget.Toast;
 
 import com.example.ld_street_lights_maintenance.R;
 
-public class MainActivity2 extends AppCompatActivity {
+public class CheckActivity extends AppCompatActivity {
 
     MapView mMapView = null;
 
