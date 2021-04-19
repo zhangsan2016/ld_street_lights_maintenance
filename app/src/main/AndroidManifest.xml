@@ -52,7 +52,10 @@
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".act.MainActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".act.DeviceTiming"
+            android:screenOrientation="portrait"/>
 
         <service android:name="com.amap.api.location.APSService" />
     </application>

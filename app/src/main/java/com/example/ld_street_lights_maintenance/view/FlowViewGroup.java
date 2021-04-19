@@ -69,7 +69,7 @@ public class FlowViewGroup extends ViewGroup  {
             //子View需要的宽度 为 子View 本身宽度+marginLeft + marginRight
             childWidth = child.getMeasuredWidth() + params.leftMargin + params.rightMargin;
             childHeight = child.getMeasuredHeight() + params.topMargin + params.bottomMargin;
-            Log.i(TAG, "子View Layout需要的宽高(包含margin)：childWidth:" + childWidth + "   ,childHeight:" + childHeight);
+      //      Log.i(TAG, "子View Layout需要的宽高(包含margin)：childWidth:" + childWidth + "   ,childHeight:" + childHeight);
 
             //如果当前的行宽度大于 父控件允许的最大宽度 则要换行
             //父控件允许的最大宽度 如果要适配 padding 这里要- getPaddingLeft() - getPaddingRight()
@@ -94,8 +94,8 @@ public class FlowViewGroup extends ViewGroup  {
             }
         }
 
-        Log.i(TAG, "系统测量允许的尺寸最大值：widthMeasure:" + widthMeasure + "   ,heightMeasure:" + heightMeasure);
-        Log.i(TAG, "经过我们测量实际的尺寸(不包括父控件的padding)：maxLineWidth:" + maxLineWidth + "   ,totalHeight:" + totalHeight);
+     //   Log.i(TAG, "系统测量允许的尺寸最大值：widthMeasure:" + widthMeasure + "   ,heightMeasure:" + heightMeasure);
+      //  Log.i(TAG, "经过我们测量实际的尺寸(不包括父控件的padding)：maxLineWidth:" + maxLineWidth + "   ,totalHeight:" + totalHeight);
 
         //适配padding,如果是wrap_content,则除了子控件本身占据的控件，还要在加上父控件的padding
         setMeasuredDimension(

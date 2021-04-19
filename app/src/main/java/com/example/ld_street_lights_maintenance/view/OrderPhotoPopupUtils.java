@@ -29,13 +29,16 @@ import com.clj.fastble.callback.BleWriteCallback;
 import com.clj.fastble.data.BleDevice;
 import com.clj.fastble.exception.BleException;
 import com.example.ld_street_lights_maintenance.R;
+import com.example.ld_street_lights_maintenance.act.DeviceTiming;
 import com.example.ld_street_lights_maintenance.act.MainActivity;
 import com.example.ld_street_lights_maintenance.fragment.mainfragment.BuleFragment;
 import com.example.ld_street_lights_maintenance.util.BlePusher;
 import com.example.ld_street_lights_maintenance.util.DensityUtil;
 
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
+import java.util.TimeZone;
 
 
 public class OrderPhotoPopupUtils extends PopupWindow implements
@@ -201,6 +204,93 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
             }
         });
 
+        // 恢复原厂设置
+        Button bt_factory_reset = mPopView.findViewById(R.id.bt_factory_reset);
+        bt_factory_reset.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showProgress("正在写入...");
+                byte[] funCode = new byte[]{0, 01};
+                byte[] data = new byte[]{-95, -86};
+
+                sendOrder(funCode, data);
+            }
+        });
+
+        // 恢复重启
+        Button bt_reboot = mPopView.findViewById(R.id.bt_reboot);
+        bt_reboot.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showProgress("正在写入...");
+                byte[] funCode = new byte[]{0, 01};
+                byte[] data = new byte[]{-86,-95};
+
+                sendOrder(funCode, data);
+            }
+        });
+
+        // 校时
+        Button bt_timing = mPopView.findViewById(R.id.bt_timing);
+        bt_timing.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showProgress("正在写入...");
+                byte[] funCode = new byte[]{0, 02};
+                byte[] data = new byte[7];
+
+                Calendar cal = Calendar.getInstance();
+                cal.setTimeZone(TimeZone.getTimeZone("GMT+8:00"));
+
+                String  year = String.valueOf(cal.get(Calendar.YEAR));
+                String  month = String.valueOf(cal.get(Calendar.MONTH)+1);
+                String   day = String.valueOf(cal.get(Calendar.DATE));
+                String hour;
+                if (cal.get(Calendar.AM_PM) == 0)
+                    hour = String.valueOf(cal.get(Calendar.HOUR));
+                else
+                    hour = String.valueOf(cal.get(Calendar.HOUR)+12);
+                String  minute = String.valueOf(cal.get(Calendar.MINUTE));
+                String  second = String.valueOf(cal.get(Calendar.SECOND));
+                //获取今天是这周的第几天,周日为1,周一为2,周六为7
+                int week = cal.get(Calendar.DAY_OF_WEEK);
+
+                data[0] = Byte.parseByte(year.substring(2,year.length()));
+                data[1] = Byte.parseByte(month);
+                data[2] = Byte.parseByte(day);
+                data[3] = Byte.parseByte(hour);
+                data[4] = Byte.parseByte(minute);
+                data[5] = Byte.parseByte(second);
+                data[6] = (byte) week;
+
+                sendOrder(funCode, data);
+
+            }
+        });
+
+        // 曲线定时
+        Button bt_curve_timing = mPopView.findViewById(R.id.bt_curve_timing);
+        bt_curve_timing.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+              //  showProgress("正在写入...");
+
+             /*   byte[] funCode = new byte[]{0, 3};
+
+                // 时0 分0 亮度0 时1 分1 亮度1 时2 分2 亮度2 时3 分3 亮度3 时4 分4 亮4 时5 分5 亮度5 灯具位
+                byte[] data = new byte[]{85, -86};
+
+
+                sendOrder(funCode, data);*/
+
+             Intent intent = new Intent(mContext, DeviceTiming.class);
+             mContext.startActivity(intent);
+
+
+
+            }
+        });
 
     }
 
@@ -278,7 +368,9 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
 //        this.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);// 设置弹出窗口的宽
 //        this.setHeight(DensityUtil.getScreenHeight(mContext));// 设置弹出窗口的高
         this.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);// 设置弹出窗口的宽
-        this.setHeight(ViewGroup.LayoutParams.MATCH_PARENT);// 设置弹出窗口的高
+        // 重置PopupWindow高度
+        int screenHeigh = mContext.getResources().getDisplayMetrics().heightPixels;
+        this.setHeight(Math.round(screenHeigh * 0.6f));// 设置弹出窗口的高
         this.setFocusable(false);// 设置弹出窗口可
         this.setOutsideTouchable(false);
         //   this.setAnimationStyle(R.style.mypopwindow_anim_style);// 设置动画
