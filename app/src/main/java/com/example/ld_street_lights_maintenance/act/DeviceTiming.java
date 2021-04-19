@@ -10,6 +10,7 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -20,10 +21,14 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.clj.fastble.callback.BleReadCallback;
+import com.clj.fastble.callback.BleWriteCallback;
+import com.clj.fastble.exception.BleException;
 import com.example.ld_street_lights_maintenance.R;
 import com.example.ld_street_lights_maintenance.base.BaseActivity;
 import com.example.ld_street_lights_maintenance.common.MyApplication;
 import com.example.ld_street_lights_maintenance.entity.DeviceLampJson;
+import com.example.ld_street_lights_maintenance.util.BlePusher;
 import com.example.ld_street_lights_maintenance.util.HttpUtil;
 
 import org.json.JSONException;
@@ -138,23 +143,23 @@ public class DeviceTiming extends BaseActivity {
 
         // 开关灯时间
 
-            // 时间为空时设置一个默认的时间
-            startTimeH = "18";
-            startTimeM = "00";
-            endTimeH = "08";
-            endTimeM = "00";
-            timeTwoH = "21";
-            timeTwoM = "23";
-            timeThirH = "01";
-            timeThirM = "00";
-            timeFourH = "03";
-            timeFourM = "00";
-            timeFifH = "05";
-            timeFifM = "00";
-            timeSixH = endTimeH;
-            timeSixM = endTimeM;
+        // 时间为空时设置一个默认的时间
+        startTimeH = "18";
+        startTimeM = "00";
+        endTimeH = "08";
+        endTimeM = "00";
+        timeTwoH = "21";
+        timeTwoM = "23";
+        timeThirH = "01";
+        timeThirM = "00";
+        timeFourH = "03";
+        timeFourM = "00";
+        timeFifH = "05";
+        timeFifM = "00";
+        timeSixH = endTimeH;
+        timeSixM = endTimeM;
 
-            return;
+        return;
 
     }
 
@@ -400,8 +405,7 @@ public class DeviceTiming extends BaseActivity {
             Intent intent;
             switch (v.getId()) {
                 case R.id.btn_ok_device_main:
-                    // 显示加载框
-                    showProgress();
+
                     new Thread() {
                         public void run() {
                             getTimingParameter();
@@ -577,7 +581,8 @@ public class DeviceTiming extends BaseActivity {
 
     private void getTimingParameter() {
 
-
+        // 显示加载框
+        showProgress();
 
 
         // 六段调光时间
@@ -599,9 +604,87 @@ public class DeviceTiming extends BaseActivity {
         String aa = timingTime1.split(":")[0];
         String a2a = timingTime1.split(":")[1];
 
+
+        byte[] funCode = new byte[]{0, 19};
+        // 时0 分0 亮度0 时1 分1 亮度1 时2 分2 亮度2 时3 分3 亮度3 时4 分4 亮4 时5 分5 亮度5 灯具位
+        byte[] data = new byte[19];
+
+        data[0] = Byte.parseByte(timingTime1.split(":")[0]);
+        data[1] = Byte.parseByte(timingTime1.split(":")[1]);
+        data[2] = (byte) progress1;
+
+        data[3] = Byte.parseByte(timingTime2.split(":")[0]);
+        data[4] = Byte.parseByte(timingTime2.split(":")[1]);
+        data[5] = (byte) progress2;
+
+        data[6] = Byte.parseByte(timingTime3.split(":")[0]);
+        data[7] = Byte.parseByte(timingTime3.split(":")[1]);
+        data[8] = (byte) progress3;
+
+        data[9] = Byte.parseByte(timingTime4.split(":")[0]);
+        data[10] = Byte.parseByte(timingTime4.split(":")[1]);
+        data[11] = (byte) progress4;
+
+        data[12] = Byte.parseByte(timingTime5.split(":")[0]);
+        data[13] = Byte.parseByte(timingTime5.split(":")[1]);
+        data[14] = (byte) progress5;
+
+        data[15] = Byte.parseByte(timingTime6.split(":")[0]);
+        data[16] = Byte.parseByte(timingTime6.split(":")[1]);
+        data[17] = (byte) progress6;
+
+        data[18] = 1;
+
+        Log.e("xxx",">>>>>>>>>>>>>>>>>>>>> " + Arrays.toString(data));
+
+        sendOrder(funCode, data);
+
+
     }
 
+    /**
+     * 发送蓝牙通讯指令
+     *
+     * @param funCode 功能码
+     * @param data    指令
+     */
+    private void sendOrder(byte[] funCode, byte[] data) {
 
+        try {
+            BlePusher.writeSpliceOrder(funCode, data, new BleWriteCallback() {
+                @Override
+                public void onWriteSuccess(int current, int total, byte[] justWrite) {
+
+                    BlePusher.readSpliceOrder(new BleReadCallback() {
+                        @Override
+                        public void onReadSuccess(byte[] data) {
+                            showToast("写入成功~");
+                            Log.e("xxx", ">>>>>>>>>>>>>>>>>>> 当前读取返回数据成功 " + Arrays.toString(data));
+                            // 解析数据
+                            //  parseDatas(data);
+                            stopProgress();
+                        }
+
+                        @Override
+                        public void onReadFailure(BleException exception) {
+                            showToast("数据读取失败，请靠近蓝牙设备，或重新连接蓝牙~");
+                            stopProgress();
+                        }
+                    });
+                }
+
+                @Override
+                public void onWriteFailure(BleException exception) {
+                    showToast("写入失败" + exception.toString());
+                    stopProgress();
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+            showToast(e.getMessage().toString());
+            stopProgress();
+        }
+    }
 
     /**
      * 广播接收

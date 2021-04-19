@@ -70,10 +70,6 @@ public class MapFragment extends BaseFragment implements ClusterRender, AMap.OnM
 
         // 初始化地图
         initAMap(savedInstanceState,rootView);
-        // 获取项目
-        getProject();
-
-
 
         return rootView;
     }
@@ -319,6 +315,10 @@ public class MapFragment extends BaseFragment implements ClusterRender, AMap.OnM
     public void onMapLoaded() {
 
         // 通过网络获取项目列表
+        // 获取项目
+        getProject();
+
+        // 设置监听
         mClusterOverlay = new ClusterOverlay(aMap, dp2px(mContext.getApplicationContext(), 0), mContext.getApplicationContext());
         mClusterOverlay.setClusterRenderer(this);
         mClusterOverlay.setOnClusterClickListener(this);

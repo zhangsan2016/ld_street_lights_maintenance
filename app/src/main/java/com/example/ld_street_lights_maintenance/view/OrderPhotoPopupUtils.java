@@ -274,20 +274,8 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
             @Override
             public void onClick(View v) {
 
-              //  showProgress("正在写入...");
-
-             /*   byte[] funCode = new byte[]{0, 3};
-
-                // 时0 分0 亮度0 时1 分1 亮度1 时2 分2 亮度2 时3 分3 亮度3 时4 分4 亮4 时5 分5 亮度5 灯具位
-                byte[] data = new byte[]{85, -86};
-
-
-                sendOrder(funCode, data);*/
-
              Intent intent = new Intent(mContext, DeviceTiming.class);
              mContext.startActivity(intent);
-
-
 
             }
         });
