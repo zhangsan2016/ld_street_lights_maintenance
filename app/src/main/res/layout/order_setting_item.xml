@@ -11,42 +11,48 @@
     android:paddingBottom="15dp">
 
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/cd_electricity"
-        android:background="@drawable/ripple_bg"
-        android:text="恢复原厂设置"
-        android:textColor="@color/white"></Button>
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/cd_electricity"
-        android:background="@drawable/ripple_bg"
-        android:text="校时"
-        android:textColor="@color/white"></Button>
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/cd_electricity"
-        android:background="@drawable/ripple_bg"
-        android:text="曲线定时"
-        android:textColor="@color/white"></Button>
+    <com.example.ld_street_lights_maintenance.view.FlowViewGroup
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/cd_electricity"
+            android:background="@drawable/ripple_bg"
+            android:text="恢复原厂设置"
+            android:textColor="@color/white"></Button>
 
-    <Button
-        android:id="@+id/buttona1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:background="@drawable/button_drawable"
-        android:textColor="#ffffff"
-        android:textSize="16dp"
-        android:gravity="center"
-        android:text="登陆"
-        />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/cd_electricity"
+            android:background="@drawable/ripple_bg"
+            android:text="校时"
+            android:textColor="@color/white"></Button>
 
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/cd_electricity"
+            android:background="@drawable/ripple_bg"
+            android:text="曲线定时"
+            android:textColor="@color/white"></Button>
+
+        <Button
+            android:id="@+id/buttona1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/button_drawable"
+            android:textColor="#ffffff"
+            android:textSize="16dp"
+            android:gravity="center"
+            android:text="登陆"
+            />
+
+    </com.example.ld_street_lights_maintenance.view.FlowViewGroup>
 
 
 
