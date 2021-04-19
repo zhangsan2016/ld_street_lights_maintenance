@@ -53,9 +53,8 @@
         <activity
             android:name=".act.MainActivity"
             android:screenOrientation="portrait"/>
-        <activity
-            android:name=".act.DeviceTiming"
-            android:screenOrientation="portrait"/>
+
+        <activity android:name=".act.DeviceTiming" />
 
         <service android:name="com.amap.api.location.APSService" />
     </application>

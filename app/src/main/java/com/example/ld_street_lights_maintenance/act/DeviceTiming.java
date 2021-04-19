@@ -577,10 +577,8 @@ public class DeviceTiming extends BaseActivity {
 
     private void getTimingParameter() {
 
- //       String token = MyApplication.getLoginInfo().getData().getToken().getToken();
 
-    /*    // 保存当前时间
-        final long currentRecordTime = System.currentTimeMillis();
+
 
         // 六段调光时间
         String timingTime1 = tv_spacing_start_time1.getText().toString().replaceAll(" ", "");
@@ -598,95 +596,8 @@ public class DeviceTiming extends BaseActivity {
         int progress5 = sb_brightness5.getProgress();
         int progress6 = sb_brightness6.getProgress();
 
-        String postBody = null;
-        try {
-
-            // 判断主辅灯
-            if (advocateComplementaryCode == DeviceMainAct.PRINCIPAL) {
-                // 主灯定时指令3
-                JSONObject deviceObj = new JSONObject();
-                deviceObj.put("UUID", electricityDeviceStatus.getUUID());
-                deviceObj.put("Confirm", 3);
-                JSONObject options = new JSONObject();
-                options.put("Fir_tt_Fir", timingTime1);
-                options.put("Fir_tp_Fir", progress1);
-                options.put("Sec_tt_Fir", timingTime2);
-                options.put("Sec_tp_Fir", progress2);
-                options.put("Thir_tt_Fir", timingTime3);
-                options.put("Thir_tp_Fir", progress3);
-                options.put("Four_tt_Fir", timingTime4);
-                options.put("Four_tp_Fir", progress4);
-                options.put("Fif_tt_Fir", timingTime5);
-                options.put("Fif_tp_Fir", progress5);
-                options.put("Six_tt_Fir", timingTime6);
-                options.put("Six_tp_Fir", progress6);
-                deviceObj.put("options", options);
-                postBody = deviceObj.toString();
-
-            } else if (advocateComplementaryCode == DeviceMainAct.SUBSIDIARY) {
-                // 副灯定时指令7
-                JSONObject deviceObj = new JSONObject();
-                deviceObj.put("UUID", electricityDeviceStatus.getUUID());
-                deviceObj.put("Confirm", 7);
-                JSONObject options = new JSONObject();
-                options.put("Fir_tt_Sec", timingTime1);
-                options.put("Fir_tp_Sec", progress1);
-                options.put("Sec_tt_Sec", timingTime2);
-                options.put("Sec_tp_Sec", progress2);
-                options.put("Thir_tt_Sec", timingTime3);
-                options.put("Thir_tp_Sec", progress3);
-                options.put("Four_tt_Sec", timingTime4);
-                options.put("Four_tp_Sec", progress4);
-                options.put("Fif_tt_Sec", timingTime5);
-                options.put("Fif_tp_Sec", progress5);
-                options.put("Six_tt_Sec", timingTime6);
-                options.put("Six_tp_Sec", progress6);
-                deviceObj.put("options", options);
-                postBody = deviceObj.toString();
-            }
-
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-            stopProgress();
-        }
-
-
-        if (postBody == null) {
-            stopProgress();
-            return;
-        }
-
-        LogUtil.e("postBody = " + postBody);
-
-        String url = MapHttpConfiguration.DEVICE_CONTROL_URL;
-        RequestBody body = FormBody.create(MediaType.parse("application/json"), postBody);
-
-        HttpUtil.sendHttpRequest(url, new Callback() {
-
-            @Override
-            public void onFailure(Call call, IOException e) {
-                LogUtil.e("xxx relaySetting" + "失败" + e.toString());
-                // 延迟关闭加载框
-                long delayedTime = (System.currentTimeMillis() - currentRecordTime) < stopProgressTime ? stopProgressTime - (System.currentTimeMillis() - currentRecordTime) : 0;
-                LogUtil.e("delayedTime = " + delayedTime);
-                delayedStopsendProgress(delayedTime);
-                //  showToast("定时指令发送失败！");
-            }
-
-            @Override
-            public void onResponse(Call call, okhttp3.Response response) throws IOException {
-                String json = response.body().string();
-                LogUtil.e("xxx relaySetting" + "成功" + json);
-                // 延迟关闭加载框
-                long delayedTime = (System.currentTimeMillis() - currentRecordTime) < stopProgressTime ? stopProgressTime - (System.currentTimeMillis() - currentRecordTime) : 0;
-                LogUtil.e("delayedTime = " + delayedTime);
-                delayedStopsendProgress(delayedTime);
-                // showToast("定时指令发送成功！");
-            }
-
-        }, token, body);*/
-
+        String aa = timingTime1.split(":")[0];
+        String a2a = timingTime1.split(":")[1];
 
     }
 
