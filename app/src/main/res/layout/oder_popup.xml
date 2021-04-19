@@ -1,4 +1,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -22,6 +24,30 @@
             android:padding="10dp"
             android:text="调试指令"
             android:textColor="#000000"></TextView>
+
+
+        <com.example.ld_street_lights_maintenance.view.ExpandView
+            app:item_background="@color/colorPrimaryDark"
+            android:layout_margin="1dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:expand_layout="@layout/expand_layout"
+            app:indicator_collapse="@drawable/collapse"
+            app:indicator_expand="@drawable/expand"
+            app:title_text="调试指令"
+            app:title_size="12sp">
+        </com.example.ld_street_lights_maintenance.view.ExpandView>
+
+        <com.example.ld_street_lights_maintenance.view.ExpandView
+            app:item_background="@color/colorPrimaryDark"    android:layout_margin="1dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:expand_layout="@layout/expand_layout"
+            app:indicator_collapse="@drawable/collapse"
+            app:indicator_expand="@drawable/expand"
+            app:title_text="控制指令"
+            app:title_size="12sp">
+        </com.example.ld_street_lights_maintenance.view.ExpandView>
 
         <LinearLayout
             android:layout_width="match_parent"
