@@ -110,27 +110,25 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
         // 绑定布局
         mPopView = inflater.inflate(R.layout.oder_popup, null);
 
+        // 设置下拉 "控制指令" 布局
         ExpandView ev_oder_debug = mPopView.findViewById(R.id.ev_oder_debug);
         View debugCommandView = inflater.inflate(R.layout.debug_command_item, null);
         ev_oder_debug.setExpandView(debugCommandView);
+        // 设置下拉 "控制指令" 布局
+        ExpandView ev_oder_setting = mPopView.findViewById(R.id.ev_setting);
+        View oder_serting_View = inflater.inflate(R.layout.order_setting_item, null);
+        ev_oder_setting.setExpandView(oder_serting_View);
+
 
 
         cd_main_dimming = mPopView.findViewById(R.id.cd_main_dimming);
         cd_auxiliary_dimming = mPopView.findViewById(R.id.cd_auxiliary_dimming);
 
+        // 清除报警
         Button bt_alarm_clear = mPopView.findViewById(R.id.bt_alarm_clear);
         bt_alarm_clear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-              /*  byte[] funCode = new byte[]{0, 21};
-                byte[] data = null;;
-                sendOrder(funCode, data);*/
-
-               /* showProgress("正在写入...");
-                byte[] funCode = new byte[]{0, 2};
-                byte[] data = new byte[]{05, -86};
-                sendOrder(funCode, data);*/
 
                 showProgress("正在写入...");
                 byte[] funCode = new byte[]{0, 27};
@@ -140,6 +138,7 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
             }
         });
 
+        // 亮度调节
         SeekBar seekbar = mPopView.findViewById(R.id.seekbar);
         seekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -166,14 +165,34 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
             }
         });
 
+        // 主辅灯开关灯
         Button bt_light = mPopView.findViewById(R.id.bt_light);
         bt_light.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 showProgress("正在写入...");
 
-               /* cd_main_dimming.isChecked();
-                cd_auxiliary_dimming.isChecked();*/
+                byte[] funCode = new byte[]{0, 05};
+                byte[] data = new byte[2];
+
+                boolean md = cd_main_dimming.isChecked();
+                boolean ad = cd_auxiliary_dimming.isChecked();
+                if(md && ad){
+                    data = new byte[]{100,3};
+                    Log.e("xxx", ">>>>>>>>>>>>>>>>>>> 主灯辅灯全开");
+                }else if(md){
+                    data = new byte[]{100,1};
+                    Log.e("xxx", ">>>>>>>>>>>>>>>>>>> 主灯开");
+                }else if(ad){
+                    data = new byte[]{100,2};
+                    Log.e("xxx", ">>>>>>>>>>>>>>>>>>> 辅灯开");
+                }else if(!md && !ad){
+                    data = new byte[]{0,3};
+                    Log.e("xxx", ">>>>>>>>>>>>>>>>>>> 主辅灯关");
+                }
+
+                sendOrder(funCode, data);
 
                /* byte[] funCode = new byte[]{0, 05};
                 byte[] data = new byte[]{(byte) seekBar.getProgress()};;

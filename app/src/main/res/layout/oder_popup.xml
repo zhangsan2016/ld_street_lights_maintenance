@@ -50,6 +50,18 @@
                 </com.example.ld_street_lights_maintenance.view.ExpandView>
 
                 <com.example.ld_street_lights_maintenance.view.ExpandView
+                    android:id="@+id/ev_setting"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="1dp"
+                    app:expand_layout="@layout/expand_layout"
+                    app:indicator_collapse="@drawable/collapse"
+                    app:indicator_expand="@drawable/expand"
+                    app:item_background="@color/colorPrimaryDark"
+                    app:title_size="12sp"
+                    app:title_text="设置指令"></com.example.ld_street_lights_maintenance.view.ExpandView>
+
+                <com.example.ld_street_lights_maintenance.view.ExpandView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="1dp"

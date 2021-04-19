@@ -63,8 +63,10 @@ dependencies {
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
     // 引入multidex库
     implementation 'com.android.support:multidex:1.0.3'
-
+    /* 开发工具包 */
     implementation 'com.github.xiaowujiang:easy:1.0.6'
+    /* 流式布局 */
+
 
 
 }

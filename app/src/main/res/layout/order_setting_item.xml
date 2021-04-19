@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:zhy="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/id_pop_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentBottom="true"
+    android:background="#039A9A"
+    android:orientation="vertical"
+    android:padding="5dp"
+    android:paddingBottom="15dp">
+
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/cd_electricity"
+        android:background="@drawable/ripple_bg"
+        android:text="恢复原厂设置"
+        android:textColor="@color/white"></Button>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/cd_electricity"
+        android:background="@drawable/ripple_bg"
+        android:text="校时"
+        android:textColor="@color/white"></Button>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/cd_electricity"
+        android:background="@drawable/ripple_bg"
+        android:text="曲线定时"
+        android:textColor="@color/white"></Button>
+
+    <Button
+        android:id="@+id/buttona1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/button_drawable"
+        android:textColor="#ffffff"
+        android:textSize="16dp"
+        android:gravity="center"
+        android:text="登陆"
+        />
+
+
+
+
+</LinearLayout>
