@@ -110,9 +110,13 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
         // 绑定布局
         mPopView = inflater.inflate(R.layout.oder_popup, null);
 
+        ExpandView ev_oder_debug = mPopView.findViewById(R.id.ev_oder_debug);
+        View debugCommandView = inflater.inflate(R.layout.debug_command_item, null);
+        ev_oder_debug.setExpandView(debugCommandView);
+
+
         cd_main_dimming = mPopView.findViewById(R.id.cd_main_dimming);
         cd_auxiliary_dimming = mPopView.findViewById(R.id.cd_auxiliary_dimming);
-
 
         Button bt_alarm_clear = mPopView.findViewById(R.id.bt_alarm_clear);
         bt_alarm_clear.setOnClickListener(new View.OnClickListener() {

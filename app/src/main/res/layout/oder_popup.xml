@@ -26,163 +26,44 @@
             android:textColor="#000000"></TextView>
 
 
-        <com.example.ld_street_lights_maintenance.view.ExpandView
-            app:item_background="@color/colorPrimaryDark"
-            android:layout_margin="1dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:expand_layout="@layout/expand_layout"
-            app:indicator_collapse="@drawable/collapse"
-            app:indicator_expand="@drawable/expand"
-            app:title_text="调试指令"
-            app:title_size="12sp">
-        </com.example.ld_street_lights_maintenance.view.ExpandView>
-
-        <com.example.ld_street_lights_maintenance.view.ExpandView
-            app:item_background="@color/colorPrimaryDark"    android:layout_margin="1dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:expand_layout="@layout/expand_layout"
-            app:indicator_collapse="@drawable/collapse"
-            app:indicator_expand="@drawable/expand"
-            app:title_text="控制指令"
-            app:title_size="12sp">
-        </com.example.ld_street_lights_maintenance.view.ExpandView>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="10dp"
-                android:text="0%"
-                android:textColor="#FFFFFF"></TextView>
-
-
-            <SeekBar
-                android:id="@+id/seekbar"
-                style="?android:attr/progressBarStyleHorizontal"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_weight="1"
-                android:max="100" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginRight="20dp"
-                android:text="100%"
-                android:textColor="#FFFFFF"></TextView>
-
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+        <ScrollView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
 
             <LinearLayout
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1.5"
                 android:orientation="vertical">
 
-
-                <RelativeLayout
+                <com.example.ld_street_lights_maintenance.view.ExpandView
+                    android:id="@+id/ev_oder_debug"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_margin="1dp"
+                    app:expand_layout="@layout/expand_layout"
+                    app:indicator_collapse="@drawable/collapse"
+                    app:indicator_expand="@drawable/expand"
+                    app:item_background="@color/colorPrimaryDark"
+                    app:title_size="12sp"
+                    app:title_text="控制指令">
 
-                    <CheckBox
-                        android:id="@+id/cd_electric_leakage"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="漏电报警" />
+                </com.example.ld_street_lights_maintenance.view.ExpandView>
 
-                    <CheckBox
-                        android:id="@+id/cd_voltage"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp"
-                        android:layout_toRightOf="@id/cd_electric_leakage"
-                        android:text="电压报警" />
-
-
-                </RelativeLayout>
-
-
-                <RelativeLayout
+                <com.example.ld_street_lights_maintenance.view.ExpandView
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_margin="1dp"
+                    app:expand_layout="@layout/expand_layout"
+                    app:indicator_collapse="@drawable/collapse"
+                    app:indicator_expand="@drawable/expand"
+                    app:item_background="@color/colorPrimaryDark"
+                    app:title_size="12sp"
+                    app:title_text="读取指令"></com.example.ld_street_lights_maintenance.view.ExpandView>
 
-                    <CheckBox
-                        android:id="@+id/cd_topple_over"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="倾倒报警" />
-
-                    <CheckBox
-                        android:id="@+id/cd_electricity"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp"
-                        android:layout_toRightOf="@id/cd_topple_over"
-                        android:text="电流报警"></CheckBox>
-
-                    <!--         android:background="@drawable/ripple_bg"  android:background="@color/tab_violet_bg"-->
-
-                    <Button
-                        android:id="@+id/bt_alarm_clear"
-                        android:layout_width="120dp"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/cd_electricity"
-                        android:background="@drawable/ripple_bg"
-                        android:text="报警清除"
-                        android:textColor="@color/white"></Button>
-
-                </RelativeLayout>
 
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:orientation="vertical">
-
-
-                <CheckBox
-                    android:id="@+id/cd_main_dimming"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="主灯调光" />
-
-
-                <CheckBox
-                    android:id="@+id/cd_auxiliary_dimming"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="辅灯调光" />
-
-                <Button
-                    android:id="@+id/bt_light"
-                    android:layout_width="120dp"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/cd_electricity"
-                    android:background="@drawable/ripple_bg"
-                    android:text="亮灯开关"
-                    android:textColor="@color/white"></Button>
-
-            </LinearLayout>
-
-        </LinearLayout>
+        </ScrollView>
 
 
     </LinearLayout>
