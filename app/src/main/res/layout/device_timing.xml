@@ -52,6 +52,7 @@
         android:orientation="horizontal">
 
         <CheckBox
+            android:id="@+id/cb_main"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
@@ -59,6 +60,7 @@
             android:text="主灯定时"></CheckBox>
 
         <CheckBox
+            android:id="@+id/cb_assist"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"

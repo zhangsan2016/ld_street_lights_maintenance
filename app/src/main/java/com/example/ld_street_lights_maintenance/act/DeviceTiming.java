@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
@@ -90,6 +91,8 @@ public class DeviceTiming extends BaseActivity {
     private String timeTwoH, timeTwoM, timeThirH, timeThirM, timeFourH, timeFourM, timeFifH, timeFifM, timeSixH, timeSixM;
     // 亮度
     private int brightness1, brightness2, brightness3, brightness4, brightness5;
+    // 主辅灯checkBox
+   private CheckBox cb_main,cb_assist;
 
     //  Progress加载框延迟关闭时间，毫秒
     private long stopProgressTime = 3000;
@@ -359,6 +362,10 @@ public class DeviceTiming extends BaseActivity {
                 .findViewById(R.id.tv_spacing_start_time5);
         tv_spacing_start_time6 = (TextView) this
                 .findViewById(R.id.tv_spacing_start_time6);
+
+        // 主灯辅灯选项
+         cb_main  = this.findViewById(R.id.cb_main);
+        cb_assist  = this.findViewById(R.id.cb_assist);
 
         txtStartTime = (TextView) findViewById(R.id.txt_device_main_start_time);
         txtEndTime = (TextView) findViewById(R.id.txt_device_main_end_time);
@@ -652,9 +659,16 @@ public class DeviceTiming extends BaseActivity {
         data[16] = Byte.parseByte(timingTime6.split(":")[1]);
         data[17] = (byte) progress6;
 
-        data[18] = 1;
-
-        Log.e("xxx", ">>>>>>>>>>>>>>>>>>>>> " + Arrays.toString(data));
+        if(cb_main.isChecked() && cb_assist.isChecked()){
+            data[18] = 3;
+        }else if(cb_main.isChecked()){
+            data[18] = 1;
+        }else if(cb_assist.isChecked()){
+            data[18] = 2;
+        }else{
+            showToast("请选择主灯或辅灯定时~");
+            return;
+        }
 
         sendOrder(funCode, data);
 
