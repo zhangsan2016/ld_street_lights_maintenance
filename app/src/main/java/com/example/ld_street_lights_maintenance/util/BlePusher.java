@@ -12,6 +12,7 @@ import com.clj.fastble.callback.BleReadCallback;
 import com.clj.fastble.callback.BleWriteCallback;
 import com.clj.fastble.data.BleDevice;
 import com.clj.fastble.exception.BleException;
+import com.clj.fastble.exception.OtherException;
 import com.clj.fastble.utils.HexUtil;
 import com.example.ld_street_lights_maintenance.crc.CopyOfcheckCRC;
 
@@ -160,42 +161,11 @@ public class BlePusher {
 
                     // 用于同步线程
                     final CountDownLatch latch = new CountDownLatch(1);
+                    splitWrite(bytesLeng,i+1,bytedata,callback,gattCharacteristicA1,gattCharacteristicA2, bleDevices.get(0),latch);
 
-                    BleManager.getInstance().write(
-                            bleDevices.get(0),
-                            gattCharacteristicA2.getService().getUuid().toString(),
-                            gattCharacteristicA2.getUuid().toString(),
-                            new byte[]{(byte) bytesLeng, (byte) (i + 1)},
-                            new BleWriteCallback() {
+                    //阻塞当前线程直到latch中数值为零才执行
+                    latch.await();
 
-                                @Override
-                                public void onWriteSuccess(final int current, final int total, final byte[] justWrite) {
-                                    Log.e("xx", ">>>>>>>>>>>>>>> 最后一个" + current + "  " +  total + "  " + Arrays.toString(justWrite));
-
-                                    try {
-                                        Thread.sleep(200);
-                                        BleManager.getInstance().write(
-                                                bleDevices.get(0),
-                                                gattCharacteristicA1.getService().getUuid().toString(),
-                                                gattCharacteristicA1.getUuid().toString(),
-                                                spliceData,
-                                                callback);
-                                    } catch (InterruptedException e) {
-                                        e.printStackTrace();
-                                    }
-
-                                }
-
-                                @Override
-                                public void onWriteFailure(final BleException exception) {
-                                    try {
-                                        throw new Exception(exception.toString());
-                                    } catch (Exception e) {
-                                        e.printStackTrace();
-                                    }
-
-                                }
-                            });
                 }
 
             }
@@ -211,9 +181,57 @@ public class BlePusher {
      * @param mCount  当前包数
      * @param mData   数据
      * @param callback  回调
+     * @param latch
      */
-    private void splitWrite(int mTotalNum,int mCount,byte[] mData, BleWriteCallback callback) {
+    private static void splitWrite(final int mTotalNum, final int mCount, final byte[] mData, final BleWriteCallback callback, final BluetoothGattCharacteristic a1, BluetoothGattCharacteristic a2, final BleDevice bleDevice, final CountDownLatch latch) {
+        BleManager.getInstance().write(
+                bleDevice,
+                a2.getService().getUuid().toString(),
+                a2.getUuid().toString(),
+                new byte[]{(byte) mTotalNum, (byte) mCount},
+                new BleWriteCallback() {
 
+                    @Override
+                    public void onWriteSuccess(final int current, final int total, final byte[] justWrite) {
+                        Log.e("xx", ">>>>>>>>>>>>>>> 分包发送" + Arrays.toString(justWrite));
+                        BleManager.getInstance().write(
+                                bleDevice,
+                                a1.getService().getUuid().toString(),
+                                a1.getUuid().toString(),
+                                mData,
+                                new BleWriteCallback() {
+                                    @Override
+                                    public void onWriteSuccess(int current, int total, byte[] justWrite) {
+                                        if(mTotalNum == mCount){
+                                            callback.onWriteSuccess(current,total,justWrite);
+                                        }
+                                        //让latch中的数值减一
+                                        latch.countDown();
+                                    }
+
+                                    @Override
+                                    public void onWriteFailure(BleException exception) {
+                                        if(callback != null){
+                                            callback.onWriteFailure(new OtherException("写入异常 " + exception.getDescription()));
+                                        }
+                                    }
+                                });
+
+                    }
+
+                    @Override
+                    public void onWriteFailure(final BleException exception) {
+                        try {
+                            if(callback != null){
+                                callback.onWriteFailure(new OtherException("写入异常 " + exception.getDescription()));
+                            }
+                            throw new Exception(exception.toString());
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                });
 
     }
 

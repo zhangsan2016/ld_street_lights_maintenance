@@ -631,7 +631,7 @@ public class DeviceTiming extends BaseActivity {
         String a2a = timingTime1.split(":")[1];
 
 
-        byte[] funCode = new byte[]{0, 19};
+        byte[] funCode = new byte[]{0, 3};
         // 时0 分0 亮度0 时1 分1 亮度1 时2 分2 亮度2 时3 分3 亮度3 时4 分4 亮4 时5 分5 亮度5 灯具位
         byte[] data = new byte[19];
 

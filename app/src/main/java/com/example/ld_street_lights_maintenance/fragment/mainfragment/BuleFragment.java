@@ -237,6 +237,7 @@ public class BuleFragment extends BaseFragment implements View.OnClickListener {
         }
     }
 
+
     private void onPermissionGranted(String permission) {
         switch (permission) {
             case Manifest.permission.ACCESS_FINE_LOCATION:
