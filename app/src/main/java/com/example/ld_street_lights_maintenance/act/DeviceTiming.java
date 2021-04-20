@@ -11,15 +11,21 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
+import android.widget.Toolbar;
+
+import androidx.annotation.NonNull;
+import androidx.core.app.NavUtils;
 
 import com.clj.fastble.callback.BleReadCallback;
 import com.clj.fastble.callback.BleWriteCallback;
@@ -120,6 +126,7 @@ public class DeviceTiming extends BaseActivity {
         initVariable();
 
     }
+
 
     private void initVariable() {
 
@@ -297,8 +304,17 @@ public class DeviceTiming extends BaseActivity {
 
     }
 
+
     private void initView() {
-        // 六个阶段的时间LinearLayout
+       ImageView iv_break =  this.findViewById(R.id.iv_break);
+        iv_break.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+            // 六个阶段的时间LinearLayout
         ll_spacing_start_time1 = (LinearLayout) this
                 .findViewById(R.id.ll_spacing_start_time1);
         ll_spacing_start_time2 = (LinearLayout) this
@@ -635,7 +651,7 @@ public class DeviceTiming extends BaseActivity {
 
         data[18] = 1;
 
-        Log.e("xxx",">>>>>>>>>>>>>>>>>>>>> " + Arrays.toString(data));
+        Log.e("xxx", ">>>>>>>>>>>>>>>>>>>>> " + Arrays.toString(data));
 
         sendOrder(funCode, data);
 

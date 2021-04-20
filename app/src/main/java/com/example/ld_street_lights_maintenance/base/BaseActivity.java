@@ -6,13 +6,15 @@ import android.os.Handler;
 import android.os.Message;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 /**
  * Created by ldgd on 2019/3/7.
  * 功能：
  * 说明：
  */
 
-public class BaseActivity extends Activity {
+public class BaseActivity extends AppCompatActivity {
 
     // 显示Toast
     private static final int SHOW_TOAST = 20;
