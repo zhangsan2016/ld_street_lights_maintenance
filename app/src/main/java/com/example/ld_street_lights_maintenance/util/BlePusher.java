@@ -112,15 +112,15 @@ public class BlePusher {
         final List<BleDevice> bleDevices = BleManager.getInstance().getAllConnectedDevice();
         if (bleDevices.size() > 0) {
 
+            BluetoothGatt mBluetoothGatt = BleManager.getInstance().getBluetoothGatt(bleDevices.get(0));
+            // 获取服务
+            BluetoothGattService service = mBluetoothGatt.getService(UUID.fromString(serviceUuid));
+            // 获取特征 获取一个描述符 84:C2:E4:03:02:04    0000ffa1-0000-1000-8000-00805f9b34fb
+            final BluetoothGattCharacteristic gattCharacteristicA1 = service.getCharacteristic(UUID.fromString(characteristicUuidA));
+            final BluetoothGattCharacteristic gattCharacteristicA2 = service.getCharacteristic(UUID.fromString(characteristicUuidB));
+
             // 长度大于20需要分包
             if (spliceData.length < 20) {
-                BluetoothGatt mBluetoothGatt = BleManager.getInstance().getBluetoothGatt(bleDevices.get(0));
-                // 获取服务
-                BluetoothGattService service = mBluetoothGatt.getService(UUID.fromString(serviceUuid));
-                // 获取特征 获取一个描述符 84:C2:E4:03:02:04    0000ffa1-0000-1000-8000-00805f9b34fb
-                final BluetoothGattCharacteristic gattCharacteristicA1 = service.getCharacteristic(UUID.fromString(characteristicUuidA));
-                final BluetoothGattCharacteristic gattCharacteristicA2 = service.getCharacteristic(UUID.fromString(characteristicUuidB));
-
                 BleManager.getInstance().write(
                         bleDevices.get(0),
                         gattCharacteristicA2.getService().getUuid().toString(),
@@ -149,7 +149,51 @@ public class BlePusher {
                             }
                         });
             }else{
-                // 分包
+
+                  new  Thread(new Runnable() {
+                      @Override
+                      public void run() {
+
+                          // 分包
+                          Object[] objdata =  BytesUtil.splitAry(spliceData,20);
+                          int bytesLeng = objdata.length;
+
+                          for(int i = 0; i < bytesLeng; i++){
+                              byte [] bytedata = (byte [])objdata[i];
+
+                              BleManager.getInstance().write(
+                                      bleDevices.get(0),
+                                      gattCharacteristicA2.getService().getUuid().toString(),
+                                      gattCharacteristicA2.getUuid().toString(),
+                                      new byte[]{(byte) bytesLeng, (byte) (i+1)},
+                                      new BleWriteCallback() {
+
+                                          @Override
+                                          public void onWriteSuccess(final int current, final int total, final byte[] justWrite) {
+                                              Log.e("xx", ">>>>>>>>>>>>>>> 最后一个" + finalI);
+                                    /*BleManager.getInstance().write(
+                                            bleDevices.get(0),
+                                            gattCharacteristicA1.getService().getUuid().toString(),
+                                            gattCharacteristicA1.getUuid().toString(),
+                                            spliceData,
+                                            callback);*/
+                                          }
+
+                                          @Override
+                                          public void onWriteFailure(final BleException exception) {
+                                              try {
+                                                  throw  new Exception(exception.toString());
+                                              } catch (Exception e) {
+                                                  e.printStackTrace();
+                                              }
+
+                                          }
+                                      });
+                          }
+
+                      }
+                  }).start();
+
 
             }
 

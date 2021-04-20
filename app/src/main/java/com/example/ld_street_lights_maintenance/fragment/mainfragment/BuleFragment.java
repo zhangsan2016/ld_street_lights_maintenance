@@ -104,6 +104,7 @@ public class BuleFragment extends BaseFragment implements View.OnClickListener {
         BleManager.getInstance()
                 .enableLog(true)
                 .setReConnectCount(1, 5000)
+                .setSplitWriteNum(20)
                 .setConnectOverTime(20000)
                 .setOperateTimeout(5000);
 

@@ -1,7 +1,9 @@
 package com.example.ld_street_lights_maintenance.util;
 
 import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -222,6 +224,43 @@ public class BytesUtil {
             j++;
         }
         return result;
+    }
+
+
+    /**
+     * byte大数组按大小拆分小数组
+     * @param ary 要分割的数组
+     * @param subSize 分割的块大小
+     * @return
+     */
+    public static Object[] splitAry(byte[] ary, int subSize) {
+        int count = ary.length % subSize == 0 ? ary.length / subSize: ary.length / subSize + 1;
+
+        List<List<Byte>> subAryList = new ArrayList<List<Byte>>();
+
+        for (int i = 0; i < count; i++) {
+            int index = i * subSize;
+            List<Byte> list = new ArrayList<Byte>();
+            int j = 0;
+            while (j < subSize && index < ary.length) {
+                list.add(ary[index++]);
+                j++;
+            }
+            subAryList.add(list);
+        }
+
+        Object[] subAry = new Object[subAryList.size()];
+
+        for(int i = 0; i < subAryList.size(); i++){
+            List<Byte> subList = subAryList.get(i);
+            byte[] subAryItem = new byte[subList.size()];
+            for(int j = 0; j < subList.size(); j++){
+                subAryItem[j] = subList.get(j);
+            }
+            subAry[i] = subAryItem;
+        }
+
+        return subAry;
     }
 
 }
