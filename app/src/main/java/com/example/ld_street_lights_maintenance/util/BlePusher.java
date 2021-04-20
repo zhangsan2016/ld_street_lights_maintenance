@@ -18,6 +18,7 @@ import com.example.ld_street_lights_maintenance.crc.CopyOfcheckCRC;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.CountDownLatch;
 
 @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
 public class BlePusher {
@@ -52,7 +53,6 @@ public class BlePusher {
 
         final List<BleDevice> bleDevices = BleManager.getInstance().getAllConnectedDevice();
         if (bleDevices.size() > 0) {
-
 
             BluetoothGatt mBluetoothGatt = BleManager.getInstance().getBluetoothGatt(bleDevices.get(0));
             // 获取服务
@@ -125,7 +125,7 @@ public class BlePusher {
                         bleDevices.get(0),
                         gattCharacteristicA2.getService().getUuid().toString(),
                         gattCharacteristicA2.getUuid().toString(),
-                        new byte[]{01,01},
+                        new byte[]{01, 01},
                         new BleWriteCallback() {
 
                             @Override
@@ -141,59 +141,62 @@ public class BlePusher {
                             @Override
                             public void onWriteFailure(final BleException exception) {
                                 try {
-                                    throw  new Exception(exception.toString());
+                                    throw new Exception(exception.toString());
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 }
 
                             }
                         });
-            }else{
+            } else {
 
-                  new  Thread(new Runnable() {
-                      @Override
-                      public void run() {
+                // 分包
+                Object[] objdata = BytesUtil.splitAry(spliceData, 20);
+                int bytesLeng = objdata.length;
 
-                          // 分包
-                          Object[] objdata =  BytesUtil.splitAry(spliceData,20);
-                          int bytesLeng = objdata.length;
+                for (int i = 0; i < bytesLeng; i++) {
+                    byte[] bytedata = (byte[]) objdata[i];
 
-                          for(int i = 0; i < bytesLeng; i++){
-                              byte [] bytedata = (byte [])objdata[i];
 
-                              BleManager.getInstance().write(
-                                      bleDevices.get(0),
-                                      gattCharacteristicA2.getService().getUuid().toString(),
-                                      gattCharacteristicA2.getUuid().toString(),
-                                      new byte[]{(byte) bytesLeng, (byte) (i+1)},
-                                      new BleWriteCallback() {
+                    // 用于同步线程
+                    final CountDownLatch latch = new CountDownLatch(1);
 
-                                          @Override
-                                          public void onWriteSuccess(final int current, final int total, final byte[] justWrite) {
-                                              Log.e("xx", ">>>>>>>>>>>>>>> 最后一个" + finalI);
-                                    /*BleManager.getInstance().write(
-                                            bleDevices.get(0),
-                                            gattCharacteristicA1.getService().getUuid().toString(),
-                                            gattCharacteristicA1.getUuid().toString(),
-                                            spliceData,
-                                            callback);*/
-                                          }
+                    BleManager.getInstance().write(
+                            bleDevices.get(0),
+                            gattCharacteristicA2.getService().getUuid().toString(),
+                            gattCharacteristicA2.getUuid().toString(),
+                            new byte[]{(byte) bytesLeng, (byte) (i + 1)},
+                            new BleWriteCallback() {
 
-                                          @Override
-                                          public void onWriteFailure(final BleException exception) {
-                                              try {
-                                                  throw  new Exception(exception.toString());
-                                              } catch (Exception e) {
-                                                  e.printStackTrace();
-                                              }
+                                @Override
+                                public void onWriteSuccess(final int current, final int total, final byte[] justWrite) {
+                                    Log.e("xx", ">>>>>>>>>>>>>>> 最后一个" + current + "  " +  total + "  " + Arrays.toString(justWrite));
 
-                                          }
-                                      });
-                          }
+                                    try {
+                                        Thread.sleep(200);
+                                        BleManager.getInstance().write(
+                                                bleDevices.get(0),
+                                                gattCharacteristicA1.getService().getUuid().toString(),
+                                                gattCharacteristicA1.getUuid().toString(),
+                                                spliceData,
+                                                callback);
+                                    } catch (InterruptedException e) {
+                                        e.printStackTrace();
+                                    }
 
-                      }
-                  }).start();
+                                }
 
+                                @Override
+                                public void onWriteFailure(final BleException exception) {
+                                    try {
+                                        throw new Exception(exception.toString());
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+
+                                }
+                            });
+                }
 
             }
 
@@ -202,19 +205,31 @@ public class BlePusher {
         }
     }
 
+    /**
+     *  分包发送
+     * @param mTotalNum 总包数
+     * @param mCount  当前包数
+     * @param mData   数据
+     * @param callback  回调
+     */
+    private void splitWrite(int mTotalNum,int mCount,byte[] mData, BleWriteCallback callback) {
+
+
+    }
+
 
     private static byte[] spliceOder(byte[] funCode, byte[] data) {
 
         //  协议组成：帧头 - 功能码 - 数据长度 - 数据 - crc - 帧尾部
         byte[] cBytes = BytesUtil.concat(new byte[]{head}, funCode);
         // 判断数据是否为空,为空不携带数据
-        if(data != null){
+        if (data != null) {
             // 帧头 - 功能码 - 数据长度
             byte[] leng = BytesUtil.intBytesHL(data.length, 2);
             cBytes = BytesUtil.concat(cBytes, leng);
             // 帧头 - 功能码 - 数据长度 - 数据
             cBytes = BytesUtil.concat(cBytes, data);
-        }else{
+        } else {
             // 帧头 - 功能码 - 数据长度
             byte[] leng = new byte[2];
             cBytes = BytesUtil.concat(cBytes, leng);
@@ -260,13 +275,13 @@ public class BlePusher {
 
                             Log.e("xxx", ">>>>>>>>>>>>>>>>>>> read data = " + Arrays.toString(data));
 
-                            if (data[1] == 1){
+                            if (data[1] == 1) {
                                 BleManager.getInstance().read(
                                         bleDevices.get(0),
                                         gattCharacteristicA1.getService().getUuid().toString(),
                                         gattCharacteristicA1.getUuid().toString(),
                                         callback);
-                            }else{
+                            } else {
                                 // 分包获取
                             }
 
@@ -275,13 +290,12 @@ public class BlePusher {
                         @Override
                         public void onReadFailure(BleException exception) {
                             try {
-                                throw  new Exception(exception.toString());
+                                throw new Exception(exception.toString());
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
                         }
                     });
-
 
 
         }

@@ -667,6 +667,7 @@ public class DeviceTiming extends BaseActivity {
             data[18] = 2;
         }else{
             showToast("请选择主灯或辅灯定时~");
+            stopProgress();
             return;
         }
 
