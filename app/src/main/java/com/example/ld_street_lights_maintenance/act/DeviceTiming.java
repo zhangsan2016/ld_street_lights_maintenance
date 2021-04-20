@@ -34,6 +34,7 @@ import com.example.ld_street_lights_maintenance.R;
 import com.example.ld_street_lights_maintenance.base.BaseActivity;
 import com.example.ld_street_lights_maintenance.common.MyApplication;
 import com.example.ld_street_lights_maintenance.entity.DeviceLampJson;
+import com.example.ld_street_lights_maintenance.fragment.mainfragment.BuleFragment;
 import com.example.ld_street_lights_maintenance.util.BlePusher;
 import com.example.ld_street_lights_maintenance.util.HttpUtil;
 
@@ -124,6 +125,8 @@ public class DeviceTiming extends BaseActivity {
         initView();
         initListeners();
         initVariable();
+        // 添加监听
+        initBroadCast();
 
     }
 
@@ -738,6 +741,29 @@ public class DeviceTiming extends BaseActivity {
             mProgress.dismiss();
         }
     }*/
+
+
+    /**
+     * 动态注册广播
+     */
+    private void initBroadCast() {
+
+        // 动态注册通知 - 监听蓝牙是否关闭
+        IntentFilter filter = new IntentFilter(BuleFragment.DATA_REFRESH_FILTER);
+        this.registerReceiver(singleLightSettingActReceiver, filter);
+
+    }
+
+    private BroadcastReceiver singleLightSettingActReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            // 根据action过滤广播内容
+            if (BuleFragment.DATA_REFRESH_FILTER.equals(intent.getAction())) {
+                stopProgress();
+                showToast("蓝牙断开，请重新连接再试");
+            }
+        }
+    };
 
     @Override
     protected void onDestroy() {
