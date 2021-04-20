@@ -11,6 +11,7 @@ import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Message;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -21,6 +22,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.PopupWindow;
 import android.widget.SeekBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.clj.fastble.BleManager;
@@ -54,6 +56,7 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
     private CheckBox cd_main_dimming, cd_auxiliary_dimming;
 
     private ProgressDialog mProgress;
+    private TextView txt_data;
 
     public OrderPhotoPopupUtils(Context context) {
         super(context);
@@ -121,7 +124,21 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
         ExpandView ev_oder_setting = mPopView.findViewById(R.id.ev_setting);
         View oder_serting_View = inflater.inflate(R.layout.order_setting_item, null);
         ev_oder_setting.setExpandView(oder_serting_View);
-
+        // 设置下拉 "读写指令" 布局
+        txt_data = mPopView.findViewById(R.id.txt_data);
+        txt_data.setMovementMethod(ScrollingMovementMethod.getInstance());  // 内容设置滑动效果
+        Button bt_rw_write = mPopView.findViewById(R.id.bt_rw_write);
+        bt_rw_write.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                txt_data.append("content xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+                txt_data.append("\n");
+                int offset=txt_data.getLineCount()*txt_data.getLineHeight();//判断textview文本的高度
+                if (offset > txt_data.getHeight()) {
+                    txt_data.scrollTo(0,offset - txt_data.getHeight());//如果文本的高度大于ScrollView,就自动滑动
+                }
+            }
+        });
 
 
         cd_main_dimming = mPopView.findViewById(R.id.cd_main_dimming);
