@@ -31,6 +31,9 @@ public class BlePusher {
     private static byte head = -18;
     private static byte tail = -17;
 
+    // 分包读取到的数据
+    private static byte[] mergeData = new byte[0];
+
 
     public static BlePusher getInstance() {
         return BlePusher.BleManagerHolder.sBleManager;
@@ -98,7 +101,6 @@ public class BlePusher {
     /**
      * 拼接指令
      * 协议组成：帧头 - 功能码 - 数据长度 - 数据 - crc - 帧尾部
-     *
      * @param funCode  功能码
      * @param data     数据
      * @param callback 会掉
@@ -161,7 +163,7 @@ public class BlePusher {
 
                     // 用于同步线程
                     final CountDownLatch latch = new CountDownLatch(1);
-                    splitWrite(bytesLeng,i+1,bytedata,callback,gattCharacteristicA1,gattCharacteristicA2, bleDevices.get(0),latch);
+                    splitWrite(bytesLeng, i + 1, bytedata, callback, gattCharacteristicA1, gattCharacteristicA2, bleDevices.get(0), latch);
 
                     //阻塞当前线程直到latch中数值为零才执行
                     latch.await();
@@ -176,10 +178,11 @@ public class BlePusher {
     }
 
     /**
-     *  分包发送
+     * 分包发送
+     *
      * @param mTotalNum 总包数
-     * @param mCount  当前包数
-     * @param mData   数据
+     * @param mCount    当前包数
+     * @param mData     数据
      * @param callback  回调
      * @param latch
      */
@@ -202,8 +205,8 @@ public class BlePusher {
                                 new BleWriteCallback() {
                                     @Override
                                     public void onWriteSuccess(int current, int total, byte[] justWrite) {
-                                        if(mTotalNum == mCount){
-                                            callback.onWriteSuccess(current,total,justWrite);
+                                        if (mTotalNum == mCount) {
+                                            callback.onWriteSuccess(current, total, justWrite);
                                         }
                                         //让latch中的数值减一
                                         latch.countDown();
@@ -211,7 +214,7 @@ public class BlePusher {
 
                                     @Override
                                     public void onWriteFailure(BleException exception) {
-                                        if(callback != null){
+                                        if (callback != null) {
                                             callback.onWriteFailure(new OtherException("写入异常 " + exception.getDescription()));
                                         }
                                     }
@@ -222,7 +225,7 @@ public class BlePusher {
                     @Override
                     public void onWriteFailure(final BleException exception) {
                         try {
-                            if(callback != null){
+                            if (callback != null) {
                                 callback.onWriteFailure(new OtherException("写入异常 " + exception.getDescription()));
                             }
                             throw new Exception(exception.toString());
@@ -272,7 +275,7 @@ public class BlePusher {
             BluetoothGatt mBluetoothGatt = BleManager.getInstance().getBluetoothGatt(bleDevices.get(0));
             BluetoothGattService service = mBluetoothGatt.getService(UUID.fromString(serviceUuid));
             final BluetoothGattCharacteristic gattCharacteristicA1 = service.getCharacteristic(UUID.fromString(characteristicUuidA));
-            BluetoothGattCharacteristic gattCharacteristicA2 = service.getCharacteristic(UUID.fromString(characteristicUuidB));
+            final BluetoothGattCharacteristic gattCharacteristicA2 = service.getCharacteristic(UUID.fromString(characteristicUuidB));
 
 
 
@@ -283,24 +286,41 @@ public class BlePusher {
                     callback);*/
 
             // 先获数据长度服务，判断读取次数
+            String uuid_service = gattCharacteristicA2.getService().getUuid().toString();
+            String uuid_read = gattCharacteristicA2.getUuid().toString();
             BleManager.getInstance().read(
                     bleDevices.get(0),
-                    gattCharacteristicA2.getService().getUuid().toString(),
-                    gattCharacteristicA2.getUuid().toString(),
+                    uuid_service,
+                    uuid_read,
                     new BleReadCallback() {
                         @Override
                         public void onReadSuccess(byte[] data) {
 
                             Log.e("xxx", ">>>>>>>>>>>>>>>>>>> read data = " + Arrays.toString(data));
 
-                            if (data[1] == 1) {
+                            Thread thread1 = Thread.currentThread();
+                            if (data[0] == 1) {
                                 BleManager.getInstance().read(
                                         bleDevices.get(0),
                                         gattCharacteristicA1.getService().getUuid().toString(),
                                         gattCharacteristicA1.getUuid().toString(),
                                         callback);
                             } else {
-                                // 分包获取
+                                // 分包读取
+
+                                mergeData  = new byte[0];
+                                for (int i = 0; i < data[0]; i++) {
+                                    // 用于同步线程
+                                    CountDownLatch latch = new CountDownLatch(1);
+                                    splitRead(data[0], (i + 1), callback, gattCharacteristicA1, gattCharacteristicA2, bleDevices.get(0), latch);
+                                    //阻塞当前线程直到latch中数值为零才执行
+
+                                    try {
+                                        thread1.join();
+                                    } catch (InterruptedException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
                             }
 
                         }
@@ -322,4 +342,97 @@ public class BlePusher {
     }
 
 
+    /**
+     * 分包读取
+     * @param mTotalNum 总包数
+     * @param mCount    当前包数
+     * @param callback  回调
+     * @param a1
+     * @param a2
+     * @param bleDevice
+     * @param latch
+     */
+    private static void splitRead(final byte mTotalNum, final int mCount, final BleReadCallback callback, final BluetoothGattCharacteristic a1, final BluetoothGattCharacteristic a2, final BleDevice bleDevice, final CountDownLatch latch) {
+
+
+        /*BleManager.getInstance().read(
+                bleDevice,
+                a1.getService().getUuid().toString(),
+                a1.getUuid().toString(),
+                new BleReadCallback() {
+                    @Override
+                    public void onReadSuccess(byte[] data) {
+                        Log.e("xxx", ">>>>>>>>>>>>>>>>>>> read data onReadSuccess = " + Arrays.toString(data));
+                        mergeData = BytesUtil.byteMergerAll(mergeData, data);
+                        *//*if (mTotalNum == mCount) {
+                            if (callback != null) {
+                                callback.onReadSuccess(mergeData);
+                            }
+                        }*//*
+                        //让latch中的数值减一
+                        latch.countDown();
+                    }
+
+                    @Override
+                    public void onReadFailure(BleException exception) {
+                        if (callback != null) {
+                            callback.onReadFailure(new OtherException("读取异常 " + exception.getDescription()));
+                        }
+                    }
+                });*/
+
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                BleManager.getInstance().write(
+                        bleDevice,
+                        a2.getService().getUuid().toString(),
+                        a2.getUuid().toString(),
+                        new byte[]{mTotalNum, (byte) mCount},
+                        new BleWriteCallback() {
+                            @Override
+                            public void onWriteSuccess(int current, int total, byte[] justWrite) {
+
+                                System.out.println("xxx");
+                                BleManager.getInstance().read(
+                                        bleDevice,
+                                        a1.getService().getUuid().toString(),
+                                        a1.getUuid().toString(),
+                                        new BleReadCallback() {
+                                            @Override
+                                            public void onReadSuccess(byte[] data) {
+                                                mergeData = BytesUtil.byteMergerAll(mergeData, data);
+                                                if (mTotalNum == mCount) {
+                                                    if (callback != null) {
+                                                        callback.onReadSuccess(mergeData);
+                                                    }
+                                                }
+                                                //让latch中的数值减一
+                                                latch.countDown();
+                                            }
+
+                                            @Override
+                                            public void onReadFailure(BleException exception) {
+                                                if (callback != null) {
+                                                    callback.onReadFailure(new OtherException("读取异常 " + exception.getDescription()));
+                                                }
+                                            }
+                                        });
+                            }
+
+                            @Override
+                            public void onWriteFailure(BleException exception) {
+                                if (callback != null) {
+                                    callback.onReadFailure(new OtherException("写入异常 " + exception.getDescription()));
+                                }
+                            }
+                        });
+            }
+        }).start();
+
+
+    }
+
 }
+

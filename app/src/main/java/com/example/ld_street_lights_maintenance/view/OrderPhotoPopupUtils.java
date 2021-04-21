@@ -133,12 +133,14 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
             public void onClick(View v) {
                 txt_data.append("content xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
                 txt_data.append("\n");
-                int offset=txt_data.getLineCount()*txt_data.getLineHeight();//判断textview文本的高度
+                int offset = txt_data.getLineCount() * txt_data.getLineHeight();//判断textview文本的高度
                 if (offset > txt_data.getHeight()) {
-                    txt_data.scrollTo(0,offset - txt_data.getHeight());//如果文本的高度大于ScrollView,就自动滑动
+                    txt_data.scrollTo(0, offset - txt_data.getHeight());//如果文本的高度大于ScrollView,就自动滑动
                 }
             }
         });
+        Button bt_read_alarm_threshold = mPopView.findViewById(R.id.bt_read_alarm_threshold);
+        bt_read_alarm_threshold.setOnClickListener(readOnclick);
 
 
         cd_main_dimming = mPopView.findViewById(R.id.cd_main_dimming);
@@ -198,17 +200,17 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
 
                 boolean md = cd_main_dimming.isChecked();
                 boolean ad = cd_auxiliary_dimming.isChecked();
-                if(md && ad){
-                    data = new byte[]{100,3};
+                if (md && ad) {
+                    data = new byte[]{100, 3};
                     Log.e("xxx", ">>>>>>>>>>>>>>>>>>> 主灯辅灯全开");
-                }else if(md){
-                    data = new byte[]{100,1};
+                } else if (md) {
+                    data = new byte[]{100, 1};
                     Log.e("xxx", ">>>>>>>>>>>>>>>>>>> 主灯开");
-                }else if(ad){
-                    data = new byte[]{100,2};
+                } else if (ad) {
+                    data = new byte[]{100, 2};
                     Log.e("xxx", ">>>>>>>>>>>>>>>>>>> 辅灯开");
-                }else if(!md && !ad){
-                    data = new byte[]{0,3};
+                } else if (!md && !ad) {
+                    data = new byte[]{0, 3};
                     Log.e("xxx", ">>>>>>>>>>>>>>>>>>> 主辅灯关");
                 }
 
@@ -241,7 +243,7 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
             public void onClick(View v) {
                 showProgress("正在写入...");
                 byte[] funCode = new byte[]{0, 01};
-                byte[] data = new byte[]{-86,-95};
+                byte[] data = new byte[]{-86, -95};
 
                 sendOrder(funCode, data);
             }
@@ -259,20 +261,20 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
                 Calendar cal = Calendar.getInstance();
                 cal.setTimeZone(TimeZone.getTimeZone("GMT+8:00"));
 
-                String  year = String.valueOf(cal.get(Calendar.YEAR));
-                String  month = String.valueOf(cal.get(Calendar.MONTH)+1);
-                String   day = String.valueOf(cal.get(Calendar.DATE));
+                String year = String.valueOf(cal.get(Calendar.YEAR));
+                String month = String.valueOf(cal.get(Calendar.MONTH) + 1);
+                String day = String.valueOf(cal.get(Calendar.DATE));
                 String hour;
                 if (cal.get(Calendar.AM_PM) == 0)
                     hour = String.valueOf(cal.get(Calendar.HOUR));
                 else
-                    hour = String.valueOf(cal.get(Calendar.HOUR)+12);
-                String  minute = String.valueOf(cal.get(Calendar.MINUTE));
-                String  second = String.valueOf(cal.get(Calendar.SECOND));
+                    hour = String.valueOf(cal.get(Calendar.HOUR) + 12);
+                String minute = String.valueOf(cal.get(Calendar.MINUTE));
+                String second = String.valueOf(cal.get(Calendar.SECOND));
                 //获取今天是这周的第几天,周日为1,周一为2,周六为7
                 int week = cal.get(Calendar.DAY_OF_WEEK);
 
-                data[0] = Byte.parseByte(year.substring(2,year.length()));
+                data[0] = Byte.parseByte(year.substring(2, year.length()));
                 data[1] = Byte.parseByte(month);
                 data[2] = Byte.parseByte(day);
                 data[3] = Byte.parseByte(hour);
@@ -291,8 +293,8 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
             @Override
             public void onClick(View v) {
 
-             Intent intent = new Intent(mContext, DeviceTiming.class);
-             mContext.startActivity(intent);
+                Intent intent = new Intent(mContext, DeviceTiming.class);
+                mContext.startActivity(intent);
 
             }
         });
@@ -302,7 +304,6 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
 
     /**
      * 发送蓝牙通讯指令
-     *
      * @param funCode 功能码
      * @param data    指令
      */
@@ -435,5 +436,23 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
             mListener.setOnItemClick(v, code, path);
         }
     }
+
+
+    private View.OnClickListener readOnclick = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()){
+                case R.id.bt_read_alarm_threshold:  // 读取报警电压电流阈值
+
+                    showProgress("正在写入...");
+                    byte[] funCode = new byte[]{0, 11};
+                    sendOrder(funCode, null);
+
+                    break;
+            }
+
+        }
+    };
+
 }
 

@@ -2,7 +2,57 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginTop="5dp"
     android:orientation="vertical">
+
+
+    <com.example.ld_street_lights_maintenance.view.FlowViewGroup
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/bt_read_alarm_threshold"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_below="@id/cd_electricity"
+            android:background="@drawable/button_drawable"
+            android:text="读取报警电压电流阈值"
+            android:textColor="@color/white"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_below="@id/cd_electricity"
+            android:background="@drawable/button_drawable"
+            android:text="读取时间"
+            android:textColor="@color/white"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_below="@id/cd_electricity"
+            android:background="@drawable/button_drawable"
+            android:text="读取电参"
+            android:textColor="@color/white"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_below="@id/cd_electricity"
+            android:background="@drawable/button_drawable"
+            android:text="读设备ID号"
+            android:textColor="@color/white"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_below="@id/cd_electricity"
+            android:background="@drawable/button_drawable"
+            android:text="读取设备当前版本号"
+            android:textColor="@color/white"/>
+
+
+    </com.example.ld_street_lights_maintenance.view.FlowViewGroup>
 
     <RelativeLayout
         android:layout_width="match_parent"
