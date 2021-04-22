@@ -359,33 +359,6 @@ public class BlePusher {
      */
     private static void splitRead(final byte mTotalNum, final int mCount, final BleReadCallback callback, final BluetoothGattCharacteristic a1, final BluetoothGattCharacteristic a2, final BleDevice bleDevice, final CountDownLatch latch) {
 
-
-        /*BleManager.getInstance().read(
-                bleDevice,
-                a1.getService().getUuid().toString(),
-                a1.getUuid().toString(),
-                new BleReadCallback() {
-                    @Override
-                    public void onReadSuccess(byte[] data) {
-                        Log.e("xxx", ">>>>>>>>>>>>>>>>>>> read data onReadSuccess = " + Arrays.toString(data));
-                        mergeData = BytesUtil.byteMergerAll(mergeData, data);
-                        *//*if (mTotalNum == mCount) {
-                            if (callback != null) {
-                                callback.onReadSuccess(mergeData);
-                            }
-                        }*//*
-                        //让latch中的数值减一
-                        latch.countDown();
-                    }
-
-                    @Override
-                    public void onReadFailure(BleException exception) {
-                        if (callback != null) {
-                            callback.onReadFailure(new OtherException("读取异常 " + exception.getDescription()));
-                        }
-                    }
-                });*/
-
         BleManager.getInstance().write(
                 bleDevice,
                 a2.getService().getUuid().toString(),
@@ -394,7 +367,6 @@ public class BlePusher {
                 new BleWriteCallback() {
                     @Override
                     public void onWriteSuccess(int current, int total, byte[] justWrite) {
-                        Log.e("xxx", ">>>>>>>>>>>>>>>>>>> read data onWriteSuccess1 = " );
                         BleManager.getInstance().read(
                                 bleDevice,
                                 a1.getService().getUuid().toString(),
@@ -402,7 +374,6 @@ public class BlePusher {
                                 new BleReadCallback() {
                                     @Override
                                     public void onReadSuccess(byte[] data) {
-                                        Log.e("xxx", ">>>>>>>>>>>>>>>>>>> read data onReadSuccess2 = " );
                                         mergeData = BytesUtil.byteMergerAll(mergeData, data);
                                         if (mTotalNum == mCount) {
                                             if (callback != null) {
@@ -415,7 +386,6 @@ public class BlePusher {
 
                                     @Override
                                     public void onReadFailure(BleException exception) {
-                                        Log.e("xxx", ">>>>>>>>>>>>>>>>>>> read data onReadFailure2 = " );
                                         if (callback != null) {
                                             callback.onReadFailure(new OtherException("读取异常 " + exception.getDescription()));
                                         }
@@ -425,7 +395,6 @@ public class BlePusher {
 
                     @Override
                     public void onWriteFailure(BleException exception) {
-                        Log.e("xxx", ">>>>>>>>>>>>>>>>>>> read data onWriteFailure1 = " );
                         if (callback != null) {
                             callback.onReadFailure(new OtherException("写入异常 " + exception.getDescription()));
                         }
