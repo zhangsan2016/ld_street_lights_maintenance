@@ -191,6 +191,8 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
         bt_rw_read_config.setOnClickListener(readOnclick);
         Button bt_rw_read_state = mPopView.findViewById(R.id.bt_rw_read_state);
         bt_rw_read_state.setOnClickListener(readOnclick);
+        Button bt_rw_clear = mPopView.findViewById(R.id.bt_rw_clear);
+        bt_rw_clear.setOnClickListener(readOnclick);
 
 
         cd_main_dimming = mPopView.findViewById(R.id.cd_main_dimming);
@@ -542,6 +544,9 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
             byte[] funCode;
             byte[] data;
             switch (v.getId()) {
+                case R.id.bt_rw_clear:  // 清空返回信息
+                    txt_data.setText("");
+                    break;
                 case R.id.bt_rw_read_state:  // 一键读取所有状态信息
                     showProgress("正在读取...");
                     funCode = new byte[]{0, 49};
