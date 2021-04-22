@@ -22,7 +22,7 @@
             android:layout_below="@id/cd_electricity"
             android:background="@drawable/button_drawable"
             android:text="恢复原厂设置"
-            android:textColor="@color/white"/>
+            android:textColor="@color/white" />
 
         <Button
             android:id="@+id/bt_reboot"
@@ -31,7 +31,7 @@
             android:layout_below="@id/cd_electricity"
             android:background="@drawable/button_drawable"
             android:text="重启"
-            android:textColor="@color/white"/>
+            android:textColor="@color/white" />
 
         <Button
             android:id="@+id/bt_timing"
@@ -40,7 +40,7 @@
             android:layout_below="@id/cd_electricity"
             android:background="@drawable/button_drawable"
             android:text="校时"
-            android:textColor="@color/white"/>
+            android:textColor="@color/white" />
 
         <Button
             android:id="@+id/bt_curve_timing"
@@ -50,7 +50,7 @@
             android:background="@drawable/button_drawable"
             android:gravity="center"
             android:text="曲线定时"
-            android:textColor="@color/white"/>
+            android:textColor="@color/white" />
 
         <Button
             android:id="@+id/bt_setting_dufup"
@@ -64,14 +64,82 @@
             android:textSize="16dp" />
 
         <Button
+            android:id="@+id/bt_setting_illuon"
             android:layout_width="wrap_content"
             android:layout_height="30dp"
             android:layout_gravity="center_horizontal"
             android:background="@drawable/button_drawable"
             android:gravity="center"
-            android:text="测试"
+            android:text="照度开"
             android:textColor="#ffffff"
             android:textSize="16dp" />
+
+        <Button
+            android:id="@+id/bt_setting_illuoff"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/button_drawable"
+            android:gravity="center"
+            android:text="照度关"
+            android:textColor="#ffffff"
+            android:textSize="16dp" />
+
+        <Button
+            android:id="@+id/bt_setting_locationon"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/button_drawable"
+            android:gravity="center"
+            android:text="经纬度开"
+            android:textColor="#ffffff"
+            android:textSize="16dp" />
+
+        <Button
+            android:id="@+id/bt_setting_locationoff"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/button_drawable"
+            android:gravity="center"
+            android:text="经纬度关"
+            android:textColor="#ffffff"
+            android:textSize="16dp" />
+
+        <Button
+            android:id="@+id/bt_setting_angle_adjust"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/button_drawable"
+            android:gravity="center"
+            android:text="角度校准"
+            android:textColor="#ffffff"
+            android:textSize="16dp" />
+
+        <Button
+            android:id="@+id/bt_setting_collapse_alarmon"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/button_drawable"
+            android:gravity="center"
+            android:text="角度倾倒报警开"
+            android:textColor="#ffffff"
+            android:textSize="16dp" />
+
+        <Button
+            android:id="@+id/bt_setting_collapse_alarmoff"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/button_drawable"
+            android:gravity="center"
+            android:text="角度倾倒报警关"
+            android:textColor="#ffffff"
+            android:textSize="16dp" />
+
         <Button
             android:layout_width="wrap_content"
             android:layout_height="30dp"

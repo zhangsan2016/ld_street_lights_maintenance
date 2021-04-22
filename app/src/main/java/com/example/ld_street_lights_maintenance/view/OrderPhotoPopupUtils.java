@@ -140,7 +140,20 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
         bt_curve_timing.setOnClickListener(settingOnclick);
         Button bt_setting_dufup = mPopView.findViewById(R.id.bt_setting_dufup);
         bt_setting_dufup.setOnClickListener(settingOnclick);
-
+        Button bt_setting_illuon = mPopView.findViewById(R.id.bt_setting_illuon);
+        bt_setting_illuon.setOnClickListener(settingOnclick);
+        Button bt_setting_illuoff = mPopView.findViewById(R.id.bt_setting_illuoff);
+        bt_setting_illuoff.setOnClickListener(settingOnclick);
+        Button bt_setting_locationon = mPopView.findViewById(R.id.bt_setting_locationon);
+        bt_setting_locationon.setOnClickListener(settingOnclick);
+        Button bt_setting_locationoff = mPopView.findViewById(R.id.bt_setting_locationoff);
+        bt_setting_locationoff.setOnClickListener(settingOnclick);
+        Button bt_setting_angle_adjust = mPopView.findViewById(R.id.bt_setting_angle_adjust);
+        bt_setting_angle_adjust.setOnClickListener(settingOnclick);
+        Button bt_setting_collapse_alarmon = mPopView.findViewById(R.id.bt_setting_collapse_alarmon);
+        bt_setting_collapse_alarmon.setOnClickListener(settingOnclick);
+        Button bt_setting_collapse_alarmoff = mPopView.findViewById(R.id.bt_setting_collapse_alarmoff);
+        bt_setting_collapse_alarmoff.setOnClickListener(settingOnclick);
 
 
         // 设置下拉 "读写指令" 布局
@@ -170,7 +183,10 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
         bt_rw_read_vernum.setOnClickListener(readOnclick);
         Button bt_rw_read_signal_strength = mPopView.findViewById(R.id.bt_rw_read_signal_strength);
         bt_rw_read_signal_strength.setOnClickListener(readOnclick);
-
+        Button bt_rw_read_config = mPopView.findViewById(R.id.bt_rw_read_config);
+        bt_rw_read_config.setOnClickListener(readOnclick);
+        Button bt_rw_read_state = mPopView.findViewById(R.id.bt_rw_read_state);
+        bt_rw_read_state.setOnClickListener(readOnclick);
 
 
         cd_main_dimming = mPopView.findViewById(R.id.cd_main_dimming);
@@ -252,8 +268,6 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
                 Log.i("TAG","onStopTrackingTouch=" +seekBar.getProgress());*/
             }
         });
-
-
 
 
     }
@@ -410,6 +424,47 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
             switch (v.getId()) {
                 case R.id.bt_setting_dufup: // 设备固件升级
                     break;
+                case R.id.bt_setting_collapse_alarmon: // 角度倾倒报警-开
+                    showProgress("正在写入...");
+                    funCode = new byte[]{0, 90};
+                    data = new byte[]{1};
+                    sendOrder(funCode, data, RWStart.WRITE);
+                    break;
+                case R.id.bt_setting_collapse_alarmoff: // 角度倾倒报警-关
+                    showProgress("正在写入...");
+                    funCode = new byte[]{0, 90};
+                    data = new byte[]{0};
+                    sendOrder(funCode, data, RWStart.WRITE);
+                    break;
+                case R.id.bt_setting_angle_adjust: // 角度校准
+                    showProgress("正在写入...");
+                    funCode = new byte[]{0, 88};
+                    sendOrder(funCode, null, RWStart.WRITE);
+                    break;
+                case R.id.bt_setting_locationon: // 经纬度开灯设置开
+                    showProgress("正在写入...");
+                    funCode = new byte[]{0, 86};
+                    data = new byte[]{1};
+                    sendOrder(funCode, data, RWStart.WRITE);
+                    break;
+                case R.id.bt_setting_locationoff: // 经纬度开灯设置关
+                    showProgress("正在写入...");
+                    funCode = new byte[]{0, 86};
+                    data = new byte[]{0};
+                    sendOrder(funCode, data, RWStart.WRITE);
+                    break;
+                case R.id.bt_setting_illuon: // 照度开
+                    showProgress("正在写入...");
+                    funCode = new byte[]{0, 82};
+                    data = new byte[]{1};
+                    sendOrder(funCode, data, RWStart.WRITE);
+                    break;
+                case R.id.bt_setting_illuoff: // 照度关
+                    showProgress("正在写入...");
+                    funCode = new byte[]{0, 82};
+                    data = new byte[]{0};
+                    sendOrder(funCode, data, RWStart.WRITE);
+                    break;
                 case R.id.bt_curve_timing: // 曲线定时
                     Intent intent = new Intent(mContext, DeviceTiming.class);
                     mContext.startActivity(intent);
@@ -471,6 +526,16 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
             byte[] funCode;
             byte[] data;
             switch (v.getId()) {
+                case R.id.bt_rw_read_state:  // 一键读取所有状态信息
+                    showProgress("正在读取...");
+                    funCode = new byte[]{0, 49};
+                    sendOrder(funCode, null, RWStart.READ);
+                    break;
+                case R.id.bt_rw_read_config:  // 一键读取所有配置信息
+                    showProgress("正在读取...");
+                    funCode = new byte[]{0, 47};
+                    sendOrder(funCode, null, RWStart.READ);
+                    break;
                 case R.id.bt_rw_read_signal_strength:  // 读取信号强度
                     showProgress("正在读取...");
                     funCode = new byte[]{0, 45};
@@ -501,8 +566,6 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
                     funCode = new byte[]{0, 33};
                     sendOrder(funCode, null, RWStart.READ);
                     break;
-
-
             }
 
         }
@@ -526,6 +589,20 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
             Log.e("xx", "返回设备ID号");
         } else if (data[2] == 34) {
             Log.e("xx", "返回设备版本号");
+        } else if (data[2] == 46) {
+            Log.e("xx", "读取信号强度确定");
+        } else if (data[2] == 48) {
+            Log.e("xx", "一键读取所有配置信息返回");
+        } else if (data[2] == 50) {
+            Log.e("xx", "一键读取所有状态信息返回");
+        } else if (data[2] == 83) {
+            Log.e("xx", "照度开关返回");
+        } else if (data[2] == 87) {
+            Log.e("xx", "经纬度开灯设置返回");
+        } else if (data[2] == 89) {
+            Log.e("xx", "角度校准返回");
+        } else if (data[2] == 91) {
+            Log.e("xx", "角度倾倒报警返回");
         }
 
 
