@@ -125,6 +125,7 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
         ExpandView ev_oder_setting = mPopView.findViewById(R.id.ev_setting);
         View oder_serting_View = inflater.inflate(R.layout.order_setting_item, null);
         ev_oder_setting.setExpandView(oder_serting_View);
+
         // 恢复原厂设置
         Button bt_factory_reset = mPopView.findViewById(R.id.bt_factory_reset);
         bt_factory_reset.setOnClickListener(settingOnclick);
@@ -137,6 +138,9 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
         // 曲线定时
         Button bt_curve_timing = mPopView.findViewById(R.id.bt_curve_timing);
         bt_curve_timing.setOnClickListener(settingOnclick);
+        Button bt_setting_dufup = mPopView.findViewById(R.id.bt_setting_dufup);
+        bt_setting_dufup.setOnClickListener(settingOnclick);
+
 
 
         // 设置下拉 "读写指令" 布局
@@ -164,6 +168,9 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
         bt_rw_read_devid.setOnClickListener(readOnclick);
         Button bt_rw_read_vernum = mPopView.findViewById(R.id.bt_rw_read_vernum);
         bt_rw_read_vernum.setOnClickListener(readOnclick);
+        Button bt_rw_read_signal_strength = mPopView.findViewById(R.id.bt_rw_read_signal_strength);
+        bt_rw_read_signal_strength.setOnClickListener(readOnclick);
+
 
 
         cd_main_dimming = mPopView.findViewById(R.id.cd_main_dimming);
@@ -401,6 +408,8 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
             byte[] funCode;
             byte[] data;
             switch (v.getId()) {
+                case R.id.bt_setting_dufup: // 设备固件升级
+                    break;
                 case R.id.bt_curve_timing: // 曲线定时
                     Intent intent = new Intent(mContext, DeviceTiming.class);
                     mContext.startActivity(intent);
@@ -462,6 +471,11 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
             byte[] funCode;
             byte[] data;
             switch (v.getId()) {
+                case R.id.bt_rw_read_signal_strength:  // 读取信号强度
+                    showProgress("正在读取...");
+                    funCode = new byte[]{0, 45};
+                    sendOrder(funCode, null, RWStart.READ);
+                    break;
                 case R.id.bt_read_alarm_threshold:  // 读取报警电压电流阈值
                     showProgress("正在读取...");
                     funCode = new byte[]{0, 11};

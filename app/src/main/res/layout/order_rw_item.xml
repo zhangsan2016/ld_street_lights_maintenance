@@ -55,6 +55,15 @@
             android:text="读取设备当前版本号"
             android:textColor="@color/white"/>
 
+        <Button
+            android:id="@+id/bt_rw_read_signal_strength"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_below="@id/cd_electricity"
+            android:background="@drawable/button_drawable"
+            android:text="读取信号强度"
+            android:textColor="@color/white"/>
+
 
     </com.example.ld_street_lights_maintenance.view.FlowViewGroup>
 
