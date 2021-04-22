@@ -50,6 +50,7 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
 
     private ProgressDialog mProgress;
     private TextView txt_data;
+
     // 读写状态
     private enum RWStart {
         READ,
@@ -118,10 +119,26 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
         ExpandView ev_oder_debug = mPopView.findViewById(R.id.ev_oder_debug);
         View debugCommandView = inflater.inflate(R.layout.debug_command_item, null);
         ev_oder_debug.setExpandView(debugCommandView);
-        // 设置下拉 "控制指令" 布局
+
+
+        // 设置下拉 "设置指令" 布局
         ExpandView ev_oder_setting = mPopView.findViewById(R.id.ev_setting);
         View oder_serting_View = inflater.inflate(R.layout.order_setting_item, null);
         ev_oder_setting.setExpandView(oder_serting_View);
+        // 恢复原厂设置
+        Button bt_factory_reset = mPopView.findViewById(R.id.bt_factory_reset);
+        bt_factory_reset.setOnClickListener(settingOnclick);
+        // 恢复重启
+        Button bt_reboot = mPopView.findViewById(R.id.bt_reboot);
+        bt_reboot.setOnClickListener(settingOnclick);
+        // 校时
+        Button bt_timing = mPopView.findViewById(R.id.bt_timing);
+        bt_timing.setOnClickListener(settingOnclick);
+        // 曲线定时
+        Button bt_curve_timing = mPopView.findViewById(R.id.bt_curve_timing);
+        bt_curve_timing.setOnClickListener(settingOnclick);
+
+
         // 设置下拉 "读写指令" 布局
         txt_data = mPopView.findViewById(R.id.txt_data);
         txt_data.setMovementMethod(ScrollingMovementMethod.getInstance());  // 内容设置滑动效果
@@ -129,7 +146,7 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
         bt_rw_write.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                txt_data.append("content xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+                txt_data.append("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
                 txt_data.append("\n");
                 int offset = txt_data.getLineCount() * txt_data.getLineHeight();//判断textview文本的高度
                 if (offset > txt_data.getHeight()) {
@@ -139,6 +156,14 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
         });
         Button bt_read_alarm_threshold = mPopView.findViewById(R.id.bt_read_alarm_threshold);
         bt_read_alarm_threshold.setOnClickListener(readOnclick);
+        Button bt_rw_read_time = mPopView.findViewById(R.id.bt_rw_read_time);
+        bt_rw_read_time.setOnClickListener(readOnclick);
+        Button bt_rw_read_ep = mPopView.findViewById(R.id.bt_rw_read_ep);
+        bt_rw_read_ep.setOnClickListener(readOnclick);
+        Button bt_rw_read_devid = mPopView.findViewById(R.id.bt_rw_read_devid);
+        bt_rw_read_devid.setOnClickListener(readOnclick);
+        Button bt_rw_read_vernum = mPopView.findViewById(R.id.bt_rw_read_vernum);
+        bt_rw_read_vernum.setOnClickListener(readOnclick);
 
 
         cd_main_dimming = mPopView.findViewById(R.id.cd_main_dimming);
@@ -153,7 +178,7 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
                 showProgress("正在写入...");
                 byte[] funCode = new byte[]{0, 27};
                 byte[] data = new byte[]{85, -86};
-                sendOrder(funCode, data,RWStart.WRITE);
+                sendOrder(funCode, data, RWStart.WRITE);
 
             }
         });
@@ -178,7 +203,7 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
                 byte[] funCode = new byte[]{0, 05};
                 byte[] data = new byte[]{(byte) seekBar.getProgress(), 3};
 
-                sendOrder(funCode, data,RWStart.WRITE);
+                sendOrder(funCode, data, RWStart.WRITE);
                 Log.i("TAG", "onStopTrackingTouch=" + seekBar.getProgress());
 
 
@@ -212,7 +237,7 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
                     Log.e("xxx", ">>>>>>>>>>>>>>>>>>> 主辅灯关");
                 }
 
-                sendOrder(funCode, data,RWStart.WRITE);
+                sendOrder(funCode, data, RWStart.WRITE);
 
                /* byte[] funCode = new byte[]{0, 05};
                 byte[] data = new byte[]{(byte) seekBar.getProgress()};;
@@ -221,87 +246,15 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
             }
         });
 
-        // 恢复原厂设置
-        Button bt_factory_reset = mPopView.findViewById(R.id.bt_factory_reset);
-        bt_factory_reset.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showProgress("正在写入...");
-                byte[] funCode = new byte[]{0, 01};
-                byte[] data = new byte[]{-95, -86};
 
-                sendOrder(funCode, data,RWStart.WRITE);
-            }
-        });
 
-        // 恢复重启
-        Button bt_reboot = mPopView.findViewById(R.id.bt_reboot);
-        bt_reboot.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showProgress("正在写入...");
-                byte[] funCode = new byte[]{0, 01};
-                byte[] data = new byte[]{-86, -95};
-
-                sendOrder(funCode, data,RWStart.WRITE);
-            }
-        });
-
-        // 校时
-        Button bt_timing = mPopView.findViewById(R.id.bt_timing);
-        bt_timing.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showProgress("正在写入...");
-                byte[] funCode = new byte[]{0, 02};
-                byte[] data = new byte[7];
-
-                Calendar cal = Calendar.getInstance();
-                cal.setTimeZone(TimeZone.getTimeZone("GMT+8:00"));
-
-                String year = String.valueOf(cal.get(Calendar.YEAR));
-                String month = String.valueOf(cal.get(Calendar.MONTH) + 1);
-                String day = String.valueOf(cal.get(Calendar.DATE));
-                String hour;
-                if (cal.get(Calendar.AM_PM) == 0)
-                    hour = String.valueOf(cal.get(Calendar.HOUR));
-                else
-                    hour = String.valueOf(cal.get(Calendar.HOUR) + 12);
-                String minute = String.valueOf(cal.get(Calendar.MINUTE));
-                String second = String.valueOf(cal.get(Calendar.SECOND));
-                //获取今天是这周的第几天,周日为1,周一为2,周六为7
-                int week = cal.get(Calendar.DAY_OF_WEEK);
-
-                data[0] = Byte.parseByte(year.substring(2, year.length()));
-                data[1] = Byte.parseByte(month);
-                data[2] = Byte.parseByte(day);
-                data[3] = Byte.parseByte(hour);
-                data[4] = Byte.parseByte(minute);
-                data[5] = Byte.parseByte(second);
-                data[6] = (byte) week;
-
-                sendOrder(funCode, data,RWStart.WRITE);
-
-            }
-        });
-
-        // 曲线定时
-        Button bt_curve_timing = mPopView.findViewById(R.id.bt_curve_timing);
-        bt_curve_timing.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Intent intent = new Intent(mContext, DeviceTiming.class);
-                mContext.startActivity(intent);
-
-            }
-        });
 
     }
 
 
     /**
      * 发送蓝牙通讯指令
+     *
      * @param funCode 功能码
      * @param data    指令
      * @param rwStart 读写标识
@@ -319,10 +272,10 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
                             // 解析数据
                             parseDatas(data);
                             stopProgress();
-                            if(rwStart == RWStart.WRITE){
+                            if (rwStart == RWStart.WRITE) {
                                 showToast("写入成功~");
                                 Log.e("xxx", ">>>>>>>>>>>>>>>>>>> 写入 当前读取返回数据成功 " + Arrays.toString(data));
-                            }else {
+                            } else {
                                 showToast("读取成功~");
                                 Log.e("xxx", ">>>>>>>>>>>>>>>>>>> 读取 当前读取返回数据成功 " + Arrays.toString(data));
                             }
@@ -338,9 +291,9 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
 
                 @Override
                 public void onWriteFailure(BleException exception) {
-                    if(rwStart == RWStart.WRITE){
+                    if (rwStart == RWStart.WRITE) {
                         showToast("写入失败" + exception.toString());
-                    }else {
+                    } else {
                         showToast("读取失败" + exception.toString());
                     }
                     stopProgress();
@@ -353,14 +306,6 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
         }
     }
 
-    /**
-     * 解析数据
-     *
-     * @param data
-     */
-    private void parseDatas(byte[] data) {
-
-    }
 
     private void showToast(String str) {
         Toast.makeText(mContext, str, Toast.LENGTH_SHORT).show();
@@ -446,20 +391,131 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
     }
 
 
+    /**
+     * 设置点击事件
+     */
+    private View.OnClickListener settingOnclick = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+
+            byte[] funCode;
+            byte[] data;
+            switch (v.getId()) {
+                case R.id.bt_curve_timing: // 曲线定时
+                    Intent intent = new Intent(mContext, DeviceTiming.class);
+                    mContext.startActivity(intent);
+                    break;
+                case R.id.bt_factory_reset:  //  恢复原厂设置
+                    showProgress("正在写入...");
+                    funCode = new byte[]{0, 01};
+                    data = new byte[]{-95, -86};
+                    sendOrder(funCode, data, RWStart.WRITE);
+                    break;
+                case R.id.bt_reboot:
+                    showProgress("正在写入...");
+                    funCode = new byte[]{0, 01};
+                    data = new byte[]{-86, -95};
+                    sendOrder(funCode, data, RWStart.WRITE);
+                    break;
+                case R.id.bt_timing:
+                    showProgress("正在写入...");
+                    funCode = new byte[]{0, 02};
+                    data = new byte[7];
+
+                    Calendar cal = Calendar.getInstance();
+                    cal.setTimeZone(TimeZone.getTimeZone("GMT+8:00"));
+
+                    String year = String.valueOf(cal.get(Calendar.YEAR));
+                    String month = String.valueOf(cal.get(Calendar.MONTH) + 1);
+                    String day = String.valueOf(cal.get(Calendar.DATE));
+                    String hour;
+                    if (cal.get(Calendar.AM_PM) == 0)
+                        hour = String.valueOf(cal.get(Calendar.HOUR));
+                    else
+                        hour = String.valueOf(cal.get(Calendar.HOUR) + 12);
+                    String minute = String.valueOf(cal.get(Calendar.MINUTE));
+                    String second = String.valueOf(cal.get(Calendar.SECOND));
+                    //获取今天是这周的第几天,周日为1,周一为2,周六为7
+                    int week = cal.get(Calendar.DAY_OF_WEEK);
+
+                    data[0] = Byte.parseByte(year.substring(2, year.length()));
+                    data[1] = Byte.parseByte(month);
+                    data[2] = Byte.parseByte(day);
+                    data[3] = Byte.parseByte(hour);
+                    data[4] = Byte.parseByte(minute);
+                    data[5] = Byte.parseByte(second);
+                    data[6] = (byte) week;
+
+                    sendOrder(funCode, data, RWStart.WRITE);
+                    break;
+
+            }
+        }
+    };
+
+    /**
+     * 读写点击事件
+     */
     private View.OnClickListener readOnclick = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            switch (v.getId()){
-                case com.example.ld_street_lights_maintenance.R.id.bt_read_alarm_threshold:  // 读取报警电压电流阈值
-
+            byte[] funCode;
+            byte[] data;
+            switch (v.getId()) {
+                case R.id.bt_read_alarm_threshold:  // 读取报警电压电流阈值
                     showProgress("正在读取...");
-                    byte[] funCode = new byte[]{0, 11};
-                    sendOrder(funCode, null,RWStart.READ);
+                    funCode = new byte[]{0, 11};
+                    sendOrder(funCode, null, RWStart.READ);
                     break;
+                case R.id.bt_rw_read_time: // 读取时间
+                    showProgress("正在读取...");
+                    funCode = new byte[]{0, 19};
+                    sendOrder(funCode, null, RWStart.READ);
+                    break;
+                case R.id.bt_rw_read_ep: // 读取电参
+                    showProgress("正在读取...");
+                    funCode = new byte[]{0, 25};
+                    sendOrder(funCode, null, RWStart.READ);
+                    break;
+                case R.id.bt_rw_read_devid: // 读取设备id
+                    showProgress("正在读取...");
+                    funCode = new byte[]{0, 31};
+                    sendOrder(funCode, null, RWStart.READ);
+                    break;
+                case R.id.bt_rw_read_vernum: // 读取设备当前版本号
+                    showProgress("正在读取...");
+                    funCode = new byte[]{0, 33};
+                    sendOrder(funCode, null, RWStart.READ);
+                    break;
+
+
             }
 
         }
     };
+
+    /**
+     * 解析数据
+     *
+     * @param data
+     */
+    private void parseDatas(byte[] data) {
+
+        // 根据状态码解析对应的数据
+        if (data[2] == 12) { // 返回警报电压电流阈值
+            Log.e("xx", "返回警报电压电流阈值");
+        } else if (data[2] == 20) {
+            Log.e("xx", "返回时间");
+        } else if (data[2] == 26) {
+            Log.e("xx", "返回电参");
+        } else if (data[2] == 32) {
+            Log.e("xx", "返回设备ID号");
+        } else if (data[2] == 34) {
+            Log.e("xx", "返回设备版本号");
+        }
+
+
+    }
 
 }
 

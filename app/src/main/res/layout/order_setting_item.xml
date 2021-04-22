@@ -53,12 +53,13 @@
             android:textColor="@color/white"/>
 
         <Button
+            android:id="@+id/bt_setting_dufup"
             android:layout_width="wrap_content"
             android:layout_height="30dp"
             android:layout_gravity="center_horizontal"
             android:background="@drawable/button_drawable"
             android:gravity="center"
-            android:text="登陆"
+            android:text="设备固件升级"
             android:textColor="#ffffff"
             android:textSize="16dp" />
 

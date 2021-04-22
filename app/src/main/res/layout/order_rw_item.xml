@@ -20,6 +20,7 @@
             android:textColor="@color/white"/>
 
         <Button
+            android:id="@+id/bt_rw_read_time"
             android:layout_width="wrap_content"
             android:layout_height="30dp"
             android:layout_below="@id/cd_electricity"
@@ -28,6 +29,7 @@
             android:textColor="@color/white"/>
 
         <Button
+            android:id="@+id/bt_rw_read_ep"
             android:layout_width="wrap_content"
             android:layout_height="30dp"
             android:layout_below="@id/cd_electricity"
@@ -36,6 +38,7 @@
             android:textColor="@color/white"/>
 
         <Button
+            android:id="@+id/bt_rw_read_devid"
             android:layout_width="wrap_content"
             android:layout_height="30dp"
             android:layout_below="@id/cd_electricity"
@@ -44,6 +47,7 @@
             android:textColor="@color/white"/>
 
         <Button
+            android:id="@+id/bt_rw_read_vernum"
             android:layout_width="wrap_content"
             android:layout_height="30dp"
             android:layout_below="@id/cd_electricity"
