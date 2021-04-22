@@ -162,17 +162,13 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
 
         // 设置下拉 "读写指令" 布局
         txt_data = mPopView.findViewById(R.id.txt_data);
+        txt_data.setOnTouchListener(touchListener); // 设置避免滑动冲突
         txt_data.setMovementMethod(ScrollingMovementMethod.getInstance());  // 内容设置滑动效果
         Button bt_rw_write = mPopView.findViewById(R.id.bt_rw_write);
         bt_rw_write.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                txt_data.append("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
-                txt_data.append("\n");
-                int offset = txt_data.getLineCount() * txt_data.getLineHeight();//判断textview文本的高度
-                if (offset > txt_data.getHeight()) {
-                    txt_data.scrollTo(0, offset - txt_data.getHeight());//如果文本的高度大于ScrollView,就自动滑动
-                }
+                addText(txt_data,"当前内容为：skdlfjlsdjlfjldskj46464646464646546546484787488979879879879879797984784654");
             }
         });
         Button bt_read_alarm_threshold = mPopView.findViewById(R.id.bt_read_alarm_threshold);
@@ -278,6 +274,15 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
 
     }
 
+    private void addText(TextView textView, String content) {
+        textView.append(content);
+        textView.append("\n");
+        int offset = textView.getLineCount() * textView.getLineHeight();//判断textview文本的高度
+        if (offset > textView.getHeight()) {
+            textView.scrollTo(0, offset - textView.getHeight());//如果文本的高度大于ScrollView,就自动滑动
+        }
+    }
+
 
     /**
      * 发送蓝牙通讯指令
@@ -337,6 +342,28 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
     private void showToast(String str) {
         Toast.makeText(mContext, str, Toast.LENGTH_SHORT).show();
     }
+
+    /**
+     * 解决滑动冲突
+     * 设置触摸事件，由于EditView与TextView都处于ScollView中，
+     * 所以需要在OnTouch事件中通知父控件不拦截子控件事件
+     */
+    private View.OnTouchListener touchListener = new View.OnTouchListener() {
+
+        @Override
+        public boolean onTouch(View v, MotionEvent event) {
+            if(event.getAction() == MotionEvent.ACTION_DOWN
+                    || event.getAction() == MotionEvent.ACTION_MOVE){
+                //按下或滑动时请求父节点不拦截子节点
+                v.getParent().requestDisallowInterceptTouchEvent(true);
+            }
+            if(event.getAction() == MotionEvent.ACTION_UP){
+                //抬起时请求父节点拦截子节点
+                v.getParent().requestDisallowInterceptTouchEvent(false);
+            }
+            return false;
+        }
+    };
 
 
     /**
