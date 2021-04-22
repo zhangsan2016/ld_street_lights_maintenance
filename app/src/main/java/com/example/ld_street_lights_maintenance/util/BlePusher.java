@@ -102,6 +102,7 @@ public class BlePusher {
     /**
      * 拼接指令
      * 协议组成：帧头 - 功能码 - 数据长度 - 数据 - crc - 帧尾部
+     *
      * @param funCode  功能码
      * @param data     数据
      * @param callback 会掉
@@ -299,34 +300,34 @@ public class BlePusher {
 
                             Log.e("xxx", ">>>>>>>>>>>>>>>>>>> read data = " + Arrays.toString(data));
 
-                           new Thread(new Runnable() {
-                               @Override
-                               public void run() {
-                                   if (data[0] == 1) {
-                                       BleManager.getInstance().read(
-                                               bleDevices.get(0),
-                                               gattCharacteristicA1.getService().getUuid().toString(),
-                                               gattCharacteristicA1.getUuid().toString(),
-                                               callback);
-                                   } else {
-                                       // 分包读取
-                                       mergeData  = new byte[0];
-                                       int dataSize = data[0];
-                                       for (int i = 0; i < dataSize; i++) {
-                                           // 用于同步线程
-                                           CountDownLatch latch = new CountDownLatch(1);
-                                           splitRead(data[0], (i + 1), callback, gattCharacteristicA1, gattCharacteristicA2, bleDevices.get(0), latch);
-                                           try {
-                                               //阻塞当前线程直到latch中数值为零才执行
-                                               latch.await(5, TimeUnit.SECONDS);
-                                           } catch (InterruptedException e) {
-                                               e.printStackTrace();
-                                               break;
-                                           }
-                                       }
-                                   }
-                               }
-                           }).start();
+                            new Thread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    if (data[0] == 1) {
+                                        BleManager.getInstance().read(
+                                                bleDevices.get(0),
+                                                gattCharacteristicA1.getService().getUuid().toString(),
+                                                gattCharacteristicA1.getUuid().toString(),
+                                                callback);
+                                    } else {
+                                        // 分包读取
+                                        mergeData = new byte[0];
+                                        int dataSize = data[0];
+                                        for (int i = 0; i < dataSize; i++) {
+                                            // 用于同步线程
+                                            CountDownLatch latch = new CountDownLatch(1);
+                                            splitRead(data[0], (i + 1), callback, gattCharacteristicA1, gattCharacteristicA2, bleDevices.get(0), latch);
+                                            try {
+                                                //阻塞当前线程直到latch中数值为零才执行
+                                                latch.await(5, TimeUnit.SECONDS);
+                                            } catch (InterruptedException e) {
+                                                e.printStackTrace();
+                                                break;
+                                            }
+                                        }
+                                    }
+                                }
+                            }).start();
 
                         }
 
@@ -349,6 +350,7 @@ public class BlePusher {
 
     /**
      * 分包读取
+     *
      * @param mTotalNum 总包数
      * @param mCount    当前包数
      * @param callback  回调

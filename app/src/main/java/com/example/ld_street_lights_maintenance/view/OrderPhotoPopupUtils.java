@@ -1,7 +1,6 @@
 package com.example.ld_street_lights_maintenance.view;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -10,7 +9,6 @@ import android.content.IntentFilter;
 import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
-import android.os.Message;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -25,21 +23,16 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.clj.fastble.BleManager;
 import com.clj.fastble.callback.BleReadCallback;
 import com.clj.fastble.callback.BleWriteCallback;
-import com.clj.fastble.data.BleDevice;
 import com.clj.fastble.exception.BleException;
 import com.example.ld_street_lights_maintenance.R;
 import com.example.ld_street_lights_maintenance.act.DeviceTiming;
-import com.example.ld_street_lights_maintenance.act.MainActivity;
 import com.example.ld_street_lights_maintenance.fragment.mainfragment.BuleFragment;
 import com.example.ld_street_lights_maintenance.util.BlePusher;
-import com.example.ld_street_lights_maintenance.util.DensityUtil;
 
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.List;
 import java.util.TimeZone;
 
 
@@ -57,6 +50,11 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
 
     private ProgressDialog mProgress;
     private TextView txt_data;
+    // 读写状态
+    private enum RWStart {
+        READ,
+        WRITE
+    }
 
     public OrderPhotoPopupUtils(Context context) {
         super(context);
@@ -155,7 +153,7 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
                 showProgress("正在写入...");
                 byte[] funCode = new byte[]{0, 27};
                 byte[] data = new byte[]{85, -86};
-                sendOrder(funCode, data);
+                sendOrder(funCode, data,RWStart.WRITE);
 
             }
         });
@@ -180,7 +178,7 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
                 byte[] funCode = new byte[]{0, 05};
                 byte[] data = new byte[]{(byte) seekBar.getProgress(), 3};
 
-                sendOrder(funCode, data);
+                sendOrder(funCode, data,RWStart.WRITE);
                 Log.i("TAG", "onStopTrackingTouch=" + seekBar.getProgress());
 
 
@@ -214,7 +212,7 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
                     Log.e("xxx", ">>>>>>>>>>>>>>>>>>> 主辅灯关");
                 }
 
-                sendOrder(funCode, data);
+                sendOrder(funCode, data,RWStart.WRITE);
 
                /* byte[] funCode = new byte[]{0, 05};
                 byte[] data = new byte[]{(byte) seekBar.getProgress()};;
@@ -232,7 +230,7 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
                 byte[] funCode = new byte[]{0, 01};
                 byte[] data = new byte[]{-95, -86};
 
-                sendOrder(funCode, data);
+                sendOrder(funCode, data,RWStart.WRITE);
             }
         });
 
@@ -245,7 +243,7 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
                 byte[] funCode = new byte[]{0, 01};
                 byte[] data = new byte[]{-86, -95};
 
-                sendOrder(funCode, data);
+                sendOrder(funCode, data,RWStart.WRITE);
             }
         });
 
@@ -282,7 +280,7 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
                 data[5] = Byte.parseByte(second);
                 data[6] = (byte) week;
 
-                sendOrder(funCode, data);
+                sendOrder(funCode, data,RWStart.WRITE);
 
             }
         });
@@ -306,8 +304,9 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
      * 发送蓝牙通讯指令
      * @param funCode 功能码
      * @param data    指令
+     * @param rwStart 读写标识
      */
-    private void sendOrder(byte[] funCode, byte[] data) {
+    private void sendOrder(byte[] funCode, byte[] data, final RWStart rwStart) {
 
         try {
             BlePusher.writeSpliceOrder(funCode, data, new BleWriteCallback() {
@@ -317,11 +316,16 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
                     BlePusher.readSpliceOrder(new BleReadCallback() {
                         @Override
                         public void onReadSuccess(byte[] data) {
-                            showToast("写入成功~");
-                            Log.e("xxx", ">>>>>>>>>>>>>>>>>>> 当前读取返回数据成功 " + Arrays.toString(data));
                             // 解析数据
                             parseDatas(data);
                             stopProgress();
+                            if(rwStart == RWStart.WRITE){
+                                showToast("写入成功~");
+                                Log.e("xxx", ">>>>>>>>>>>>>>>>>>> 写入 当前读取返回数据成功 " + Arrays.toString(data));
+                            }else {
+                                showToast("读取成功~");
+                                Log.e("xxx", ">>>>>>>>>>>>>>>>>>> 读取 当前读取返回数据成功 " + Arrays.toString(data));
+                            }
                         }
 
                         @Override
@@ -334,7 +338,11 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
 
                 @Override
                 public void onWriteFailure(BleException exception) {
-                    showToast("写入失败" + exception.toString());
+                    if(rwStart == RWStart.WRITE){
+                        showToast("写入失败" + exception.toString());
+                    }else {
+                        showToast("读取失败" + exception.toString());
+                    }
                     stopProgress();
                 }
             });
@@ -387,7 +395,7 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 // id是你需要点击的控件id之上的地方，来实现点击外围扩散的效果
-                int height = mPopView.findViewById(R.id.id_pop_layout).getTop();
+                int height = mPopView.findViewById(com.example.ld_street_lights_maintenance.R.id.id_pop_layout).getTop();
                 int y = (int) event.getY();
                 if (event.getAction() == MotionEvent.ACTION_UP) {
                     if (y < height) {
@@ -442,12 +450,11 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
         @Override
         public void onClick(View v) {
             switch (v.getId()){
-                case R.id.bt_read_alarm_threshold:  // 读取报警电压电流阈值
+                case com.example.ld_street_lights_maintenance.R.id.bt_read_alarm_threshold:  // 读取报警电压电流阈值
 
-                    showProgress("正在写入...");
+                    showProgress("正在读取...");
                     byte[] funCode = new byte[]{0, 11};
-                    sendOrder(funCode, null);
-
+                    sendOrder(funCode, null,RWStart.READ);
                     break;
             }
 
