@@ -154,6 +154,10 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
         bt_setting_collapse_alarmon.setOnClickListener(settingOnclick);
         Button bt_setting_collapse_alarmoff = mPopView.findViewById(R.id.bt_setting_collapse_alarmoff);
         bt_setting_collapse_alarmoff.setOnClickListener(settingOnclick);
+        Button bt_setting_boot_configon = mPopView.findViewById(R.id.bt_setting_boot_configon);
+        bt_setting_boot_configon.setOnClickListener(settingOnclick);
+        Button bt_setting_boot_configoff = mPopView.findViewById(R.id.bt_setting_boot_configoff);
+        bt_setting_boot_configoff.setOnClickListener(settingOnclick);
 
 
         // 设置下拉 "读写指令" 布局
@@ -424,6 +428,18 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
             switch (v.getId()) {
                 case R.id.bt_setting_dufup: // 设备固件升级
                     break;
+                case R.id.bt_setting_boot_configon: // 角度倾倒报警-开
+                    showProgress("正在写入...");
+                    funCode = new byte[]{0, 92};
+                    data = new byte[]{1};
+                    sendOrder(funCode, data, RWStart.WRITE);
+                    break;
+                case R.id.bt_setting_boot_configoff: // 角度倾倒报警-关
+                    showProgress("正在写入...");
+                    funCode = new byte[]{0, 92};
+                    data = new byte[]{0};
+                    sendOrder(funCode, data, RWStart.WRITE);
+                    break;
                 case R.id.bt_setting_collapse_alarmon: // 角度倾倒报警-开
                     showProgress("正在写入...");
                     funCode = new byte[]{0, 90};
@@ -603,8 +619,9 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
             Log.e("xx", "角度校准返回");
         } else if (data[2] == 91) {
             Log.e("xx", "角度倾倒报警返回");
+        } else if (data[2] == 93) {
+            Log.e("xx", "开机状态配置返回");
         }
-
 
     }
 

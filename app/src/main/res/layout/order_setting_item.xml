@@ -141,12 +141,24 @@
             android:textSize="16dp" />
 
         <Button
+            android:id="@+id/bt_setting_boot_configon"
             android:layout_width="wrap_content"
             android:layout_height="30dp"
             android:layout_gravity="center_horizontal"
             android:background="@drawable/button_drawable"
             android:gravity="center"
-            android:text="测试"
+            android:text="开机状态配置-开灯"
+            android:textColor="#ffffff"
+            android:textSize="16dp" />
+
+        <Button
+            android:id="@+id/bt_setting_boot_configoff"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/button_drawable"
+            android:gravity="center"
+            android:text="开机状态配置-关灯"
             android:textColor="#ffffff"
             android:textSize="16dp" />
 
