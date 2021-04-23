@@ -298,7 +298,9 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
         try {
             BlePusher.writeSpliceOrder(funCode, data, new BleWriteCallback() {
                 @Override
-                public void onWriteSuccess(int current, int total, byte[] justWrite) {
+                public void onWriteSuccess(int current, int total, byte[] data) {
+
+                    Log.e("xxx", " 写入成功 返回的数据 = " );
                     stopProgress();
                    /* BlePusher.readSpliceOrder(new BleReadCallback() {
                         @Override

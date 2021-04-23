@@ -181,7 +181,6 @@ public class BuleFragment extends BaseFragment implements View.OnClickListener {
                 // 将连接成功的蓝牙设备更新到 MainActivity 中
                 ((MainActivity) getActivity()).setBleDevice(bleDevice);
 
-                StartNotify(bleDevice);
 
             }
 
@@ -208,37 +207,7 @@ public class BuleFragment extends BaseFragment implements View.OnClickListener {
         });
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
-    private void StartNotify(BleDevice bleDevice) {
-        BluetoothGatt mBluetoothGatt = BleManager.getInstance().getBluetoothGatt(bleDevice);
-        // 获取服务
-        BluetoothGattService service = mBluetoothGatt.getService(UUID.fromString(BlePusher.serviceUuid));
-        final BluetoothGattCharacteristic notify = service.getCharacteristic(UUID.fromString(BlePusher.notifyUuid));
 
-        BleManager.getInstance().notify(
-                bleDevice,
-                notify.getService().getUuid().toString(),
-                notify.getUuid().toString(),
-                new BleNotifyCallback() {
-
-                    @Override
-                    public void onNotifySuccess() {
-
-                        Log.e("xxx", " notify success " );
-                    }
-
-                    @Override
-                    public void onNotifyFailure(final BleException exception) {
-
-                        Log.e("xxx", " notify onNotifyFailure " + exception.toString());
-                    }
-
-                    @Override
-                    public void onCharacteristicChanged(byte[] data) {
-                        Log.e("xxx", " notify onCharacteristicChanged " + Arrays.toString(data));
-                    }
-                });
-    }
 
 
     @Override
