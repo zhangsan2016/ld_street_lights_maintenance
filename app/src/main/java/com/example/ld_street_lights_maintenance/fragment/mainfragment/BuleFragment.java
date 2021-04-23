@@ -2,6 +2,7 @@ package com.example.ld_street_lights_maintenance.fragment.mainfragment;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
@@ -11,6 +12,8 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothGatt;
+import android.bluetooth.BluetoothGattCharacteristic;
+import android.bluetooth.BluetoothGattService;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -32,19 +35,24 @@ import android.widget.Toast;
 
 import com.clj.fastble.BleManager;
 import com.clj.fastble.callback.BleGattCallback;
+import com.clj.fastble.callback.BleNotifyCallback;
 import com.clj.fastble.callback.BleScanCallback;
 import com.clj.fastble.data.BleDevice;
 import com.clj.fastble.exception.BleException;
+import com.clj.fastble.utils.HexUtil;
 import com.example.ld_street_lights_maintenance.R;
 import com.example.ld_street_lights_maintenance.act.MainActivity;
 import com.example.ld_street_lights_maintenance.act.OperationAct;
 import com.example.ld_street_lights_maintenance.adapter.DeviceAdapter;
 import com.example.ld_street_lights_maintenance.base.BaseFragment;
 import com.example.ld_street_lights_maintenance.comm.ObserverManager;
+import com.example.ld_street_lights_maintenance.util.BlePusher;
 import com.example.ld_street_lights_maintenance.view.MyRadioGroup;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 
 public class BuleFragment extends BaseFragment implements View.OnClickListener {
 
@@ -163,6 +171,7 @@ public class BuleFragment extends BaseFragment implements View.OnClickListener {
             }
 
             // 连接成功
+            @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
             @Override
             public void onConnectSuccess(BleDevice bleDevice, BluetoothGatt gatt, int status) {
                 stopProgress();
@@ -171,6 +180,8 @@ public class BuleFragment extends BaseFragment implements View.OnClickListener {
                 mDeviceAdapter.notifyDataSetChanged();
                 // 将连接成功的蓝牙设备更新到 MainActivity 中
                 ((MainActivity) getActivity()).setBleDevice(bleDevice);
+
+                StartNotify(bleDevice);
 
             }
 
@@ -195,6 +206,38 @@ public class BuleFragment extends BaseFragment implements View.OnClickListener {
 
             }
         });
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
+    private void StartNotify(BleDevice bleDevice) {
+        BluetoothGatt mBluetoothGatt = BleManager.getInstance().getBluetoothGatt(bleDevice);
+        // 获取服务
+        BluetoothGattService service = mBluetoothGatt.getService(UUID.fromString(BlePusher.serviceUuid));
+        final BluetoothGattCharacteristic notify = service.getCharacteristic(UUID.fromString(BlePusher.notifyUuid));
+
+        BleManager.getInstance().notify(
+                bleDevice,
+                notify.getService().getUuid().toString(),
+                notify.getUuid().toString(),
+                new BleNotifyCallback() {
+
+                    @Override
+                    public void onNotifySuccess() {
+
+                        Log.e("xxx", " notify success " );
+                    }
+
+                    @Override
+                    public void onNotifyFailure(final BleException exception) {
+
+                        Log.e("xxx", " notify onNotifyFailure " + exception.toString());
+                    }
+
+                    @Override
+                    public void onCharacteristicChanged(byte[] data) {
+                        Log.e("xxx", " notify onCharacteristicChanged " + Arrays.toString(data));
+                    }
+                });
     }
 
 

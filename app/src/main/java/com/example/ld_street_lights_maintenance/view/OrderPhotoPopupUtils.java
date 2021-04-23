@@ -299,8 +299,8 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
             BlePusher.writeSpliceOrder(funCode, data, new BleWriteCallback() {
                 @Override
                 public void onWriteSuccess(int current, int total, byte[] justWrite) {
-
-                    BlePusher.readSpliceOrder(new BleReadCallback() {
+                    stopProgress();
+                   /* BlePusher.readSpliceOrder(new BleReadCallback() {
                         @Override
                         public void onReadSuccess(byte[] data) {
                             // 解析数据
@@ -320,7 +320,7 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
                             showToast("数据读取失败，请靠近蓝牙设备，或重新连接蓝牙~");
                             stopProgress();
                         }
-                    });
+                    });*/
                 }
 
                 @Override

@@ -25,9 +25,11 @@ import java.util.concurrent.TimeUnit;
 @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
 public class BlePusher {
     // 服务 uuid 和特征 uuid
-    private static String serviceUuid = "0000ffa0-0000-1000-8000-00805f9b34fb";
+    public static String serviceUuid = "0000ffa0-0000-1000-8000-00805f9b34fb";
     private static String characteristicUuidA = "0000ffa1-0000-1000-8000-00805f9b34fb";
     private static String characteristicUuidB = "0000ffa2-0000-1000-8000-00805f9b34fb";
+    // 通知
+    public static String notifyUuid = "0000ffa4-0000-1000-8000-00805f9b34fb";
 
     private static byte head = -18;
     private static byte tail = -17;
