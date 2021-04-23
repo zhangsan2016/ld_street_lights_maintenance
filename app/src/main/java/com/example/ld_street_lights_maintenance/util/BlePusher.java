@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.bluetooth.BluetoothGatt;
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattService;
+import android.content.Intent;
 import android.os.Build;
 import android.util.Log;
 
@@ -16,6 +17,7 @@ import com.clj.fastble.exception.BleException;
 import com.clj.fastble.exception.OtherException;
 import com.clj.fastble.utils.HexUtil;
 import com.example.ld_street_lights_maintenance.crc.CopyOfcheckCRC;
+import com.example.ld_street_lights_maintenance.fragment.mainfragment.BuleFragment;
 
 import java.util.Arrays;
 import java.util.List;
@@ -25,6 +27,7 @@ import java.util.concurrent.TimeUnit;
 
 @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
 public class BlePusher {
+    public static final String DATA_NOTIFY_FILTER = "street_lights_maintenance_ble_notify";
     // 服务 uuid 和特征 uuid
     public static String serviceUuid = "0000ffa0-0000-1000-8000-00805f9b34fb";
     private static String characteristicUuidA = "0000ffa1-0000-1000-8000-00805f9b34fb";
@@ -153,7 +156,7 @@ public class BlePusher {
                                             @Override
                                             public void onWriteSuccess(final int current, final int total, final byte[] justWrite) {
                                                 // 返回消息
-                                                callback.onWriteSuccess(0,0,mergeData);
+                                             //   callback.onWriteSuccess(0,0,mergeData);
                                             }
                                             @Override
                                             public void onWriteFailure(final BleException exception) {
@@ -191,8 +194,15 @@ public class BlePusher {
                             mergeData = BytesUtil.byteMergerAll(mergeData, data);
                             for (int i = 0; i < data.length; i++) {
                                 if (data[i] == -17){
+
+                                    // 发送蓝牙状态广播通知传递接收读取消息
+                                    // 发送蓝牙状态广播
+                                    /*Intent intent = new Intent();
+                                    intent.setAction(DATA_NOTIFY_FILTER);
+                                    sendBroadcast(intent);*/
                                     // 返回消息
-                                 //   callback.onWriteSuccess(0,0,mergeData);
+                                    callback.onWriteSuccess(0,0,mergeData);
+
                                     // 关闭通知
                                     BleManager.getInstance().stopNotify(
                                             bleDevices.get(0),

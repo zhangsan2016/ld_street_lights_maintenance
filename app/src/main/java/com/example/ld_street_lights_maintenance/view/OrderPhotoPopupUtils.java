@@ -80,6 +80,10 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
         IntentFilter filter = new IntentFilter(BuleFragment.DATA_REFRESH_FILTER);
         mContext.registerReceiver(singleLightSettingActReceiver, filter);
 
+        // 监听蓝牙通知
+        IntentFilter bleNotifyFilter = new IntentFilter(BlePusher.DATA_NOTIFY_FILTER);
+        mContext.registerReceiver(bleReceiver, bleNotifyFilter);
+
     }
 
     private BroadcastReceiver singleLightSettingActReceiver = new BroadcastReceiver() {
@@ -89,6 +93,13 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
             if (BuleFragment.DATA_REFRESH_FILTER.equals(intent.getAction())) {
                 stopProgress();
             }
+        }
+    };
+
+    private BroadcastReceiver bleReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Log.e("xxx", ">>>>>>>>>>>>>>>>>>> 通知接收数据 " );
         }
     };
 
@@ -300,7 +311,7 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
                 @Override
                 public void onWriteSuccess(int current, int total, byte[] data) {
 
-                    Log.e("xxx", " 写入成功 返回的数据 = " );
+                    Log.e("xxx", " 写入成功 返回的数据 = "   + Arrays.toString(data));
                     stopProgress();
                    /* BlePusher.readSpliceOrder(new BleReadCallback() {
                         @Override
