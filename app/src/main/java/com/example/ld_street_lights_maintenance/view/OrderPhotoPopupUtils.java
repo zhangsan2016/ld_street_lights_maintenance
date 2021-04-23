@@ -275,8 +275,10 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
     }
 
     private void addText(TextView textView, String content) {
+
         textView.append(content);
         textView.append("\n");
+
         int offset = textView.getLineCount() * textView.getLineHeight();//判断textview文本的高度
         if (offset > textView.getHeight()) {
             textView.scrollTo(0, offset - textView.getHeight());//如果文本的高度大于ScrollView,就自动滑动
@@ -573,6 +575,7 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
             switch (v.getId()) {
                 case R.id.bt_rw_clear:  // 清空返回信息
                     txt_data.setText("");
+                    txt_data.scrollTo(0, 0);
                     break;
                 case R.id.bt_rw_read_state:  // 一键读取所有状态信息
                     showProgress("正在读取...");

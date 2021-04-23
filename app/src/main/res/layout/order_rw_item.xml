@@ -84,15 +84,6 @@
 
     </com.example.ld_street_lights_maintenance.view.FlowViewGroup>
 
-    <TextView
-        android:id="@+id/txt_data"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fadeScrollbars="false"
-        android:paddingLeft="5dp"
-        android:layout_marginRight="25dp"
-        android:scrollbars="vertical"
-        android:textSize="13sp" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -136,6 +127,15 @@
 
     </RelativeLayout>
 
-
+    <TextView
+        android:id="@+id/txt_data"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:fadeScrollbars="false"
+        android:paddingLeft="5dp"
+        android:layout_marginRight="60dp"
+        android:scrollbars="vertical"
+        android:singleLine="false"
+        android:textSize="13sp" />
 
 </LinearLayout>
