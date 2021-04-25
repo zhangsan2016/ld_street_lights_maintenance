@@ -723,7 +723,15 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
      */
     private boolean checkDataCrc(byte[] data) {
 
-        for (int i = data.length-1; i > 0; i--) {
+       /* for (int i = data.length-1; i > 0; i--) {
+            if(data[i] == -17){
+                byte [] checkData = new byte[i-2];
+                System.arraycopy(data,0,checkData,0,i-2);
+                return  CopyOfcheckCRC.checkTheCrc(checkData,new byte[]{ data[i-2],data[i-1]});
+            }
+        }*/
+
+        for (int i = 0; i < data.length; i++) {
             if(data[i] == -17){
                 byte [] checkData = new byte[i-2];
                 System.arraycopy(data,0,checkData,0,i-2);

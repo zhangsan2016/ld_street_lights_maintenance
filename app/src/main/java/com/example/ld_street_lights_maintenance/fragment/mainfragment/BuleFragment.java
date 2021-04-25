@@ -191,18 +191,24 @@ public class BuleFragment extends BaseFragment implements View.OnClickListener {
                 mDeviceAdapter.notifyDataSetChanged();
 
                 if (isActiveDisConnected) {
-                    showToast(getString(R.string.active_disconnected));
+                    if(BuleFragment.this != null && BuleFragment.this.isAdded()){
+                        showToast(getString(R.string.active_disconnected));
+                    }
+
 
                 } else {
-                    showToast(getString(R.string.disconnected));
+                    if(BuleFragment.this != null && BuleFragment.this.isAdded()){
+                        showToast(getString(R.string.disconnected));
+                    }
                     ObserverManager.getInstance().notifyObserver(bleDevice);
                 }
 
-                // 发送蓝牙状态广播
-                Intent intent = new Intent();
-                intent.setAction(DATA_REFRESH_FILTER);
-                BuleFragment.this.getActivity().sendBroadcast(intent);
-
+                if(BuleFragment.this != null && BuleFragment.this.isAdded()){
+                    // 发送蓝牙状态广播
+                    Intent intent = new Intent();
+                    intent.setAction(DATA_REFRESH_FILTER);
+                    BuleFragment.this.getActivity().sendBroadcast(intent);
+                }
             }
         });
     }
