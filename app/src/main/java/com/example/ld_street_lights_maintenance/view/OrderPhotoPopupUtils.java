@@ -31,6 +31,7 @@ import com.clj.fastble.exception.BleException;
 import com.clj.fastble.exception.TimeoutException;
 import com.example.ld_street_lights_maintenance.R;
 import com.example.ld_street_lights_maintenance.act.DeviceTiming;
+import com.example.ld_street_lights_maintenance.crc.CopyOfcheckCRC;
 import com.example.ld_street_lights_maintenance.fragment.mainfragment.BuleFragment;
 import com.example.ld_street_lights_maintenance.util.BlePusher;
 
@@ -674,6 +675,16 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
      * @param data
      */
     private void parseDatas(byte[] data) {
+        // [-18, 0, 48, 0, 56, 17, 0, 100, 20, 0, 80, 23, 0, 30, 1, 0, 40, 4, 0, 80, 9, 0, 0, 18, 0, 0, 21, 23, 0, 1, 0, 0, 3, 0, 0, 5, 0, 0, 8, 0, 0, 97, -88, 46, -32, 1, -12, 0, 0, 0, 20, -1, 1, 0, 30, 0, 5, 1, -60, 0, 1, -65, -56, -17, 0, 0, 0, 0, 77, 81]
+
+        addText(txt_data,Arrays.toString(data));
+        //使用 crc 校验数据
+        if(!checkDataCrc(data)){
+            Log.e("xx", "CRC 校验失败~");
+           return;
+        }else{
+            Log.e("xx", "CRC 校验成功~");
+        }
 
         // 根据状态码解析对应的数据
         if (data[2] == 12) { // 返回警报电压电流阈值
@@ -704,8 +715,22 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
             Log.e("xx", "开机状态配置返回");
         }
 
-        addText(txt_data,Arrays.toString(data));
+    }
 
+    /**
+     *  使用 crc 校验数据
+     * @param data
+     */
+    private boolean checkDataCrc(byte[] data) {
+
+        for (int i = data.length-1; i > 0; i--) {
+            if(data[i] == -17){
+                byte [] checkData = new byte[i-2];
+                System.arraycopy(data,0,checkData,0,i-2);
+                return  CopyOfcheckCRC.checkTheCrc(checkData,new byte[]{ data[i-2],data[i-1]});
+            }
+        }
+        return false;
     }
 
 }
