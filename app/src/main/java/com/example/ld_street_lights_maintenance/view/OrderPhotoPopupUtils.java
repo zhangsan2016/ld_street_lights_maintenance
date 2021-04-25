@@ -3,6 +3,8 @@ package com.example.ld_street_lights_maintenance.view;
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -176,6 +178,19 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
         txt_data = mPopView.findViewById(R.id.txt_data);
         txt_data.setOnTouchListener(touchListener); // 设置避免滑动冲突
         txt_data.setMovementMethod(ScrollingMovementMethod.getInstance());  // 内容设置滑动效果
+        txt_data.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+
+                ClipboardManager cm =(ClipboardManager)mContext.getSystemService(Context.CLIPBOARD_SERVICE);
+                ClipData clipData = ClipData.newPlainText("ldgd", txt_data.getText().toString());
+                cm.setPrimaryClip(clipData);
+                showToast("内容复制成");
+                return false;
+            }
+        });
+
+
         Button bt_rw_write = mPopView.findViewById(R.id.bt_rw_write);
         bt_rw_write.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -312,6 +327,8 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
                 @Override
                 public void onWriteSuccess(int current, int total, byte[] data) {
 
+                    // 解析数据
+                    parseDatas(data);
                     if (rwStart == RWStart.WRITE) {
                         showToast("写入成功~");
                         Log.e("xxx", ">>>>>>>>>>>>>>>>>>> 写入 当前读取返回数据成功 " + Arrays.toString(data));
@@ -654,7 +671,6 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
 
     /**
      * 解析数据
-     *
      * @param data
      */
     private void parseDatas(byte[] data) {
@@ -662,6 +678,7 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
         // 根据状态码解析对应的数据
         if (data[2] == 12) { // 返回警报电压电流阈值
             Log.e("xx", "返回警报电压电流阈值");
+            addText(txt_data,"当前内容为：");
         } else if (data[2] == 20) {
             Log.e("xx", "返回时间");
         } else if (data[2] == 26) {

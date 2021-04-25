@@ -132,6 +132,7 @@
         android:layout_width="match_parent"
         android:layout_height="150dp"
         android:fadeScrollbars="false"
+        android:textIsSelectable="true"
         android:paddingLeft="5dp"
         android:layout_marginRight="60dp"
         android:scrollbars="vertical"
