@@ -178,7 +178,7 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
         txt_data = mPopView.findViewById(R.id.txt_data);
         txt_data.setOnTouchListener(touchListener); // 设置避免滑动冲突
         txt_data.setMovementMethod(ScrollingMovementMethod.getInstance());  // 内容设置滑动效果
-        txt_data.setOnLongClickListener(new View.OnLongClickListener() {
+        txt_data.setOnLongClickListener(new View.OnLongClickListener() {  // 添加内容拷贝
             @Override
             public boolean onLongClick(View v) {
 
