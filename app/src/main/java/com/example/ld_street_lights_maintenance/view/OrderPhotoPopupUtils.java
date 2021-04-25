@@ -678,7 +678,6 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
         // 根据状态码解析对应的数据
         if (data[2] == 12) { // 返回警报电压电流阈值
             Log.e("xx", "返回警报电压电流阈值");
-            addText(txt_data,"当前内容为：");
         } else if (data[2] == 20) {
             Log.e("xx", "返回时间");
         } else if (data[2] == 26) {
@@ -704,6 +703,8 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
         } else if (data[2] == 93) {
             Log.e("xx", "开机状态配置返回");
         }
+
+        addText(txt_data,Arrays.toString(data));
 
     }
 

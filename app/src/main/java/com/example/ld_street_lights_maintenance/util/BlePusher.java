@@ -297,14 +297,8 @@ public class BlePusher {
                                         // 返回消息
                                         callback.onWriteSuccess(0,0,mergeData);
 
-                                        // 关闭通知
-                                        BleManager.getInstance().stopNotify(
-                                                bleDevices.get(0),
-                                                notify.getService().getUuid().toString(),
-                                                notify.getUuid().toString());
-
                                         // 关闭超时通知
-                                        mHandler.removeMessages(MSG_TIMEOUT);
+                                        mHandler.sendEmptyMessage(MSG_TIMEOUT);
                                     }
                                 }
                             }
