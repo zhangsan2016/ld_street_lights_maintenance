@@ -90,7 +90,6 @@ public class BlePusher {
                                 bleDevices.get(0),
                                 notify.getService().getUuid().toString(),
                                 notify.getUuid().toString());
-
                     }
 
                     break;
@@ -207,6 +206,7 @@ public class BlePusher {
                                             new byte[]{01, 01}, new BleWriteCallback() {
                                                 @Override
                                                 public void onWriteSuccess(int current, int total, byte[] justWrite) {
+
                                                     BleManager.getInstance().write(
                                                             bleDevices.get(0),
                                                             gattCharacteristicA1.getService().getUuid().toString(),
@@ -252,23 +252,29 @@ public class BlePusher {
 
                                 } else {
                                     // 分包
-                                    Object[] objdata = BytesUtil.splitAry(spliceData, 20);
-                                    int bytesLeng = objdata.length;
+                                  new Thread(new Runnable() {
+                                      @Override
+                                      public void run() {
 
-                                    for (int i = 0; i < bytesLeng; i++) {
-                                        byte[] bytedata = (byte[]) objdata[i];
+                                          Object[] objdata = BytesUtil.splitAry(spliceData, 20);
+                                          int bytesLeng = objdata.length;
 
-                                        // 用于同步线程
-                                        final CountDownLatch latch = new CountDownLatch(1);
-                                        splitWrite(bytesLeng, i + 1, bytedata, callback, gattCharacteristicA1, gattCharacteristicA2, bleDevices.get(0), latch);
+                                          for (int i = 0; i < bytesLeng; i++) {
+                                              byte[] bytedata = (byte[]) objdata[i];
 
-                                        try {
-                                            //阻塞当前线程直到latch中数值为零才执行
-                                            latch.await();
-                                        } catch (InterruptedException e) {
-                                            e.printStackTrace();
-                                        }
-                                    }
+                                              // 用于同步线程
+                                              final CountDownLatch latch = new CountDownLatch(1);
+                                              splitWrite(bytesLeng, i + 1, bytedata, callback, gattCharacteristicA1, gattCharacteristicA2, bleDevices.get(0), latch);
+
+                                              try {
+                                                  //阻塞当前线程直到latch中数值为零才执行
+                                                  latch.await();
+                                              } catch (InterruptedException e) {
+                                                  e.printStackTrace();
+                                              }
+                                          }
+                                      }
+                                  }).start();
                                 }
                             }
                             @Override
@@ -395,7 +401,11 @@ public class BlePusher {
                                     @Override
                                     public void onWriteSuccess(int current, int total, byte[] justWrite) {
                                         if (mTotalNum == mCount) {
-                                            callback.onWriteSuccess(current, total, justWrite);
+                                            // 分包写入，当最后一个写入成功后如果超时未能接收到返回数据，先关闭消息接收
+                                            mHandler.removeMessages(MSG_TIMEOUT);
+                                            mHandler.sendMessageDelayed(
+                                                    mHandler.obtainMessage(MSG_TIMEOUT, callback),
+                                                    BleManager.getInstance().getOperateTimeout());
                                         }
                                         //让latch中的数值减一
                                         latch.countDown();
