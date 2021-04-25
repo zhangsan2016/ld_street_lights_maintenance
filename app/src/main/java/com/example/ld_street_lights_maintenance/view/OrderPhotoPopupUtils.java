@@ -215,7 +215,7 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
                 showProgress("正在写入...");
                 byte[] funCode = new byte[]{0, 27};
                 byte[] data = new byte[]{85, -86};
-                sendOrder(funCode, data, RWStart.WRITE);
+                sendOrder(funCode, data, RWStart.WRITE,true);
 
             }
         });
@@ -240,7 +240,7 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
                 byte[] funCode = new byte[]{0, 05};
                 byte[] data = new byte[]{(byte) seekBar.getProgress(), 3};
 
-                sendOrder(funCode, data, RWStart.WRITE);
+                sendOrder(funCode, data, RWStart.WRITE,true);
                 Log.i("TAG", "onStopTrackingTouch=" + seekBar.getProgress());
 
 
@@ -274,7 +274,7 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
                     Log.e("xxx", ">>>>>>>>>>>>>>>>>>> 主辅灯关");
                 }
 
-                sendOrder(funCode, data, RWStart.WRITE);
+                sendOrder(funCode, data, RWStart.WRITE,false);
 
                /* byte[] funCode = new byte[]{0, 05};
                 byte[] data = new byte[]{(byte) seekBar.getProgress()};;
@@ -300,19 +300,25 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
 
     /**
      * 发送蓝牙通讯指令
-     *
      * @param funCode 功能码
      * @param data    指令
-     * @param rwStart 读写标识
+     * @param rwStart 读写标识rwStart
+     * @param isListenInform  是否监听蓝牙通知服务
      */
-    private void sendOrder(byte[] funCode, byte[] data, final RWStart rwStart) {
+    private void sendOrder(byte[] funCode, byte[] data, final RWStart rwStart,boolean isListenInform) {
 
         try {
             BlePusher.writeSpliceOrder(funCode, data, new BleWriteCallback() {
                 @Override
                 public void onWriteSuccess(int current, int total, byte[] data) {
 
-                    Log.e("xxx", " 写入成功 返回的数据 = "   + Arrays.toString(data));
+                    if (rwStart == RWStart.WRITE) {
+                        showToast("写入成功~");
+                        Log.e("xxx", ">>>>>>>>>>>>>>>>>>> 写入 当前读取返回数据成功 " + Arrays.toString(data));
+                    } else {
+                        showToast("读取成功~");
+                        Log.e("xxx", ">>>>>>>>>>>>>>>>>>> 读取 当前读取返回数据成功 " + Arrays.toString(data));
+                    }
                     stopProgress();
                    /* BlePusher.readSpliceOrder(new BleReadCallback() {
                         @Override
@@ -355,7 +361,8 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
                     }
                     stopProgress();
                 }
-            });
+            },isListenInform);
+
         } catch (Exception e) {
             e.printStackTrace();
             showToast(e.getMessage().toString());
@@ -486,54 +493,54 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
                     showProgress("正在写入...");
                     funCode = new byte[]{0, 92};
                     data = new byte[]{1};
-                    sendOrder(funCode, data, RWStart.WRITE);
+                    sendOrder(funCode, data, RWStart.WRITE,true);
                     break;
                 case R.id.bt_setting_boot_configoff: // 角度倾倒报警-关
                     showProgress("正在写入...");
                     funCode = new byte[]{0, 92};
                     data = new byte[]{0};
-                    sendOrder(funCode, data, RWStart.WRITE);
+                    sendOrder(funCode, data, RWStart.WRITE,true);
                     break;
                 case R.id.bt_setting_collapse_alarmon: // 角度倾倒报警-开
                     showProgress("正在写入...");
                     funCode = new byte[]{0, 90};
                     data = new byte[]{1};
-                    sendOrder(funCode, data, RWStart.WRITE);
+                    sendOrder(funCode, data, RWStart.WRITE,true);
                     break;
                 case R.id.bt_setting_collapse_alarmoff: // 角度倾倒报警-关
                     showProgress("正在写入...");
                     funCode = new byte[]{0, 90};
                     data = new byte[]{0};
-                    sendOrder(funCode, data, RWStart.WRITE);
+                    sendOrder(funCode, data, RWStart.WRITE,true);
                     break;
                 case R.id.bt_setting_angle_adjust: // 角度校准
                     showProgress("正在写入...");
                     funCode = new byte[]{0, 88};
-                    sendOrder(funCode, null, RWStart.WRITE);
+                    sendOrder(funCode, null, RWStart.WRITE,true);
                     break;
                 case R.id.bt_setting_locationon: // 经纬度开灯设置开
                     showProgress("正在写入...");
                     funCode = new byte[]{0, 86};
                     data = new byte[]{1};
-                    sendOrder(funCode, data, RWStart.WRITE);
+                    sendOrder(funCode, data, RWStart.WRITE,true);
                     break;
                 case R.id.bt_setting_locationoff: // 经纬度开灯设置关
                     showProgress("正在写入...");
                     funCode = new byte[]{0, 86};
                     data = new byte[]{0};
-                    sendOrder(funCode, data, RWStart.WRITE);
+                    sendOrder(funCode, data, RWStart.WRITE,true);
                     break;
                 case R.id.bt_setting_illuon: // 照度开
                     showProgress("正在写入...");
                     funCode = new byte[]{0, 82};
                     data = new byte[]{1};
-                    sendOrder(funCode, data, RWStart.WRITE);
+                    sendOrder(funCode, data, RWStart.WRITE,true);
                     break;
                 case R.id.bt_setting_illuoff: // 照度关
                     showProgress("正在写入...");
                     funCode = new byte[]{0, 82};
                     data = new byte[]{0};
-                    sendOrder(funCode, data, RWStart.WRITE);
+                    sendOrder(funCode, data, RWStart.WRITE,true);
                     break;
                 case R.id.bt_curve_timing: // 曲线定时
                     Intent intent = new Intent(mContext, DeviceTiming.class);
@@ -543,13 +550,13 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
                     showProgress("正在写入...");
                     funCode = new byte[]{0, 01};
                     data = new byte[]{-95, -86};
-                    sendOrder(funCode, data, RWStart.WRITE);
+                    sendOrder(funCode, data, RWStart.WRITE,false);
                     break;
-                case R.id.bt_reboot:
+                case R.id.bt_reboot:  // 重启
                     showProgress("正在写入...");
                     funCode = new byte[]{0, 01};
                     data = new byte[]{-86, -95};
-                    sendOrder(funCode, data, RWStart.WRITE);
+                    sendOrder(funCode, data, RWStart.WRITE,false);
                     break;
                 case R.id.bt_timing:
                     showProgress("正在写入...");
@@ -580,7 +587,7 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
                     data[5] = Byte.parseByte(second);
                     data[6] = (byte) week;
 
-                    sendOrder(funCode, data, RWStart.WRITE);
+                    sendOrder(funCode, data, RWStart.WRITE,false);
                     break;
 
             }
@@ -603,42 +610,42 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
                 case R.id.bt_rw_read_state:  // 一键读取所有状态信息
                     showProgress("正在读取...");
                     funCode = new byte[]{0, 49};
-                    sendOrder(funCode, null, RWStart.READ);
+                    sendOrder(funCode, null, RWStart.READ,true);
                     break;
                 case R.id.bt_rw_read_config:  // 一键读取所有配置信息
                     showProgress("正在读取...");
                     funCode = new byte[]{0, 47};
-                    sendOrder(funCode, null, RWStart.READ);
+                    sendOrder(funCode, null, RWStart.READ,true);
                     break;
                 case R.id.bt_rw_read_signal_strength:  // 读取信号强度
                     showProgress("正在读取...");
                     funCode = new byte[]{0, 45};
-                    sendOrder(funCode, null, RWStart.READ);
+                    sendOrder(funCode, null, RWStart.READ,true);
                     break;
                 case R.id.bt_read_alarm_threshold:  // 读取报警电压电流阈值
                     showProgress("正在读取...");
                     funCode = new byte[]{0, 11};
-                    sendOrder(funCode, null, RWStart.READ);
+                    sendOrder(funCode, null, RWStart.READ,true);
                     break;
                 case R.id.bt_rw_read_time: // 读取时间
                     showProgress("正在读取...");
                     funCode = new byte[]{0, 19};
-                    sendOrder(funCode, null, RWStart.READ);
+                    sendOrder(funCode, null, RWStart.READ,true);
                     break;
                 case R.id.bt_rw_read_ep: // 读取电参
                     showProgress("正在读取...");
                     funCode = new byte[]{0, 25};
-                    sendOrder(funCode, null, RWStart.READ);
+                    sendOrder(funCode, null, RWStart.READ,true);
                     break;
                 case R.id.bt_rw_read_devid: // 读取设备id
                     showProgress("正在读取...");
                     funCode = new byte[]{0, 31};
-                    sendOrder(funCode, null, RWStart.READ);
+                    sendOrder(funCode, null, RWStart.READ,true);
                     break;
                 case R.id.bt_rw_read_vernum: // 读取设备当前版本号
                     showProgress("正在读取...");
                     funCode = new byte[]{0, 33};
-                    sendOrder(funCode, null, RWStart.READ);
+                    sendOrder(funCode, null, RWStart.READ,true);
                     break;
             }
 

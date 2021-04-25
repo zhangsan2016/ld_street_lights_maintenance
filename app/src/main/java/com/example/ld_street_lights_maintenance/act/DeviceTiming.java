@@ -689,7 +689,13 @@ public class DeviceTiming extends BaseActivity {
                 @Override
                 public void onWriteSuccess(int current, int total, byte[] justWrite) {
 
-                    BlePusher.readSpliceOrder(new BleReadCallback() {
+                    showToast("写入成功~");
+                    Log.e("xxx", ">>>>>>>>>>>>>>>>>>> 当前读取返回数据成功 " + Arrays.toString(justWrite));
+                    // 解析数据
+                    //  parseDatas(data);
+                    stopProgress();
+
+                  /*  BlePusher.readSpliceOrder(new BleReadCallback() {
                         @Override
                         public void onReadSuccess(byte[] data) {
                             showToast("写入成功~");
@@ -704,7 +710,7 @@ public class DeviceTiming extends BaseActivity {
                             showToast("数据读取失败，请靠近蓝牙设备，或重新连接蓝牙~");
                             stopProgress();
                         }
-                    });
+                    });*/
                 }
 
                 @Override
@@ -712,7 +718,7 @@ public class DeviceTiming extends BaseActivity {
                     showToast("写入失败" + exception.toString());
                     stopProgress();
                 }
-            });
+            },true);
         } catch (Exception e) {
             e.printStackTrace();
             showToast(e.getMessage().toString());
@@ -737,8 +743,6 @@ public class DeviceTiming extends BaseActivity {
                     Toast.makeText(DeviceTiming.this, msg, Toast.LENGTH_SHORT).show();
                     timingToken = true;
                     stopProgress();
-
-
                     myHandler.sendEmptyMessage(2);
                 }
             }

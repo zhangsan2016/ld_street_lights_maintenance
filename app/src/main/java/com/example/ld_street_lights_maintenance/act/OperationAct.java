@@ -92,7 +92,7 @@ public class OperationAct extends AppCompatActivity implements View.OnClickListe
                     showToast("写入失败" + exception.toString());
                     stopProgress();
                 }
-            });
+            },true);
         } catch (Exception e) {
             e.printStackTrace();
             showToast(e.getMessage().toString());
