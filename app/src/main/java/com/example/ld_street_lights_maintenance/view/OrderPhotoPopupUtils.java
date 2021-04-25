@@ -26,6 +26,7 @@ import android.widget.Toast;
 import com.clj.fastble.callback.BleReadCallback;
 import com.clj.fastble.callback.BleWriteCallback;
 import com.clj.fastble.exception.BleException;
+import com.clj.fastble.exception.TimeoutException;
 import com.example.ld_street_lights_maintenance.R;
 import com.example.ld_street_lights_maintenance.act.DeviceTiming;
 import com.example.ld_street_lights_maintenance.fragment.mainfragment.BuleFragment;
@@ -339,9 +340,18 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
                 @Override
                 public void onWriteFailure(BleException exception) {
                     if (rwStart == RWStart.WRITE) {
-                        showToast("写入失败" + exception.toString());
+                        if (exception instanceof TimeoutException){
+                            showToast("写入失败: 当前蓝牙信号较弱，请尝试靠近~"  );
+                        }else{
+                            showToast("写入失败:" + exception.toString());
+                        }
                     } else {
-                        showToast("读取失败" + exception.toString());
+                        if (exception instanceof TimeoutException){
+                            showToast("读取失败: 当前蓝牙信号较弱，请尝试靠近~"  );
+                        }else{
+                            showToast("读取失败" + exception.toString());
+                        }
+
                     }
                     stopProgress();
                 }
