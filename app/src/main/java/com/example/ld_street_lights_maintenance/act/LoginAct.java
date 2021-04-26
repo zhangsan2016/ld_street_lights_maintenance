@@ -1,11 +1,9 @@
 package com.example.ld_street_lights_maintenance.act;
 
 
-import android.Manifest;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -16,12 +14,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-
-import com.amap.api.location.AMapLocation;
-import com.amap.api.location.AMapLocationClient;
-import com.amap.api.location.AMapLocationListener;
 import com.example.ld_street_lights_maintenance.R;
 import com.example.ld_street_lights_maintenance.entity.LoginInfo;
 import com.example.ld_street_lights_maintenance.util.HttpConfiguration;
@@ -30,9 +22,7 @@ import com.example.ld_street_lights_maintenance.util.LogUtil;
 import com.example.ld_street_lights_maintenance.util.SpUtils;
 import com.google.gson.Gson;
 
-import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 import org.json.JSONStringer;
 
 import java.io.IOException;
