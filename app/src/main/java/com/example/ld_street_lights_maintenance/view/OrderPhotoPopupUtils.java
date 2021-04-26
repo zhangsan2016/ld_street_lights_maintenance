@@ -106,7 +106,7 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
     private BroadcastReceiver bleReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            Log.e("xxx", ">>>>>>>>>>>>>>>>>>> 通知接收数据 " );
+            Log.e("xxx", ">>>>>>>>>>>>>>>>>>> 通知接收数据 ");
         }
     };
 
@@ -134,7 +134,7 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
         mPopView = inflater.inflate(R.layout.order_popup, null);
         int screenHeigh = mContext.getResources().getDisplayMetrics().heightPixels;
         // 设置弹出窗口的高
-        ((RelativeLayout)mPopView.findViewById(R.id.rl_oder_popup)).getLayoutParams().height = Math.round(screenHeigh * 0.6f);
+        ((RelativeLayout) mPopView.findViewById(R.id.rl_oder_popup)).getLayoutParams().height = Math.round(screenHeigh * 0.6f);
 
         // 设置下拉 "控制指令" 布局
         ExpandView ev_oder_debug = mPopView.findViewById(R.id.ev_oder_debug);
@@ -189,7 +189,7 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
             @Override
             public boolean onLongClick(View v) {
 
-                ClipboardManager cm =(ClipboardManager)mContext.getSystemService(Context.CLIPBOARD_SERVICE);
+                ClipboardManager cm = (ClipboardManager) mContext.getSystemService(Context.CLIPBOARD_SERVICE);
                 ClipData clipData = ClipData.newPlainText("ldgd", txt_data.getText().toString());
                 cm.setPrimaryClip(clipData);
                 showToast("内容复制成");
@@ -202,13 +202,15 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
         bt_rw_write.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addText(txt_data,"当前内容为：skdlfjlsdjlfjldskj46464646464646546546484787488979879879879879797984784654");
+                addText(txt_data, "当前内容为：skdlfjlsdjlfjldskj46464646464646546546484787488979879879879879797984784654");
             }
         });
         Button bt_read_alarm_threshold = mPopView.findViewById(R.id.bt_read_alarm_threshold);
         bt_read_alarm_threshold.setOnClickListener(readOnclick);
         Button bt_rw_read_time = mPopView.findViewById(R.id.bt_rw_read_time);
         bt_rw_read_time.setOnClickListener(readOnclick);
+        Button bt_rw_read_alarm_state = mPopView.findViewById(R.id.bt_rw_read_alarm_state);
+        bt_rw_read_alarm_state.setOnClickListener(readOnclick);
         Button bt_rw_read_ep = mPopView.findViewById(R.id.bt_rw_read_ep);
         bt_rw_read_ep.setOnClickListener(readOnclick);
         Button bt_rw_read_devid = mPopView.findViewById(R.id.bt_rw_read_devid);
@@ -237,7 +239,7 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
                 showProgress("正在写入...");
                 byte[] funCode = new byte[]{0, 27};
                 byte[] data = new byte[]{85, -86};
-                sendOrder(funCode, data, RWStart.WRITE,true);
+                sendOrder(funCode, data, RWStart.WRITE, true);
 
             }
         });
@@ -262,7 +264,7 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
                 byte[] funCode = new byte[]{0, 05};
                 byte[] data = new byte[]{(byte) seekBar.getProgress(), 3};
 
-                sendOrder(funCode, data, RWStart.WRITE,true);
+                sendOrder(funCode, data, RWStart.WRITE, true);
                 Log.i("TAG", "onStopTrackingTouch=" + seekBar.getProgress());
 
 
@@ -296,7 +298,7 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
                     Log.e("xxx", ">>>>>>>>>>>>>>>>>>> 主辅灯关");
                 }
 
-                sendOrder(funCode, data, RWStart.WRITE,false);
+                sendOrder(funCode, data, RWStart.WRITE, false);
 
                /* byte[] funCode = new byte[]{0, 05};
                 byte[] data = new byte[]{(byte) seekBar.getProgress()};;
@@ -322,12 +324,13 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
 
     /**
      * 发送蓝牙通讯指令
-     * @param funCode 功能码
-     * @param data    指令
-     * @param rwStart 读写标识rwStart
-     * @param isListenInform  是否监听蓝牙通知服务
+     *
+     * @param funCode        功能码
+     * @param data           指令
+     * @param rwStart        读写标识rwStart
+     * @param isListenInform 是否监听蓝牙通知服务
      */
-    private void sendOrder(byte[] funCode, byte[] data, final RWStart rwStart,boolean isListenInform) {
+    private void sendOrder(byte[] funCode, byte[] data, final RWStart rwStart, boolean isListenInform) {
 
         try {
             BlePusher.writeSpliceOrder(funCode, data, new BleWriteCallback() {
@@ -370,22 +373,22 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
                 @Override
                 public void onWriteFailure(BleException exception) {
                     if (rwStart == RWStart.WRITE) {
-                        if (exception instanceof TimeoutException){
-                            showToast("写入失败: 当前蓝牙信号较弱，请尝试靠近~"  );
-                        }else{
+                        if (exception instanceof TimeoutException) {
+                            showToast("写入失败: 当前蓝牙信号较弱，请尝试靠近~");
+                        } else {
                             showToast("写入失败:" + exception.toString());
                         }
                     } else {
-                        if (exception instanceof TimeoutException){
-                            showToast("读取失败: 当前蓝牙信号较弱，请尝试靠近~"  );
-                        }else{
+                        if (exception instanceof TimeoutException) {
+                            showToast("读取失败: 当前蓝牙信号较弱，请尝试靠近~");
+                        } else {
                             showToast("读取失败" + exception.toString());
                         }
 
                     }
                     stopProgress();
                 }
-            },isListenInform);
+            }, isListenInform);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -408,12 +411,12 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
 
         @Override
         public boolean onTouch(View v, MotionEvent event) {
-            if(event.getAction() == MotionEvent.ACTION_DOWN
-                    || event.getAction() == MotionEvent.ACTION_MOVE){
+            if (event.getAction() == MotionEvent.ACTION_DOWN
+                    || event.getAction() == MotionEvent.ACTION_MOVE) {
                 //按下或滑动时请求父节点不拦截子节点
                 v.getParent().requestDisallowInterceptTouchEvent(true);
             }
-            if(event.getAction() == MotionEvent.ACTION_UP){
+            if (event.getAction() == MotionEvent.ACTION_UP) {
                 //抬起时请求父节点拦截子节点
                 v.getParent().requestDisallowInterceptTouchEvent(false);
             }
@@ -454,7 +457,7 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
                 // id是你需要点击的控件id之上的地方，来实现点击外围扩散的效果
                 int top = mPopView.findViewById(com.example.ld_street_lights_maintenance.R.id.rl_oder_popup).getTop();
                 int height = mPopView.findViewById(com.example.ld_street_lights_maintenance.R.id.rl_oder_popup).getHeight();
-                int y = (int) event.getY()-top;
+                int y = (int) event.getY() - top;
                 if (event.getAction() == MotionEvent.ACTION_UP) {
                     if (y < top) {
                         dismiss();
@@ -521,54 +524,54 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
                     showProgress("正在写入...");
                     funCode = new byte[]{0, 92};
                     data = new byte[]{1};
-                    sendOrder(funCode, data, RWStart.WRITE,true);
+                    sendOrder(funCode, data, RWStart.WRITE, true);
                     break;
                 case R.id.bt_setting_boot_configoff: // 角度倾倒报警-关
                     showProgress("正在写入...");
                     funCode = new byte[]{0, 92};
                     data = new byte[]{0};
-                    sendOrder(funCode, data, RWStart.WRITE,true);
+                    sendOrder(funCode, data, RWStart.WRITE, true);
                     break;
                 case R.id.bt_setting_collapse_alarmon: // 角度倾倒报警-开
                     showProgress("正在写入...");
                     funCode = new byte[]{0, 90};
                     data = new byte[]{1};
-                    sendOrder(funCode, data, RWStart.WRITE,true);
+                    sendOrder(funCode, data, RWStart.WRITE, true);
                     break;
                 case R.id.bt_setting_collapse_alarmoff: // 角度倾倒报警-关
                     showProgress("正在写入...");
                     funCode = new byte[]{0, 90};
                     data = new byte[]{0};
-                    sendOrder(funCode, data, RWStart.WRITE,true);
+                    sendOrder(funCode, data, RWStart.WRITE, true);
                     break;
                 case R.id.bt_setting_angle_adjust: // 角度校准
                     showProgress("正在写入...");
                     funCode = new byte[]{0, 88};
-                    sendOrder(funCode, null, RWStart.WRITE,true);
+                    sendOrder(funCode, null, RWStart.WRITE, true);
                     break;
                 case R.id.bt_setting_locationon: // 经纬度开灯设置开
                     showProgress("正在写入...");
                     funCode = new byte[]{0, 86};
                     data = new byte[]{1};
-                    sendOrder(funCode, data, RWStart.WRITE,true);
+                    sendOrder(funCode, data, RWStart.WRITE, true);
                     break;
                 case R.id.bt_setting_locationoff: // 经纬度开灯设置关
                     showProgress("正在写入...");
                     funCode = new byte[]{0, 86};
                     data = new byte[]{0};
-                    sendOrder(funCode, data, RWStart.WRITE,true);
+                    sendOrder(funCode, data, RWStart.WRITE, true);
                     break;
                 case R.id.bt_setting_illuon: // 照度开
                     showProgress("正在写入...");
                     funCode = new byte[]{0, 82};
                     data = new byte[]{1};
-                    sendOrder(funCode, data, RWStart.WRITE,true);
+                    sendOrder(funCode, data, RWStart.WRITE, true);
                     break;
                 case R.id.bt_setting_illuoff: // 照度关
                     showProgress("正在写入...");
                     funCode = new byte[]{0, 82};
                     data = new byte[]{0};
-                    sendOrder(funCode, data, RWStart.WRITE,true);
+                    sendOrder(funCode, data, RWStart.WRITE, true);
                     break;
                 case R.id.bt_curve_timing: // 曲线定时
                     Intent intent = new Intent(mContext, DeviceTiming.class);
@@ -578,13 +581,13 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
                     showProgress("正在写入...");
                     funCode = new byte[]{0, 01};
                     data = new byte[]{-95, -86};
-                    sendOrder(funCode, data, RWStart.WRITE,false);
+                    sendOrder(funCode, data, RWStart.WRITE, false);
                     break;
                 case R.id.bt_reboot:  // 重启
                     showProgress("正在写入...");
                     funCode = new byte[]{0, 01};
                     data = new byte[]{-86, -95};
-                    sendOrder(funCode, data, RWStart.WRITE,false);
+                    sendOrder(funCode, data, RWStart.WRITE, false);
                     break;
                 case R.id.bt_timing:
                     showProgress("正在写入...");
@@ -615,7 +618,7 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
                     data[5] = Byte.parseByte(second);
                     data[6] = (byte) week;
 
-                    sendOrder(funCode, data, RWStart.WRITE,false);
+                    sendOrder(funCode, data, RWStart.WRITE, false);
                     break;
 
             }
@@ -635,45 +638,50 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
                     txt_data.setText("");
                     txt_data.scrollTo(0, 0);
                     break;
+                case R.id.bt_rw_read_alarm_state:  // 读取报警状态
+                    showProgress("正在读取...");
+                    funCode = new byte[]{0, 17};
+                    sendOrder(funCode, null, RWStart.READ, true);
+                    break;
                 case R.id.bt_rw_read_state:  // 一键读取所有状态信息
                     showProgress("正在读取...");
                     funCode = new byte[]{0, 49};
-                    sendOrder(funCode, null, RWStart.READ,true);
+                    sendOrder(funCode, null, RWStart.READ, true);
                     break;
                 case R.id.bt_rw_read_config:  // 一键读取所有配置信息
                     showProgress("正在读取...");
                     funCode = new byte[]{0, 47};
-                    sendOrder(funCode, null, RWStart.READ,true);
+                    sendOrder(funCode, null, RWStart.READ, true);
                     break;
                 case R.id.bt_rw_read_signal_strength:  // 读取信号强度
                     showProgress("正在读取...");
                     funCode = new byte[]{0, 45};
-                    sendOrder(funCode, null, RWStart.READ,true);
+                    sendOrder(funCode, null, RWStart.READ, true);
                     break;
                 case R.id.bt_read_alarm_threshold:  // 读取报警电压电流阈值
                     showProgress("正在读取...");
                     funCode = new byte[]{0, 11};
-                    sendOrder(funCode, null, RWStart.READ,true);
+                    sendOrder(funCode, null, RWStart.READ, true);
                     break;
                 case R.id.bt_rw_read_time: // 读取时间
                     showProgress("正在读取...");
                     funCode = new byte[]{0, 19};
-                    sendOrder(funCode, null, RWStart.READ,true);
+                    sendOrder(funCode, null, RWStart.READ, true);
                     break;
                 case R.id.bt_rw_read_ep: // 读取电参
                     showProgress("正在读取...");
                     funCode = new byte[]{0, 25};
-                    sendOrder(funCode, null, RWStart.READ,true);
+                    sendOrder(funCode, null, RWStart.READ, true);
                     break;
                 case R.id.bt_rw_read_devid: // 读取设备id
                     showProgress("正在读取...");
                     funCode = new byte[]{0, 31};
-                    sendOrder(funCode, null, RWStart.READ,true);
+                    sendOrder(funCode, null, RWStart.READ, true);
                     break;
                 case R.id.bt_rw_read_vernum: // 读取设备当前版本号
                     showProgress("正在读取...");
                     funCode = new byte[]{0, 33};
-                    sendOrder(funCode, null, RWStart.READ,true);
+                    sendOrder(funCode, null, RWStart.READ, true);
                     break;
             }
 
@@ -682,33 +690,51 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
 
     /**
      * 解析数据
+     *
      * @param data
      */
     private void parseDatas(byte[] data) {
 
-        addText(txt_data,Arrays.toString(data));
+        addText(txt_data, Arrays.toString(data));
         //使用 crc 校验数据
-        if(!checkDataCrc(data)){
+        if (!checkDataCrc(data)) {
             Log.e("xx", "CRC 校验失败~");
-           return;
-        }else{
+            return;
+        } else {
             Log.e("xx", "CRC 校验成功~");
         }
 
         // 根据状态码解析对应的数据
         if (data[2] == 12) { // 返回警报电压电流阈值
             Log.e("xx", "返回警报电压电流阈值");
-
+            //  [-18, 0, 12, 0, 8, 97, -88, 46, -32, 1, -12, 0, 0, 44, 26, -17, 0, 0, 0, 0]
+        } else if (data[2] == 18) {
+            Log.e("xx", "返回读警报状态确认");
         } else if (data[2] == 20) {
+
             Log.e("xx", "返回时间");
+            String txt = "读取的时间为：" + "20" + data[5] + "年" + data[6] + "月" + data[7] + "日" + " " + data[8] + ":" + data[9] + ":" + data[10];
+            addText(txt_data, txt);
+
         } else if (data[2] == 26) {
             Log.e("xx", "返回电参");
         } else if (data[2] == 32) {
             Log.e("xx", "返回设备ID号");
+            //  [-18, 0, 32, 0, 23, 52, 48, 48, 55, 48, 48, 48, 48, 56, 54, 52, 56, 51, 49, 48, 53, 53, 48, 52, 50, 51, 54, 51, 20, 35, -17, 0, 0, 0, 0, 0, 0, 20, -27, 4]
+            String txt = "设备ID为：" + "52, 48, 48, 55, 48, 48, 48, 48, 56, 54, 52, 56, 51, 49, 48, 53, 53, 48, 52, 50, 51, 54, 51,";
+            addText(txt_data, txt);
+
         } else if (data[2] == 34) {
             Log.e("xx", "返回设备版本号");
+            // -18, 0, 34, 0, 3, 0, 4, 9, -49, 11, -17, 0, 0, 0, 0, 52, 56, 51, 49, 48
+            String txt = "当前设备版本为：" + data[5] + "" + data[6] + "" + data[7];
+            addText(txt_data, txt);
+
         } else if (data[2] == 46) {
             Log.e("xx", "读取信号强度确定");
+            // -18, 0, 46, 0, 3, 0, 45, 18, -104, 84, -17, 0, 0, 0, 0, 0, 56, 51, 49, 48
+            String txt = "当前设备信号强度为：" + data[5] + "" + data[6] + "" + data[7];
+            addText(txt_data, txt);
         } else if (data[2] == 48) {
             Log.e("xx", "一键读取所有配置信息返回");
         } else if (data[2] == 50) {
@@ -728,15 +754,16 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
     }
 
     /**
-     *  使用 crc 校验数据
+     * 使用 crc 校验数据
+     *
      * @param data
      */
     private boolean checkDataCrc(byte[] data) {
         for (int i = 0; i < data.length; i++) {
-            if(data[i] == -17){
-                byte [] checkData = new byte[i-2];
-                System.arraycopy(data,0,checkData,0,i-2);
-                return  CopyOfcheckCRC.checkTheCrc(checkData,new byte[]{ data[i-2],data[i-1]});
+            if (data[i] == -17) {
+                byte[] checkData = new byte[i - 2];
+                System.arraycopy(data, 0, checkData, 0, i - 2);
+                return CopyOfcheckCRC.checkTheCrc(checkData, new byte[]{data[i - 2], data[i - 1]});
             }
         }
         return false;

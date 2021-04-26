@@ -20,6 +20,15 @@
             android:textColor="@color/white" />
 
         <Button
+            android:id="@+id/bt_rw_read_alarm_state"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_below="@id/cd_electricity"
+            android:background="@drawable/button_drawable"
+            android:text="读取报警状态"
+            android:textColor="@color/white" />
+
+        <Button
             android:id="@+id/bt_rw_read_time"
             android:layout_width="wrap_content"
             android:layout_height="30dp"
