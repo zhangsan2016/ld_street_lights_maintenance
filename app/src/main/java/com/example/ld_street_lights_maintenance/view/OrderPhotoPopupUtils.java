@@ -20,12 +20,13 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.clj.fastble.callback.BleReadCallback;
 import com.clj.fastble.callback.BleWriteCallback;
 import com.clj.fastble.exception.BleException;
 import com.clj.fastble.exception.TimeoutException;
@@ -34,6 +35,7 @@ import com.example.ld_street_lights_maintenance.act.DeviceTiming;
 import com.example.ld_street_lights_maintenance.crc.CopyOfcheckCRC;
 import com.example.ld_street_lights_maintenance.fragment.mainfragment.BuleFragment;
 import com.example.ld_street_lights_maintenance.util.BlePusher;
+import com.example.ld_street_lights_maintenance.util.DensityUtil;
 
 import java.util.Arrays;
 import java.util.Calendar;
@@ -128,7 +130,10 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
     private void init(Context context) {
         LayoutInflater inflater = LayoutInflater.from(context);
         // 绑定布局
-        mPopView = inflater.inflate(R.layout.oder_popup, null);
+        mPopView = inflater.inflate(R.layout.order_popup, null);
+        int screenHeigh = mContext.getResources().getDisplayMetrics().heightPixels;
+        // 设置弹出窗口的高
+        ((RelativeLayout)mPopView.findViewById(R.id.rl_oder_popup)).getLayoutParams().height = Math.round(screenHeigh * 0.6f);
 
         // 设置下拉 "控制指令" 布局
         ExpandView ev_oder_debug = mPopView.findViewById(R.id.ev_oder_debug);
@@ -431,9 +436,10 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
 //        this.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);// 设置弹出窗口的宽
 //        this.setHeight(DensityUtil.getScreenHeight(mContext));// 设置弹出窗口的高
         this.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);// 设置弹出窗口的宽
-        // 重置PopupWindow高度
-        int screenHeigh = mContext.getResources().getDisplayMetrics().heightPixels;
-        this.setHeight(Math.round(screenHeigh * 0.6f));// 设置弹出窗口的高
+      /*  // 重置PopupWindow高度
+       int screenHeigh = mContext.getResources().getDisplayMetrics().heightPixels;
+        this.setHeight(Math.round(screenHeigh * 0.6f));  // 设置弹出窗口的高*/
+        this.setHeight(DensityUtil.getScreenHeight(mContext));// 设置弹出窗口的高
         this.setFocusable(false);// 设置弹出窗口可
         this.setOutsideTouchable(false);
         //   this.setAnimationStyle(R.style.mypopwindow_anim_style);// 设置动画
@@ -443,14 +449,17 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
             @SuppressLint("ClickableViewAccessibility")
             @Override
             public boolean onTouch(View v, MotionEvent event) {
+
                 // id是你需要点击的控件id之上的地方，来实现点击外围扩散的效果
-                int height = mPopView.findViewById(com.example.ld_street_lights_maintenance.R.id.id_pop_layout).getTop();
-                int y = (int) event.getY();
+                int top = mPopView.findViewById(com.example.ld_street_lights_maintenance.R.id.rl_oder_popup).getTop();
+                int height = mPopView.findViewById(com.example.ld_street_lights_maintenance.R.id.rl_oder_popup).getHeight();
+                int y = (int) event.getY()-top;
                 if (event.getAction() == MotionEvent.ACTION_UP) {
-                    if (y < height) {
+                    if (y < top) {
                         dismiss();
                     }
                 }
+
                 return true;
             }
         });
