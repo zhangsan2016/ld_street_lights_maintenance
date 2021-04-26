@@ -277,7 +277,13 @@ public class LoginAct extends Activity {
 
 
     private void showProgress() {
-        mProgress = ProgressDialog.show(this, "", "Loading...");
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mProgress = ProgressDialog.show(LoginAct.this, "", "Loading...");
+            }
+        });
+
     }
 
     private void stopProgress() {

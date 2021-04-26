@@ -1,9 +1,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
     <!-- 以上的background是遮罩层颜色，具体颜色可以自己设置，在此就不贴出来了-->
     <!-- 以下的background才是底部弹窗的颜色，此处我新增了两个按钮，当点击已经选取的图片时提供删除和查看 -->
 
