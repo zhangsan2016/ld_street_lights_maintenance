@@ -298,7 +298,12 @@ public class BlePusher {
                                         callback.onWriteSuccess(0,0,mergeData);
 
                                         // 关闭超时通知
-                                        mHandler.sendEmptyMessage(MSG_TIMEOUT);
+                                        mHandler.removeMessages(MSG_TIMEOUT);
+                                        BleManager.getInstance().stopNotify(
+                                                bleDevices.get(0),
+                                                notify.getService().getUuid().toString(),
+                                                notify.getUuid().toString());
+
                                     }
                                 }
                             }
