@@ -12,6 +12,7 @@
 
         <TextView
             android:id="@+id/agent_name"
+            style="@style/amap_view_infowindow_marker_text_style"
             android:layout_width="match_parent"
             android:layout_height="20dp"
             android:layout_marginTop="11dp"
@@ -19,6 +20,7 @@
 
         <TextView
             android:id="@+id/agent_addr"
+            style="@style/amap_view_infowindow_marker_text_style"
             android:layout_width="match_parent"
             android:layout_height="17dp"
             android:layout_marginLeft="14dp"
@@ -32,22 +34,24 @@
             android:orientation="horizontal">
 
             <TextView
+                style="@style/amap_view_infowindow_marker_text_style"
                 android:layout_width="0dp"
                 android:layout_height="17dp"
                 android:layout_marginLeft="14dp"
-                android:layout_marginRight="14dp"
                 android:layout_marginTop="2dp"
+                android:layout_marginRight="14dp"
                 android:layout_weight="1"
                 android:singleLine="true"
                 android:text="电箱："
                 android:textSize="12sp" />
 
             <TextView
+                style="@style/amap_view_infowindow_marker_text_style"
                 android:layout_width="0dp"
                 android:layout_height="17dp"
                 android:layout_marginLeft="14dp"
-                android:layout_marginRight="14dp"
                 android:layout_marginTop="2dp"
+                android:layout_marginRight="14dp"
                 android:layout_weight="1"
                 android:singleLine="true"
                 android:text="电箱："
@@ -62,51 +66,24 @@
             android:orientation="horizontal">
 
             <TextView
+                style="@style/amap_view_infowindow_marker_text_style"
                 android:layout_width="0dp"
                 android:layout_height="17dp"
                 android:layout_marginLeft="14dp"
-                android:layout_marginRight="14dp"
                 android:layout_marginTop="2dp"
+                android:layout_marginRight="14dp"
                 android:layout_weight="1"
                 android:singleLine="true"
                 android:text="电箱："
                 android:textSize="12sp" />
 
             <TextView
+                style="@style/amap_view_infowindow_marker_text_style"
                 android:layout_width="0dp"
                 android:layout_height="17dp"
                 android:layout_marginLeft="14dp"
-                android:layout_marginRight="14dp"
                 android:layout_marginTop="2dp"
-                android:layout_weight="1"
-                android:singleLine="true"
-                android:text="电箱："
-                android:textSize="12sp" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="17dp"
-                android:layout_marginLeft="14dp"
                 android:layout_marginRight="14dp"
-                android:layout_marginTop="2dp"
-                android:layout_weight="1"
-                android:singleLine="true"
-                android:text="电箱："
-                android:textSize="12sp" />
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="17dp"
-                android:layout_marginLeft="14dp"
-                android:layout_marginRight="14dp"
-                android:layout_marginTop="2dp"
                 android:layout_weight="1"
                 android:singleLine="true"
                 android:text="电箱："
@@ -120,22 +97,55 @@
             android:orientation="horizontal">
 
             <TextView
+                style="@style/amap_view_infowindow_marker_text_style"
                 android:layout_width="0dp"
                 android:layout_height="17dp"
                 android:layout_marginLeft="14dp"
-                android:layout_marginRight="14dp"
                 android:layout_marginTop="2dp"
+                android:layout_marginRight="14dp"
                 android:layout_weight="1"
                 android:singleLine="true"
                 android:text="电箱："
                 android:textSize="12sp" />
 
             <TextView
+                style="@style/amap_view_infowindow_marker_text_style"
                 android:layout_width="0dp"
                 android:layout_height="17dp"
                 android:layout_marginLeft="14dp"
-                android:layout_marginRight="14dp"
                 android:layout_marginTop="2dp"
+                android:layout_marginRight="14dp"
+                android:layout_weight="1"
+                android:singleLine="true"
+                android:text="电箱："
+                android:textSize="12sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/amap_view_infowindow_marker_text_style"
+                android:layout_width="0dp"
+                android:layout_height="17dp"
+                android:layout_marginLeft="14dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginRight="14dp"
+                android:layout_weight="1"
+                android:singleLine="true"
+                android:text="电箱："
+                android:textSize="12sp" />
+
+            <TextView
+                style="@style/amap_view_infowindow_marker_text_style"
+                android:layout_width="0dp"
+                android:layout_height="17dp"
+                android:layout_marginLeft="14dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginRight="14dp"
                 android:layout_weight="1"
                 android:singleLine="true"
                 android:text="电箱："
@@ -148,8 +158,8 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginLeft="6dp"
-            android:layout_marginRight="6dp"
             android:layout_marginTop="9dp"
+            android:layout_marginRight="6dp"
             android:background="#DFDFDF" />
 
         <LinearLayout
@@ -171,6 +181,7 @@
                     android:scaleType="centerCrop" />
 
                 <TextView
+                    style="@style/amap_view_infowindow_marker_text_style"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
@@ -181,8 +192,8 @@
             <View
                 android:layout_width="1dp"
                 android:layout_height="30dp"
-                android:layout_marginBottom="13dp"
                 android:layout_marginTop="5dp"
+                android:layout_marginBottom="13dp"
                 android:background="#DFDFDF" />
 
             <LinearLayout
@@ -199,6 +210,7 @@
                     android:scaleType="centerCrop" />
 
                 <TextView
+                    style="@style/amap_view_infowindow_marker_text_style"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"

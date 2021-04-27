@@ -60,4 +60,9 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <!-- 地图marker弹窗字体样式  -->
+    <style name="amap_view_infowindow_marker_text_style">
+        <item name="android:textColor">@color/marker_text_hotpink</item>
+    </style>
+
 </resources>
