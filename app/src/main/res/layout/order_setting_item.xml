@@ -64,6 +64,19 @@
             android:textSize="16dp" />
 
         <Button
+            android:id="@+id/bt_setting_illu_vpt"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/button_drawable"
+            android:gravity="center"
+            android:text="照度阈值设置"
+            android:textColor="#ffffff"
+            android:textSize="16dp" />
+
+
+
+        <Button
             android:id="@+id/bt_setting_illuon"
             android:layout_width="wrap_content"
             android:layout_height="30dp"
@@ -126,6 +139,17 @@
             android:background="@drawable/button_drawable"
             android:gravity="center"
             android:text="角度倾倒报警开"
+            android:textColor="#ffffff"
+            android:textSize="16dp" />
+
+        <Button
+            android:id="@+id/bt_setting_alarming_protector"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/button_drawable"
+            android:gravity="center"
+            android:text="使能电参异常报警"
             android:textColor="#ffffff"
             android:textSize="16dp" />
 

@@ -1,11 +1,13 @@
 package com.example.ld_street_lights_maintenance.view;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Rect;
@@ -20,12 +22,15 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import com.clj.fastble.callback.BleWriteCallback;
 import com.clj.fastble.exception.BleException;
@@ -35,6 +40,7 @@ import com.example.ld_street_lights_maintenance.act.DeviceTiming;
 import com.example.ld_street_lights_maintenance.crc.CopyOfcheckCRC;
 import com.example.ld_street_lights_maintenance.fragment.mainfragment.BuleFragment;
 import com.example.ld_street_lights_maintenance.util.BlePusher;
+import com.example.ld_street_lights_maintenance.util.BytesUtil;
 import com.example.ld_street_lights_maintenance.util.DensityUtil;
 
 import java.util.Arrays;
@@ -179,6 +185,10 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
         bt_setting_boot_configon.setOnClickListener(settingOnclick);
         Button bt_setting_boot_configoff = mPopView.findViewById(R.id.bt_setting_boot_configoff);
         bt_setting_boot_configoff.setOnClickListener(settingOnclick);
+        Button bt_setting_alarming_protector = mPopView.findViewById(R.id.bt_setting_alarming_protector);
+        bt_setting_alarming_protector.setOnClickListener(settingOnclick);
+        Button bt_setting_illu_vpt = mPopView.findViewById(R.id.bt_setting_illu_vpt);
+        bt_setting_illu_vpt.setOnClickListener(settingOnclick);
 
 
         // 设置下拉 "读写指令" 布局
@@ -520,6 +530,65 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
             switch (v.getId()) {
                 case R.id.bt_setting_dufup: // 设备固件升级
                     break;
+                case R.id.bt_setting_illu_vpt: // 照度阈值设置
+
+                    final View illu_vpt_dialog = LayoutInflater.from(mContext).inflate(R.layout.order_seting_illu_vpt_dialog, null);
+                    AlertDialog illuVptAlerdialog = new AlertDialog.Builder(mContext)
+                            .setTitle("照度阈值设置")
+                            .setView(illu_vpt_dialog)
+                            .setPositiveButton("设置", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface arg0, int arg1) {
+                                    EditText ed_lux_limit = illu_vpt_dialog.findViewById(R.id.ed_order_seting_lux_limit);
+                                    EditText ed_lux_lowerlimit = illu_vpt_dialog.findViewById(R.id.ed_order_seting_lux_lowerlimit);
+
+                                    if (ed_lux_limit.getText().toString().equals("") || ed_lux_lowerlimit.getText().toString().equals("")) {
+                                        showToast("照度阈值设置失败，阈值不能为空！");
+                                        return;
+                                    }
+
+                                    byte[] lux_limit = BytesUtil.intBytesHL(Integer.parseInt(ed_lux_limit.getText().toString()), 2);
+                                    byte[] lux_lowerlimit = BytesUtil.intBytesHL(Integer.parseInt(ed_lux_lowerlimit.getText().toString()), 2);
+                                    byte[] data = BytesUtil.byteMergerAll(lux_limit, lux_lowerlimit);
+
+                                    showProgress("正在写入...");
+                                    byte[] funCode = new byte[]{0, 84};
+                                    sendOrder(funCode, data, RWStart.WRITE, true);
+
+                                }
+                            })
+                            .setNegativeButton("取消", null)
+                            .show();
+                    break;
+                case R.id.bt_setting_alarming_protector: // 使能电参异常报警
+
+                    final View view = LayoutInflater.from(mContext).inflate(R.layout.order_seting_alarm_enable_dialog, null);
+                    AlertDialog myAlerdialog = new AlertDialog.Builder(mContext)
+                            .setTitle("报警保护使能")
+                            .setView(view)
+                            .setPositiveButton("设置", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface arg0, int arg1) {
+                                    ToggleButton overvoltage = view.findViewById(R.id.tb_order_setting_alarm_overvoltage);
+                                    ToggleButton undervoltage = view.findViewById(R.id.tb_order_setting_alarm_undervoltage);
+                                    ToggleButton overcurrent = view.findViewById(R.id.tb_order_setting_alarm_overcurrent);
+                                    ToggleButton undercurrent = view.findViewById(R.id.tb_order_setting_alarm_undercurrent);
+                                    ToggleButton leakage = view.findViewById(R.id.tb_order_setting_alarm_leakage);
+                                    String alarm_enable = (overvoltage.isChecked() ? 1 : 0) + "" + (undervoltage.isChecked() ? 1 : 0) + "" + (overcurrent.isChecked() ? 1 : 0) + "" + (undercurrent.isChecked() ? 1 : 0) + "" + (leakage.isChecked() ? 1 : 0);
+                                    alarm_enable = "000" + alarm_enable;
+                                    byte alarmByte = BytesUtil.BitToByte(alarm_enable);
+                                    Log.e("xx", ">>>>>>>>>>>>>>>>>>>> alarm_enable = " + alarm_enable + " " + alarmByte);
+
+                                    showProgress("正在写入...");
+                                    byte[] funCode = new byte[]{0, 80};
+                                    byte[] data = new byte[]{alarmByte};
+                                    sendOrder(funCode, data, RWStart.WRITE, true);
+
+                                }
+                            })
+                            .setNegativeButton("取消", null)
+                            .show();
+
+
+                    break;
                 case R.id.bt_setting_boot_configon: // 角度倾倒报警-开
                     showProgress("正在写入...");
                     funCode = new byte[]{0, 92};
@@ -695,7 +764,7 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
      */
     private void parseDatas(byte[] data) {
 
-        addText(txt_data, Arrays.toString(data));
+        addText(txt_data, Arrays.toString(data) + "\n");
         //使用 crc 校验数据
         if (!checkDataCrc(data)) {
             Log.e("xx", "CRC 校验失败~");
@@ -706,41 +775,67 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
 
         // 根据状态码解析对应的数据
         if (data[2] == 12) { // 返回警报电压电流阈值
+
             Log.e("xx", "返回警报电压电流阈值");
-            //  [-18, 0, 12, 0, 8, 97, -88, 46, -32, 1, -12, 0, 0, 44, 26, -17, 0, 0, 0, 0]
+            // -18, 0, 12, 0, 10, 97, -88, 46, -32, 1, -12, 0, 0, 0, 20, 10, 1, -17, 0, 0
+            String txt = "读取报警电压电流阈值：" + "电压高:" + BytesUtil.bytesIntHL(new byte[]{data[5], data[6]}) + " 电压低:" + BytesUtil.bytesIntHL(new byte[]{data[7], data[8]}) + " 电流高:" + BytesUtil.bytesIntHL(new byte[]{data[9], data[10]})
+                    + " 电流低:" + BytesUtil.bytesIntHL(new byte[]{data[11], data[12]});
+            addText(txt_data, txt);
+
         } else if (data[2] == 18) {
+
             Log.e("xx", "返回读警报状态确认");
+            // -18, 0, 18, 0, 4, 0, 17, 0, 0, -112, 28, -17, 0, 0, 0, 0, 56, 51, 49, 48
+            String txt = "读取警报状态：" + "报警状态:" + data[7] + " 电参报警状态:" + data[8];
+            addText(txt_data, txt);
+
         } else if (data[2] == 20) {
 
             Log.e("xx", "返回时间");
-            String txt = "读取的时间为：" + "20" + data[5] + "年" + data[6] + "月" + data[7] + "日" + " " + data[8] + ":" + data[9] + ":" + data[10];
+            String txt = "读取的时间为：" + "20" + data[5] + "年" + data[6] + "月" + data[7] + "日" + " " + data[8] + ":" + data[9] + ":" + data[10] + "\n";
             addText(txt_data, txt);
 
         } else if (data[2] == 26) {
             Log.e("xx", "返回电参");
         } else if (data[2] == 32) {
-            Log.e("xx", "返回设备ID号");
+            Log.e("xx", "返回设备ID号" + "\n");
             //  [-18, 0, 32, 0, 23, 52, 48, 48, 55, 48, 48, 48, 48, 56, 54, 52, 56, 51, 49, 48, 53, 53, 48, 52, 50, 51, 54, 51, 20, 35, -17, 0, 0, 0, 0, 0, 0, 20, -27, 4]
-            String txt = "设备ID为：" + "52, 48, 48, 55, 48, 48, 48, 48, 56, 54, 52, 56, 51, 49, 48, 53, 53, 48, 52, 50, 51, 54, 51,";
+            String txt = "设备ID为：" + "52, 48, 48, 55, 48, 48, 48, 48, 56, 54, 52, 56, 51, 49, 48, 53, 53, 48, 52, 50, 51, 54, 51," + "\n";
             addText(txt_data, txt);
 
         } else if (data[2] == 34) {
             Log.e("xx", "返回设备版本号");
             // -18, 0, 34, 0, 3, 0, 4, 9, -49, 11, -17, 0, 0, 0, 0, 52, 56, 51, 49, 48
-            String txt = "当前设备版本为：" + data[5] + "" + data[6] + "" + data[7];
+            String txt = "当前设备版本为：" + data[5] + "" + data[6] + "" + data[7] + "\n";
             addText(txt_data, txt);
 
         } else if (data[2] == 46) {
             Log.e("xx", "读取信号强度确定");
             // -18, 0, 46, 0, 3, 0, 45, 18, -104, 84, -17, 0, 0, 0, 0, 0, 56, 51, 49, 48
-            String txt = "当前设备信号强度为：" + data[5] + "" + data[6] + "" + data[7];
+            String txt = "当前设备信号强度为：" + data[5] + "" + data[6] + "" + data[7] + "\n";
             addText(txt_data, txt);
         } else if (data[2] == 48) {
+
             Log.e("xx", "一键读取所有配置信息返回");
+            // -18, 0, 48, 0, 56, 17, 0, 100, 20, 0, 80, 23, 0, 30, 1, 0, 40, 4, 0, 80, 9, 0, 0, 18, 0, 0, 21, 23, 0, 1, 0, 0, 3, 0, 0, 5, 0, 0, 8, 0, 0, 97, -88, 46, -32, 1, -12, 0, 0, 0, 20, -1, 1, 0, 30, 0, 5, 1, -60, 0, 1, -65, -56, -17, 0, 0, 0, 0, 77, 81
+            String txt = "";
+            addText(txt_data, txt);
+
         } else if (data[2] == 50) {
+
             Log.e("xx", "一键读取所有状态信息返回");
+            // -18, 0, 50, 0, 46, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 16, 0, 0, 0, 26, -27, 4, 9, 36, -40, -17, 0, 0, 0, 0, -60, 0
+            String txt = "";
+            addText(txt_data, txt);
+
+        } else if (data[2] == 81) {
+            Log.e("xx", "使能电参异常报警返回");
+            String txt = "使能电参异常报警状态:" + data[7];
+            addText(txt_data, txt);
         } else if (data[2] == 83) {
             Log.e("xx", "照度开关返回");
+        } else if (data[2] == 85) {
+            Log.e("xx", "照度阈值设置返回");
         } else if (data[2] == 87) {
             Log.e("xx", "经纬度开灯设置返回");
         } else if (data[2] == 89) {

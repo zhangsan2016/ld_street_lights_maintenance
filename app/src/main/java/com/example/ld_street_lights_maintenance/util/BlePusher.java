@@ -219,7 +219,6 @@ public class BlePusher {
                                                                     //   callback.onWriteSuccess(0,0,mergeData);
 
                                                                     // 消息超时（一定时间无返回）时关闭等待
-                                                                    Log.e("xxx", " notify MSG_TIMEOUT "  + BleManager.getInstance().getOperateTimeout());
                                                                     mHandler.removeMessages(MSG_TIMEOUT);
                                                                     mHandler.sendMessageDelayed(
                                                                             mHandler.obtainMessage(MSG_TIMEOUT, callback),
@@ -304,6 +303,7 @@ public class BlePusher {
                                                 notify.getService().getUuid().toString(),
                                                 notify.getUuid().toString());
 
+                                        break;
                                     }
                                 }
                             }
