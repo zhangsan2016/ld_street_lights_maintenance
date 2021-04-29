@@ -207,7 +207,6 @@ public class NfcNdefActivity extends BaseNfcActivity {
             "  <密码>!@Ddfox136030</密码>\n" +
             "</当前读取信息>\n";
 
-
     private Handler myHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
