@@ -45,7 +45,7 @@ public abstract class BaseBleFragment extends BaseFragment {
     public void onStart() {
         super.onStart();
         this.mNfcAdapter = NfcAdapter.getDefaultAdapter(getContext());
-        this.mPendingIntent = PendingIntent.getActivity(getContext(), 0, new Intent(getContext(), getActivity().getClass()), 0);
+        this.mPendingIntent = PendingIntent.getActivity(getContext(), 0, new Intent(getContext(), getContext().getClass()), 0);
     }
 
 

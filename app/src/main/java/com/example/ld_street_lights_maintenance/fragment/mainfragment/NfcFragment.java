@@ -344,7 +344,7 @@ public class NfcFragment extends BaseBleFragment {
     private void initNFC() {
         // 初始化NFC-onResume处理
         mNfcAdapter = NfcAdapter.getDefaultAdapter(getActivity());
-        mPendingIntent = PendingIntent.getActivity(getActivity(), 0, new Intent(mContext, getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
+        mPendingIntent = PendingIntent.getActivity(getActivity(), 0, new Intent(mContext, getContext().getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
         // 检测nfc权限
         NfcUtils.NfcCheck(getActivity());
 
