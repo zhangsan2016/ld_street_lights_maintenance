@@ -252,13 +252,13 @@ public class NfcNdefActivity extends BaseNfcActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // 去掉窗口标题
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
+       /* requestWindowFeature(Window.FEATURE_NO_TITLE);
         // 隐藏顶部的状态栏
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         getSupportActionBar().hide();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        }
+        }*/
         setContentView(R.layout.activity_nfc);
 
         initNFC();
@@ -1278,7 +1278,6 @@ public class NfcNdefActivity extends BaseNfcActivity {
 
 
     private byte[] payload;
-
     private void readNfcTag(Intent intent) {
 
         if (NfcAdapter.ACTION_NDEF_DISCOVERED.equals(intent.getAction())) {

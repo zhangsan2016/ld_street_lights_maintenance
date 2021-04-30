@@ -6,7 +6,10 @@ import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.graphics.Color;
+import android.nfc.NfcAdapter;
+import android.nfc.Tag;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -25,6 +28,7 @@ import android.widget.TextView;
 import com.clj.fastble.data.BleDevice;
 import com.example.ld_street_lights_maintenance.R;
 import com.example.ld_street_lights_maintenance.adapter.MainTabAdapter;
+import com.example.ld_street_lights_maintenance.fragment.mainfragment.NfcFragment;
 import com.example.ld_street_lights_maintenance.util.DensityUtil;
 import com.example.ld_street_lights_maintenance.view.LightingPlanningPopupUtils;
 import com.example.ld_street_lights_maintenance.view.OrderPhotoPopupUtils;
@@ -46,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
     // 当前蓝牙设备
     private BleDevice bleDevice = null;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,7 +68,17 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    /// static private NFCTag mTag;
+    static private Tag mTag;
+    @Override
+    public void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);
+        mTag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
+        //获取Tag对象,传递到
+        ((NfcFragment) ((MainTabAdapter)viewPager.getAdapter()).getItem(1)).onNewIntent();
 
+    }
 
 
     private void initView() {
