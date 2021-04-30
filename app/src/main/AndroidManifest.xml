@@ -91,7 +91,6 @@
         android:required="true" />
 
 
-
     <application
         android:name=".common.MyApplication"
         android:allowBackup="true"
@@ -109,12 +108,14 @@
             android:value="8a6f1dbe996e9438dca8c34caabf7c0d" />
 
         <activity android:name=".act.LoginAct">
-           <intent-filter>
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+
         <activity
             android:name=".act.CheckActivity"
             android:label="@string/title_activity_main2"
@@ -123,6 +124,7 @@
 
         <activity
             android:name=".act.MainActivity"
+            android:windowSoftInputMode="adjustPan"
             android:screenOrientation="portrait">
 
             <intent-filter>
@@ -151,6 +153,7 @@
             <meta-data
                 android:name="android.nfc.action.TECH_DISCOVERED"
                 android:resource="@xml/filter_nfc" />
+
         </activity>
 
         <activity android:name=".act.DeviceTiming" />
