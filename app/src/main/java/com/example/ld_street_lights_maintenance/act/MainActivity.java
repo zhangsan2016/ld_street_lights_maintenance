@@ -34,6 +34,7 @@ import com.example.ld_street_lights_maintenance.R;
 import com.example.ld_street_lights_maintenance.adapter.MainTabAdapter;
 import com.example.ld_street_lights_maintenance.fragment.mainfragment.NfcFragment;
 import com.example.ld_street_lights_maintenance.util.DensityUtil;
+import com.example.ld_street_lights_maintenance.util.FullScreenModelUtil;
 import com.example.ld_street_lights_maintenance.view.LightingPlanningPopupUtils;
 import com.example.ld_street_lights_maintenance.view.OrderPhotoPopupUtils;
 import com.example.ld_street_lights_maintenance.view.SettingsPopupUtils;
@@ -65,9 +66,13 @@ public class MainActivity extends AppCompatActivity {
             winParams.flags |= bits;
             win.setAttributes(winParams);
         }
+        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+
         setContentView(R.layout.activity_main);
+     //   FullScreenModelUtil.assistActivity(this);
 
         initView();
+
 
 
     }
@@ -108,6 +113,7 @@ public class MainActivity extends AppCompatActivity {
     private void bottomTab() {
         mTabRadioGroup = findViewById(R.id.tabs_rg);
         //  mTabRadioGroup.setOnCheckedChangeListener(mOnCheckedChangeListener);
+
 
         orderPop = new OrderPhotoPopupUtils(MainActivity.this);
         orderPop.setOnItemClickListener(new OrderPhotoPopupUtils.OnItemClickListener() {
@@ -298,6 +304,8 @@ public class MainActivity extends AppCompatActivity {
         MainTabAdapter adapter = new MainTabAdapter(this.getSupportFragmentManager(), FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         viewPager.setOffscreenPageLimit(3);
         viewPager.setAdapter(adapter);
+
+
     }
 
     /**

@@ -259,8 +259,7 @@ public class NfcFragment extends BaseBleFragment {
 
         mContext =  getActivity();
 
-        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
-
+       // getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
 
         initNFC();
 
@@ -655,6 +654,7 @@ public class NfcFragment extends BaseBleFragment {
 
     private void initView(View rootView) {
 
+
         //将Activity传入以便获取contentView
         AutoFitKeyBoardUtil.getInstance().assistActivity(getActivity());
 
@@ -673,7 +673,6 @@ public class NfcFragment extends BaseBleFragment {
 
         // 清除当前界面信息
         clearInterface();
-
 
         // 写入提示框
         View view = View.inflate(mContext, R.layout.alert_dialog_item, null);

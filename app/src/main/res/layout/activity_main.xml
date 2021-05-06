@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" android:fitsSystemWindows="true"
+    android:layout_height="match_parent"
     android:orientation="vertical">
 
 
@@ -13,7 +13,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:background="#617FDE"
-        android:fitsSystemWindows="true"
         android:minHeight="48sp"
         app:title=" "
         app:titleTextColor="@android:color/white">
@@ -30,7 +29,6 @@
             android:textSize="18sp" />
 
     </androidx.appcompat.widget.Toolbar>
-
 
 
     <!-- ViewPager -->
@@ -133,9 +131,9 @@
                     android:textSize="22.0dip" />
 
             </FrameLayout>
+
         </LinearLayout>
     </TabHost>
-
 
     <RadioGroup
         android:id="@+id/tabs_rg"
@@ -162,10 +160,8 @@
             style="@style/Custom.TabRadioButton"
             android:drawableTop="@drawable/tab_setting_selector"
             android:text="设置" />
+
     </RadioGroup>
-
-
-
 
 
 </LinearLayout>
