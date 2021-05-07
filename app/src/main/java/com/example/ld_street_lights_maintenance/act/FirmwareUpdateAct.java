@@ -1,11 +1,15 @@
 package com.example.ld_street_lights_maintenance.act;
 
 import android.os.Bundle;
+import android.os.Environment;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.example.ld_street_lights_maintenance.R;
 import com.example.ld_street_lights_maintenance.base.BaseActivity;
@@ -17,18 +21,42 @@ import com.google.gson.Gson;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
+import okhttp3.ResponseBody;
 
 public class FirmwareUpdateAct extends BaseActivity {
     private Spinner sp_firmware;
+    private  TextView tv_endpoint;
     private ArrayAdapter<String> adapter;
     private List<String> list = new ArrayList<String>();
+
+
+    //主线程更新UI进度
+    private Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case 1:
+                    int progress = msg.arg1;
+
+                    break;
+
+                default:
+                    break;
+            }
+        }
+    };
+
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,14 +70,15 @@ public class FirmwareUpdateAct extends BaseActivity {
 
     private void initView() {
 
-        sp_firmware= this.findViewById(R.id.sp_firmware);
+        sp_firmware = this.findViewById(R.id.sp_firmware);
+        tv_endpoint = this.findViewById(R.id.tv_endpoint);
         adapter = new ArrayAdapter<String>(FirmwareUpdateAct.this, android.R.layout.simple_spinner_item, list);
         sp_firmware.setAdapter(adapter);
 
         sp_firmware.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-               // showToast("当前选项是 ：" + adapter.getItem(position));
+                // showToast("当前选项是 ：" + adapter.getItem(position));
                 /* 将 spinnertext 显示^*/
                 parent.setVisibility(View.VISIBLE);
             }
@@ -59,7 +88,6 @@ public class FirmwareUpdateAct extends BaseActivity {
                 parent.setVisibility(View.VISIBLE);
             }
         });
-
 
 
     }
@@ -87,19 +115,20 @@ public class FirmwareUpdateAct extends BaseActivity {
                         String json = response.body().string();
                         Log.e("xxx", "成功 json = " + json);
                         Gson gson = new Gson();
-                        FirmwareJson firmwareJson = gson.fromJson(json, FirmwareJson.class);
-                        Log.e("xxx", " json = " + firmwareJson.getData().getFiles().size() );
+                        final FirmwareJson firmwareJson = gson.fromJson(json, FirmwareJson.class);
+                        Log.e("xxx", " json = " + firmwareJson.getData().getFiles().size());
                         // 清空list
                         list.clear();
                         for (int i = 0; i < firmwareJson.getData().getFiles().size(); i++) {
                             Log.e("xxx", "  firmware = " + firmwareJson.getData().getFiles().get(i));
-                            if(firmwareJson.getData().getFiles().get(i).contains(".bin")){
+                            if (firmwareJson.getData().getFiles().get(i).contains(".bin")) {
                                 list.add(firmwareJson.getData().getFiles().get(i));
                             }
                         }
                         FirmwareUpdateAct.this.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
+                                tv_endpoint.setText(firmwareJson.getData().getEndpoint());
                                 adapter.notifyDataSetChanged();
                             }
                         });
@@ -110,4 +139,97 @@ public class FirmwareUpdateAct extends BaseActivity {
         );
 
     }
+
+    public void firmwareUp(View view) {
+
+        showProgress();
+        String url = "http://asset.sz-luoding.com/"+ sp_firmware.getSelectedItem().toString();
+        HttpUtil.sendHttpRequest(url, new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                FirmwareUpdateAct.this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        showToast("连接服务器异常！");
+                    }
+                });
+                stopProgress();
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                String json = response.body().string();
+
+
+                InputStream is = null;  //网络输入流
+                FileOutputStream fos = null;  //文件输出流
+
+                long totalSize = response.body().contentLength();  //文件总大小
+
+                is = response.body().byteStream();
+
+                writeFile(response.body());
+
+                stopProgress();
+            }
+        });
+
+    }
+
+
+    private void writeFile(ResponseBody body) {
+        InputStream is = null;  //网络输入流
+        FileOutputStream fos = null;  //文件输出流
+
+        is = body.byteStream();
+
+        String filePath = FirmwareUpdateAct.this.getCacheDir() + File.separator + sp_firmware.getSelectedItem().toString();
+        File file = new File(filePath);
+        try {
+            fos = new FileOutputStream(file);
+            byte[] buffer = new byte[1024];
+            int len = 0;
+            long totalSize = body.contentLength();  //文件总大小
+            long sum = 0;
+            while ((len = is.read(buffer)) != -1) {
+                fos.write(buffer, 0, len);
+                sum += len;
+                int progress = (int) (sum * 1.0f / totalSize * 100);
+                Message msg = handler.obtainMessage();
+                msg.what = 1;
+                msg.arg1 = progress;
+                handler.sendMessage(msg);
+            }
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (is != null) {
+                try {
+                    is.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (fos != null) {
+                try {
+                    fos.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+
+
+
+
+
+
+
+
+
 }

@@ -1,6 +1,5 @@
 package com.example.ld_street_lights_maintenance.act;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.ViewPager;
@@ -28,8 +27,8 @@ import android.widget.TextView;
 import com.clj.fastble.data.BleDevice;
 import com.example.ld_street_lights_maintenance.R;
 import com.example.ld_street_lights_maintenance.adapter.MainTabAdapter;
+import com.example.ld_street_lights_maintenance.base.BaseMainActivity;
 import com.example.ld_street_lights_maintenance.fragment.mainfragment.NfcFragment;
-import com.example.ld_street_lights_maintenance.util.DensityUtil;
 import com.example.ld_street_lights_maintenance.view.LightingPlanningPopupUtils;
 import com.example.ld_street_lights_maintenance.view.OrderPhotoPopupUtils;
 import com.example.ld_street_lights_maintenance.view.SettingsPopupUtils;
@@ -37,7 +36,7 @@ import com.example.ld_street_lights_maintenance.view.SettingsPopupUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseMainActivity {
 
     private RadioGroup mTabRadioGroup;
     private ViewPager viewPager;
