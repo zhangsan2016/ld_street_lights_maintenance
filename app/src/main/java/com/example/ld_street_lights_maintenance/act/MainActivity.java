@@ -30,7 +30,6 @@ import com.example.ld_street_lights_maintenance.R;
 import com.example.ld_street_lights_maintenance.adapter.MainTabAdapter;
 import com.example.ld_street_lights_maintenance.fragment.mainfragment.NfcFragment;
 import com.example.ld_street_lights_maintenance.util.DensityUtil;
-import com.example.ld_street_lights_maintenance.util.FullScreenModelUtil;
 import com.example.ld_street_lights_maintenance.view.LightingPlanningPopupUtils;
 import com.example.ld_street_lights_maintenance.view.OrderPhotoPopupUtils;
 import com.example.ld_street_lights_maintenance.view.SettingsPopupUtils;
@@ -62,17 +61,19 @@ public class MainActivity extends AppCompatActivity {
             winParams.flags |= bits;
             win.setAttributes(winParams);
         }
+
+
         // 隐藏状态栏
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
-
         setContentView(R.layout.activity_main);
-        FullScreenModelUtil.assistActivity(this);
+
+
         initView();
 
 
-
-
     }
+
+
 
 
     /// static private NFCTag mTag;
@@ -190,7 +191,8 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     // 设置PopupWindow中的位置
                    // pop.showAtLocation(rb, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, rb.getMeasuredHeight());
-                    pop.showAtLocation(rb, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, DensityUtil.getNavigationBarHeight(this) + rb.getMeasuredHeight());
+                 //   pop.showAtLocation(rb, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, DensityUtil.getNavigationBarHeight(this) + rb.getMeasuredHeight());
+                    pop.showAtLocation(rb, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, rb.getMeasuredHeight());
                 }
             }else{
                 if (pop.isShowing()) {
