@@ -65,7 +65,7 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
     private TextView txt_data;
 
     // 读写状态
-    private enum RWStart {
+    public enum RWStart {
         READ,
         WRITE
     }

@@ -11,12 +11,17 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.clj.fastble.callback.BleWriteCallback;
+import com.clj.fastble.exception.BleException;
+import com.clj.fastble.exception.TimeoutException;
 import com.example.ld_street_lights_maintenance.R;
 import com.example.ld_street_lights_maintenance.base.BaseActivity;
 import com.example.ld_street_lights_maintenance.entity.FirmwareJson;
 import com.example.ld_street_lights_maintenance.entity.LoginInfo;
+import com.example.ld_street_lights_maintenance.util.BlePusher;
 import com.example.ld_street_lights_maintenance.util.HttpUtil;
 import com.example.ld_street_lights_maintenance.util.LogUtil;
+import com.example.ld_street_lights_maintenance.view.OrderPhotoPopupUtils;
 import com.google.gson.Gson;
 
 import org.jetbrains.annotations.NotNull;
@@ -27,6 +32,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import okhttp3.Call;
@@ -36,7 +42,7 @@ import okhttp3.ResponseBody;
 
 public class FirmwareUpdateAct extends BaseActivity {
     private Spinner sp_firmware;
-    private  TextView tv_endpoint;
+    private TextView tv_endpoint;
     private ArrayAdapter<String> adapter;
     private List<String> list = new ArrayList<String>();
 
@@ -76,6 +82,11 @@ public class FirmwareUpdateAct extends BaseActivity {
     }
 
 
+    /**
+     * 服务器获取所有固件包
+     *
+     * @param view
+     */
     public void getFirmware(View view) {
 
         showProgress();
@@ -125,8 +136,13 @@ public class FirmwareUpdateAct extends BaseActivity {
 
     public void firmwareUp(View view) {
 
+        if(sp_firmware.getSelectedItem() == null){
+            showToast("请先获取获取升级文件~");
+            return;
+        }
+
         showProgress();
-        String url = "http://asset.sz-luoding.com/"+ sp_firmware.getSelectedItem().toString();
+        String url = "http://asset.sz-luoding.com/" + sp_firmware.getSelectedItem().toString();
         HttpUtil.sendHttpRequest(url, new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
@@ -144,7 +160,8 @@ public class FirmwareUpdateAct extends BaseActivity {
 
                 long totalSize = response.body().contentLength();  //文件总大小
 
-                writeFile(response.body());
+                // 升级
+                upgrade(response.body());
 
                 stopProgress();
             }
@@ -153,7 +170,9 @@ public class FirmwareUpdateAct extends BaseActivity {
     }
 
 
-    private void writeFile(ResponseBody body) {
+    private void upgrade(ResponseBody body) {
+
+        // 1.下载文件
         InputStream is = null;  //网络输入流
         FileOutputStream fos = null;  //文件输出流
 
@@ -174,9 +193,10 @@ public class FirmwareUpdateAct extends BaseActivity {
                 sum += len;
             }
 
-            if(sum == totalSize){
-                showToast(downloadFile + "下载完成");
-
+            if (sum == totalSize) {
+                showToast(downloadFile + "固件下载完成");
+                // 2.发送蓝牙协议请求升级
+                sendOrderRequest();
             }
 
         } catch (FileNotFoundException e) {
@@ -201,13 +221,70 @@ public class FirmwareUpdateAct extends BaseActivity {
         }
     }
 
+    /**
+     * 发送命令请求更新
+     */
+    private void sendOrderRequest() {
+        // 1_1_0_4_7.bin
+        byte[] funCode = new byte[]{0, 35};
+        byte[] data = new byte[]{85, -86};
+        //sendOrder();
 
+    }
 
+    /**
+     * 发送蓝牙通讯指令
+     *
+     * @param funCode        功能码
+     * @param data           指令
+     * @param rwStart        读写标识rwStart
+     * @param isListenInform 是否监听蓝牙通知服务
+     */
+    private void sendOrder(byte[] funCode, byte[] data, final OrderPhotoPopupUtils.RWStart rwStart, boolean isListenInform) {
 
+        try {
+            BlePusher.writeSpliceOrder(funCode, data, new BleWriteCallback() {
+                @Override
+                public void onWriteSuccess(int current, int total, byte[] data) {
 
+                    // 解析数据
+                   // parseDatas(data);
+                    if (rwStart == OrderPhotoPopupUtils.RWStart.WRITE) {
+                        showToast("写入成功~");
+                        Log.e("xxx", ">>>>>>>>>>>>>>>>>>> 写入 当前读取返回数据成功 " + Arrays.toString(data));
+                    } else {
+                        showToast("读取成功~");
+                        Log.e("xxx", ">>>>>>>>>>>>>>>>>>> 读取 当前读取返回数据成功 " + Arrays.toString(data));
+                    }
+                    stopProgress();
+                }
 
+                @Override
+                public void onWriteFailure(BleException exception) {
+                    if (rwStart == OrderPhotoPopupUtils.RWStart.WRITE) {
+                        if (exception instanceof TimeoutException) {
+                            showToast("写入失败: 当前蓝牙信号较弱，请尝试靠近~");
+                        } else {
+                            showToast("写入失败:" + exception.toString());
+                        }
+                    } else {
+                        if (exception instanceof TimeoutException) {
+                            showToast("读取失败: 当前蓝牙信号较弱，请尝试靠近~");
+                        } else {
+                            showToast("读取失败" + exception.toString());
+                        }
 
+                    }
+                    stopProgress();
+                }
+            }, isListenInform);
 
+        } catch (Exception e) {
+            e.printStackTrace();
+            showToast(e.getMessage().toString());
+            stopProgress();
+        }
+    }
 
 
 }

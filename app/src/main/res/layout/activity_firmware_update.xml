@@ -30,6 +30,7 @@
 
     <!-- 设备类型 固件ID_高 固件ID_低 版本高_高 版本号_中 版本号_低 固件大小（4字节） -->
     <LinearLayout
+        android:layout_margin="10dp"
         android:layout_marginTop="20dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -50,6 +51,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:layout_margin="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
