@@ -41,23 +41,6 @@ public class FirmwareUpdateAct extends BaseActivity {
     private List<String> list = new ArrayList<String>();
 
 
-    //主线程更新UI进度
-    private Handler handler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case 1:
-                    int progress = msg.arg1;
-
-                    break;
-
-                default:
-                    break;
-            }
-        }
-    };
-
-
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.activity_firmware_update);
@@ -158,15 +141,8 @@ public class FirmwareUpdateAct extends BaseActivity {
 
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                String json = response.body().string();
-
-
-                InputStream is = null;  //网络输入流
-                FileOutputStream fos = null;  //文件输出流
 
                 long totalSize = response.body().contentLength();  //文件总大小
-
-                is = response.body().byteStream();
 
                 writeFile(response.body());
 
@@ -183,7 +159,9 @@ public class FirmwareUpdateAct extends BaseActivity {
 
         is = body.byteStream();
 
-        String filePath = FirmwareUpdateAct.this.getCacheDir() + File.separator + sp_firmware.getSelectedItem().toString();
+        String downloadFile = sp_firmware.getSelectedItem().toString();
+        // /data/data/com.ldgd.ldstreetlightmanagement/cache/com.android.opengl.shaders_cache
+        String filePath = FirmwareUpdateAct.this.getCacheDir() + File.separator + downloadFile;
         File file = new File(filePath);
         try {
             fos = new FileOutputStream(file);
@@ -194,11 +172,11 @@ public class FirmwareUpdateAct extends BaseActivity {
             while ((len = is.read(buffer)) != -1) {
                 fos.write(buffer, 0, len);
                 sum += len;
-                int progress = (int) (sum * 1.0f / totalSize * 100);
-                Message msg = handler.obtainMessage();
-                msg.what = 1;
-                msg.arg1 = progress;
-                handler.sendMessage(msg);
+            }
+
+            if(sum == totalSize){
+                showToast(downloadFile + "下载完成");
+
             }
 
         } catch (FileNotFoundException e) {
