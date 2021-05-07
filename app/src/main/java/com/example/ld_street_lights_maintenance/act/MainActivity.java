@@ -59,7 +59,6 @@ public class MainActivity extends AppCompatActivity {
             WindowManager.LayoutParams winParams = win.getAttributes();
             final int bits = WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS;
             winParams.flags |= bits;
-            win.setAttributes(winParams);
         }
 
 

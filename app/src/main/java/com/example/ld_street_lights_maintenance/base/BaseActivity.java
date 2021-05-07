@@ -8,6 +8,10 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.ld_street_lights_maintenance.entity.LoginInfo;
+import com.example.ld_street_lights_maintenance.util.SpUtils;
+import com.google.gson.Gson;
+
 /**
  * Created by ldgd on 2019/3/7.
  * 功能：
@@ -66,6 +70,12 @@ public class BaseActivity extends AppCompatActivity {
 
     protected void delayedStopsendProgress(long millisecond) {
         baseHandler.sendEmptyMessageDelayed(STOP_PROGRESS,millisecond);
+    }
+
+    public String getToken(){
+        Gson gson = new Gson();
+        LoginInfo loginInfo =  gson.fromJson((String) SpUtils.getValue(SpUtils.LOGIN_INFO, ""), LoginInfo.class);
+        return loginInfo.getData().getToken().getToken();
     }
 
 }

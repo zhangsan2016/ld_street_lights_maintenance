@@ -37,6 +37,7 @@ import com.clj.fastble.exception.BleException;
 import com.clj.fastble.exception.TimeoutException;
 import com.example.ld_street_lights_maintenance.R;
 import com.example.ld_street_lights_maintenance.act.DeviceTiming;
+import com.example.ld_street_lights_maintenance.act.FirmwareUpdateAct;
 import com.example.ld_street_lights_maintenance.crc.CopyOfcheckCRC;
 import com.example.ld_street_lights_maintenance.fragment.mainfragment.BuleFragment;
 import com.example.ld_street_lights_maintenance.util.BlePusher;
@@ -529,6 +530,8 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
             byte[] data;
             switch (v.getId()) {
                 case R.id.bt_setting_dufup: // 设备固件升级
+                    Intent intentUpdate= new Intent(mContext,FirmwareUpdateAct.class);
+                    mContext.startActivity(intentUpdate);
                     break;
                 case R.id.bt_setting_illu_vpt: // 照度阈值设置
 
