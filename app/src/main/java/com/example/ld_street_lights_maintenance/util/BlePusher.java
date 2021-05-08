@@ -102,7 +102,6 @@ public class BlePusher {
 
     /**
      * 写入指令
-     *
      * @param order    十六机制字符串
      * @param callback 返回
      * @throws Exception
@@ -381,7 +380,6 @@ public class BlePusher {
 
     /**
      * 分包发送
-     *
      * @param mTotalNum 总包数
      * @param mCount    当前包数
      * @param mData     数据
@@ -597,7 +595,8 @@ public class BlePusher {
     public static void writeUpdate(byte[] datas, int sendLeng, final BleWriteCallback callback) {
 
 
-        final Object[] objdata = BytesUtil.splitAry(datas, sendLeng-9);
+   //     final Object[] objdata = BytesUtil.splitAry(datas, sendLeng-10);
+        final Object[] objdata = BytesUtil.splitAry(datas, 5);
 
         //   包序号_高8位 包序号_低8位 数据包（根据数据包大小决定）
         final byte[] funCode = new byte[]{0, 37};
@@ -624,10 +623,68 @@ public class BlePusher {
                         public void onNotifySuccess() {
                             Log.e("xxx", " notify success ");
 
-                            byte[] data = new byte[]{(byte) 0, 1};
+                            BleManager.getInstance().write(
+                                    bleDevices.get(0),
+                                    gattCharacteristicA2.getService().getUuid().toString(),
+                                    gattCharacteristicA2.getUuid().toString(),
+                                    new byte[]{01, 01}, new BleWriteCallback() {
+                                        @Override
+                                        public void onWriteSuccess(int current, int total, byte[] justWrite) {
+
+                                            byte[] data = new byte[]{(byte) 0, 1};
+                                            data = BytesUtil.byteMergerAll(data, (byte[]) objdata[0]);
+                                            // 协议拼接
+                                            final byte[] spliceData = spliceOder(funCode, data);
+                                            Log.e("xxx", " 更新 spliceData " + Arrays.toString(spliceData));
+                                            BleManager.getInstance().write(
+                                                    bleDevices.get(0),
+                                                    gattCharacteristicA1.getService().getUuid().toString(),
+                                                    gattCharacteristicA1.getUuid().toString(),
+                                                    data,
+                                                    new BleWriteCallback() {
+                                                        @Override
+                                                        public void onWriteSuccess(final int current, final int total, final byte[] justWrite) {
+                                                            // 返回消息
+                                                            //   callback.onWriteSuccess(0,0,mergeData);
+
+                                                            Log.e("xxx", " 更新返回 " + Arrays.toString(justWrite));
+
+                                                            // 消息超时（一定时间无返回）时关闭等待
+                                                            mHandler.removeMessages(MSG_TIMEOUT);
+                                                            mHandler.sendMessageDelayed(
+                                                                    mHandler.obtainMessage(MSG_TIMEOUT, callback),
+                                                                    BleManager.getInstance().getOperateTimeout());
+                                                        }
+
+                                                        @Override
+                                                        public void onWriteFailure(final BleException exception) {
+                                                            callback.onWriteFailure(exception);
+                                                            // 关闭通知
+                                                            BleManager.getInstance().stopNotify(
+                                                                    bleDevices.get(0),
+                                                                    notify.getService().getUuid().toString(),
+                                                                    notify.getUuid().toString());
+                                                        }
+                                                    });
+                                        }
+
+                                        @Override
+                                        public void onWriteFailure(BleException exception) {
+                                            callback.onWriteFailure(exception);
+                                            // 关闭通知
+                                            BleManager.getInstance().stopNotify(
+                                                    bleDevices.get(0),
+                                                    notify.getService().getUuid().toString(),
+                                                    notify.getUuid().toString());
+
+                                        }
+                                    });
+
+                           /* byte[] data = new byte[]{(byte) 0, 1};
                             data = BytesUtil.byteMergerAll(data, (byte[]) objdata[0]);
                             // 协议拼接
                             final byte[] spliceData = spliceOder(funCode, data);
+                            Log.e("xxx", " 更新 spliceData " + Arrays.toString(spliceData));
                             BleManager.getInstance().write(
                                     bleDevices.get(0),
                                     gattCharacteristicA1.getService().getUuid().toString(),
@@ -657,7 +714,7 @@ public class BlePusher {
                                                     notify.getService().getUuid().toString(),
                                                     notify.getUuid().toString());
                                         }
-                                    });
+                                    });*/
                         }
 
                         @Override
