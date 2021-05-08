@@ -556,8 +556,6 @@ public class BlePusher {
      * @param latch
      */
     private static void splitRead(final byte mTotalNum, final int mCount, final BleReadCallback callback, final BluetoothGattCharacteristic a1, final BluetoothGattCharacteristic a2, final BleDevice bleDevice, final CountDownLatch latch) {
-
-
         BleManager.getInstance().read(
                 bleDevice,
                 a1.getService().getUuid().toString(),
@@ -585,49 +583,10 @@ public class BlePusher {
                         }
                     }
                 });
+    }
 
-      /*  BleManager.getInstance().write(
-                bleDevice,
-                a2.getService().getUuid().toString(),
-                a2.getUuid().toString(),
-                new byte[]{mTotalNum, (byte) mCount},
-                new BleWriteCallback() {
-                    @Override
-                    public void onWriteSuccess(int current, int total, byte[] justWrite) {
-                        BleManager.getInstance().read(
-                                bleDevice,
-                                a1.getService().getUuid().toString(),
-                                a1.getUuid().toString(),
-                                new BleReadCallback() {
-                                    @Override
-                                    public void onReadSuccess(byte[] data) {
-                                        mergeData = BytesUtil.byteMergerAll(mergeData, data);
-                                        if (mTotalNum == mCount) {
-                                            if (callback != null) {
-                                                callback.onReadSuccess(mergeData);
-                                            }
-                                        }
-                                        //让latch中的数值减一
-                                        latch.countDown();
-                                    }
 
-                                    @Override
-                                    public void onReadFailure(BleException exception) {
-                                        if (callback != null) {
-                                            callback.onReadFailure(new OtherException("读取异常 " + exception.getDescription()));
-                                        }
-                                    }
-                                });
-                    }
-
-                    @Override
-                    public void onWriteFailure(BleException exception) {
-                        if (callback != null) {
-                            callback.onReadFailure(new OtherException("写入异常 " + exception.getDescription()));
-                        }
-                    }
-                });*/
-
+    private static void  writeUpdate(){
 
     }
 

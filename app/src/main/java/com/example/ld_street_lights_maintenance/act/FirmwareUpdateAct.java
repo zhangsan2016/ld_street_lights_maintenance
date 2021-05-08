@@ -1,5 +1,6 @@
 package com.example.ld_street_lights_maintenance.act;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -16,9 +17,11 @@ import com.clj.fastble.exception.BleException;
 import com.clj.fastble.exception.TimeoutException;
 import com.example.ld_street_lights_maintenance.R;
 import com.example.ld_street_lights_maintenance.base.BaseActivity;
+import com.example.ld_street_lights_maintenance.crc.CopyOfcheckCRC;
 import com.example.ld_street_lights_maintenance.entity.FirmwareJson;
 import com.example.ld_street_lights_maintenance.entity.LoginInfo;
 import com.example.ld_street_lights_maintenance.util.BlePusher;
+import com.example.ld_street_lights_maintenance.util.BytesUtil;
 import com.example.ld_street_lights_maintenance.util.HttpUtil;
 import com.example.ld_street_lights_maintenance.util.LogUtil;
 import com.example.ld_street_lights_maintenance.view.OrderPhotoPopupUtils;
@@ -27,6 +30,7 @@ import com.google.gson.Gson;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -45,6 +49,8 @@ public class FirmwareUpdateAct extends BaseActivity {
     private TextView tv_endpoint;
     private ArrayAdapter<String> adapter;
     private List<String> list = new ArrayList<String>();
+    // 固件包地址
+    private File firmwarePackageFile = null;
 
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -136,7 +142,7 @@ public class FirmwareUpdateAct extends BaseActivity {
 
     public void firmwareUp(View view) {
 
-        if(sp_firmware.getSelectedItem() == null){
+        if (sp_firmware.getSelectedItem() == null) {
             showToast("请先获取获取升级文件~");
             return;
         }
@@ -195,8 +201,11 @@ public class FirmwareUpdateAct extends BaseActivity {
 
             if (sum == totalSize) {
                 showToast(downloadFile + "固件下载完成");
+                // 保存固件包地址
+                firmwarePackageFile = file;
                 // 2.发送蓝牙协议请求升级
-                sendOrderRequest();
+                sendOrderRequest(downloadFile, totalSize);
+
             }
 
         } catch (FileNotFoundException e) {
@@ -221,14 +230,40 @@ public class FirmwareUpdateAct extends BaseActivity {
         }
     }
 
+
     /**
-     * 发送命令请求更新
+     * 发送命令，请求更新
+     *
+     * @param downloadFile 文件名
+     * @param totalSize    固件包大小
      */
-    private void sendOrderRequest() {
-        // 1_1_0_4_7.bin
+    private void sendOrderRequest(String downloadFile, long totalSize) {
+
+        //  1_1_0_4_7.bin
+        String[] infos = downloadFile.split("_");
+        if (infos.length != 5) {
+            showToast("固件包有误~");
+            return;
+        }
+
+        // 功能码
         byte[] funCode = new byte[]{0, 35};
-        byte[] data = new byte[]{85, -86};
-        //sendOrder();
+        // 设备类型
+        byte deviceType = Byte.parseByte(infos[0]);
+        byte[] data = new byte[]{deviceType};
+        // 固件id
+        byte[] firmwareId = BytesUtil.intBytesHL(Integer.parseInt(infos[1]), 2);
+        data = BytesUtil.byteMergerAll(data, firmwareId);
+        // 版本号 高、中、 低
+        data = BytesUtil.byteMergerAll(data, new byte[]{Byte.parseByte(infos[2]), Byte.parseByte(infos[3]), Byte.parseByte(infos[4].substring(0, infos[4].indexOf(".")))});
+        // 固件包大小
+        byte[] totalSizeBt = BytesUtil.intBytesHL((int) totalSize, 4);
+        data = BytesUtil.byteMergerAll(data, totalSizeBt);
+        Log.e("xxx", ">>>>>>>>>>>>>>>>>>> data = 设备类型: " + deviceType + " 固件id:" + Arrays.toString(firmwareId) + " 版本号 高、中、 低:" + Arrays.toString(data) + " 固件包大小 :" + Arrays.toString(totalSizeBt));
+        Log.e("xxx", ">>>>>>>>>>>>>>>>>>> data = " + Arrays.toString(data));
+        Log.e("xxx", "固件包大小：" + totalSize);
+        sendOrder(funCode, data, OrderPhotoPopupUtils.RWStart.WRITE, true);
+
 
     }
 
@@ -248,9 +283,8 @@ public class FirmwareUpdateAct extends BaseActivity {
                 public void onWriteSuccess(int current, int total, byte[] data) {
 
                     // 解析数据
-                   // parseDatas(data);
+                    parseDatas(data);
                     if (rwStart == OrderPhotoPopupUtils.RWStart.WRITE) {
-                        showToast("写入成功~");
                         Log.e("xxx", ">>>>>>>>>>>>>>>>>>> 写入 当前读取返回数据成功 " + Arrays.toString(data));
                     } else {
                         showToast("读取成功~");
@@ -286,5 +320,97 @@ public class FirmwareUpdateAct extends BaseActivity {
         }
     }
 
+
+    /**
+     * 解析数据
+     *
+     * @param data
+     */
+    private void parseDatas(byte[] data) {
+
+        //使用 crc 校验数据
+        if (!checkDataCrc(data)) {
+            Log.e("xx", "CRC 校验失败~");
+            return;
+        } else {
+            Log.e("xx", "CRC 校验成功~");
+        }
+
+        // 根据状态码解析对应的数据
+        if (data[2] == 36) { // 返回设备固件升级确认
+            //  [-18, 0, 36, 0, 3, 0, 32, 1, 111, 17, -17, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+            if (data[7] == 1) {
+                // 确认升级
+                Log.e("xx", "确认升级~");
+                // 获取更新包每次发送承接的长度
+               int sendLeng = BytesUtil.bytesIntHL(new byte[]{data[5],data[6]});
+                // 发送固件
+                sendFirmware(sendLeng);
+
+            } else {
+                // 固件包有误
+                showToast("升级失败固件包参数有误~");
+            }
+
+        }else if(data[2] == 38){ // 返回设备固件数据包确认
+              //
+            Log.e("xx", "升级" + Arrays.toString(data) );
+        }
+
+    }
+
+
+    /**
+     *  发送固件包到下位机升级固件
+     * @param sendLeng 发送包单次承接的长度
+     */
+    private Object[] firmwareData = null;
+    private void sendFirmware(final int sendLeng) {
+
+      new Thread(new Runnable() {
+          @Override
+          public void run() {
+              if (firmwarePackageFile != null) {
+                  FileInputStream fis = null;
+                  try {
+                      fis = new FileInputStream(firmwarePackageFile);
+                      byte[] buffer = new byte[fis.available()];
+                      fis.read(buffer);
+                      fis.close();
+
+                      Object[] objdata = BytesUtil.splitAry(buffer, sendLeng);
+                      firmwareData = objdata;
+                      int bytesLeng = objdata.length;
+
+                   //   包序号_高8位 包序号_低8位 数据包（根据数据包大小决定）
+                      byte[] funCode = new byte[]{0, 37};
+                      byte[] data = new byte[]{(byte) 0, 0};
+                      data = BytesUtil.byteMergerAll(data, (byte[]) objdata[0]);
+                      sendOrder(funCode, data, OrderPhotoPopupUtils.RWStart.WRITE, true);
+
+                  } catch (Exception e) {
+                      e.printStackTrace();
+                  }
+              }
+          }
+      }).start();
+
+    }
+
+    /**
+     * 使用 crc 校验数据
+     *
+     * @param data
+     */
+    private boolean checkDataCrc(byte[] data) {
+        for (int i = 0; i < data.length; i++) {
+            if (data[i] == -17) {
+                byte[] checkData = new byte[i - 2];
+                System.arraycopy(data, 0, checkData, 0, i - 2);
+                return CopyOfcheckCRC.checkTheCrc(checkData, new byte[]{data[i - 2], data[i - 1]});
+            }
+        }
+        return false;
+    }
 
 }
