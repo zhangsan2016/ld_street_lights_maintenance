@@ -100,11 +100,10 @@ public class BlePusher {
     };
 
 
-
-
     /**
      * 写入指令
-     * @param order 十六机制字符串
+     *
+     * @param order    十六机制字符串
      * @param callback 返回
      * @throws Exception
      */
@@ -156,17 +155,17 @@ public class BlePusher {
     }
 
 
-
     /**
      * 拼接指令
      * 协议组成：帧头 - 功能码 - 数据长度 - 数据 - crc - 帧尾部
-     * @param funCode  功能码
-     * @param data     数据
+     *
+     * @param funCode        功能码
+     * @param data           数据
      * @param isListenInform 是否监听通知
-     * @param callback 回调
+     * @param callback       回调
      * @throws Exception
      */
-    public static void writeSpliceOrder(byte[] funCode, final byte[] data, final BleWriteCallback callback,boolean isListenInform) throws Exception {
+    public static void writeSpliceOrder(byte[] funCode, final byte[] data, final BleWriteCallback callback, boolean isListenInform) throws Exception {
 
 
         // 协议拼接
@@ -177,7 +176,7 @@ public class BlePusher {
         if (bleDevices.size() > 0) {
 
             // 先判断是否需要监听消息
-            if(isListenInform){
+            if (isListenInform) {
 
                 BluetoothGatt mBluetoothGatt = BleManager.getInstance().getBluetoothGatt(bleDevices.get(0));
                 // 获取服务
@@ -196,7 +195,7 @@ public class BlePusher {
                         new BleNotifyCallback() {
                             @Override
                             public void onNotifySuccess() {
-                                Log.e("xxx", " notify success " );
+                                Log.e("xxx", " notify success ");
                                 // 长度大于20需要分包
                                 if (spliceData.length < 20) {
                                     BleManager.getInstance().write(
@@ -224,6 +223,7 @@ public class BlePusher {
                                                                             mHandler.obtainMessage(MSG_TIMEOUT, callback),
                                                                             BleManager.getInstance().getOperateTimeout());
                                                                 }
+
                                                                 @Override
                                                                 public void onWriteFailure(final BleException exception) {
                                                                     callback.onWriteFailure(exception);
@@ -251,41 +251,47 @@ public class BlePusher {
 
                                 } else {
                                     // 分包
-                                  new Thread(new Runnable() {
-                                      @Override
-                                      public void run() {
+                                    new Thread(new Runnable() {
+                                        @Override
+                                        public void run() {
 
-                                          Object[] objdata = BytesUtil.splitAry(spliceData, 20);
-                                          int bytesLeng = objdata.length;
+                                            Object[] objdata = BytesUtil.splitAry(spliceData, 20);
+                                            int bytesLeng = objdata.length;
 
-                                          for (int i = 0; i < bytesLeng; i++) {
-                                              byte[] bytedata = (byte[]) objdata[i];
+                                            for (int i = 0; i < bytesLeng; i++) {
+                                                byte[] bytedata = (byte[]) objdata[i];
 
-                                              // 用于同步线程
-                                              final CountDownLatch latch = new CountDownLatch(1);
-                                              splitWrite(bytesLeng, i + 1, bytedata, callback, gattCharacteristicA1, gattCharacteristicA2, bleDevices.get(0), latch);
+                                                // 用于同步线程
+                                                final CountDownLatch latch = new CountDownLatch(1);
+                                                splitWrite(bytesLeng, i + 1, bytedata, callback, gattCharacteristicA1, gattCharacteristicA2, bleDevices.get(0), latch);
 
-                                              try {
-                                                  //阻塞当前线程直到latch中数值为零才执行
-                                                  latch.await();
-                                              } catch (InterruptedException e) {
-                                                  e.printStackTrace();
-                                              }
-                                          }
-                                      }
-                                  }).start();
+                                                try {
+                                                    //阻塞当前线程直到latch中数值为零才执行
+                                                    latch.await();
+                                                } catch (InterruptedException e) {
+                                                    e.printStackTrace();
+                                                }
+                                            }
+                                        }
+                                    }).start();
                                 }
                             }
+
                             @Override
                             public void onNotifyFailure(final BleException exception) {
                                 Log.e("xxx", " notify onNotifyFailure " + exception.toString());
+                                BleManager.getInstance().stopNotify(
+                                        bleDevices.get(0),
+                                        notify.getService().getUuid().toString(),
+                                        notify.getUuid().toString());
                             }
+
                             @Override
                             public void onCharacteristicChanged(byte[] data) {
                                 Log.e("xxx", " notify onCharacteristicChanged " + Arrays.toString(data));
                                 mergeData = BytesUtil.byteMergerAll(mergeData, data);
                                 for (int i = 0; i < data.length; i++) {
-                                    if (data[i] == -17){
+                                    if (data[i] == -17) {
 
                                         // 发送蓝牙状态广播通知传递接收读取消息
                                         // 发送蓝牙状态广播
@@ -293,8 +299,6 @@ public class BlePusher {
                                     intent.setAction(DATA_NOTIFY_FILTER);
                                     sendBroadcast(intent);*/
 
-                                        // 返回消息
-                                        callback.onWriteSuccess(0,0,mergeData);
 
                                         // 关闭超时通知
                                         mHandler.removeMessages(MSG_TIMEOUT);
@@ -303,14 +307,17 @@ public class BlePusher {
                                                 notify.getService().getUuid().toString(),
                                                 notify.getUuid().toString());
 
+                                        // 返回消息
+                                        callback.onWriteSuccess(0, 0, mergeData);
+
                                         break;
                                     }
                                 }
                             }
                         });
-            }else{
+            } else {
                 // 不需要监听通知
-                writeOrder(spliceData,callback);
+                writeOrder(spliceData, callback);
             }
 
         } else {
@@ -321,11 +328,12 @@ public class BlePusher {
     /**
      * 拼接指令，无数据返回，不用监听通知返回
      * 协议组成：帧头 - 功能码 - 数据长度 - 数据 - crc - 帧尾部
+     *
      * @param data
      * @param callback 返回
      * @throws Exception
      */
-    public static void writeOrder( final byte[] data, final BleWriteCallback callback)  {
+    public static void writeOrder(final byte[] data, final BleWriteCallback callback) {
 
 
         final List<BleDevice> bleDevices = BleManager.getInstance().getAllConnectedDevice();
@@ -366,7 +374,7 @@ public class BlePusher {
                     });
         } else {
             if (callback != null) {
-                callback.onWriteFailure(new OtherException("请先连接蓝牙设备" ));
+                callback.onWriteFailure(new OtherException("请先连接蓝牙设备"));
             }
         }
     }
@@ -433,8 +441,6 @@ public class BlePusher {
                     }
                 });
     }
-
-
 
 
     private static byte[] spliceOder(byte[] funCode, byte[] data) {
@@ -536,11 +542,7 @@ public class BlePusher {
                             }
                         }
                     });
-
-
         }
-
-
     }
 
 
@@ -586,7 +588,108 @@ public class BlePusher {
     }
 
 
-    private static void  writeUpdate(){
+    /**
+     * 更新固件包
+     * @param datas    数据
+     * @param sendLeng 单次最高长度
+     * @param callback 回调
+     */
+    public static void writeUpdate(byte[] datas, int sendLeng, final BleWriteCallback callback) {
+
+
+        final Object[] objdata = BytesUtil.splitAry(datas, sendLeng-9);
+
+        //   包序号_高8位 包序号_低8位 数据包（根据数据包大小决定）
+        final byte[] funCode = new byte[]{0, 37};
+
+
+        final List<BleDevice> bleDevices = BleManager.getInstance().getAllConnectedDevice();
+        if (bleDevices.size() > 0) {
+            BluetoothGatt mBluetoothGatt = BleManager.getInstance().getBluetoothGatt(bleDevices.get(0));
+            // 获取服务
+            BluetoothGattService service = mBluetoothGatt.getService(UUID.fromString(serviceUuid));
+            // 获取特征 获取一个描述符 84:C2:E4:03:02:04    0000ffa1-0000-1000-8000-00805f9b34fb
+            final BluetoothGattCharacteristic gattCharacteristicA1 = service.getCharacteristic(UUID.fromString(characteristicUuidA));
+            final BluetoothGattCharacteristic gattCharacteristicA2 = service.getCharacteristic(UUID.fromString(characteristicUuidB));
+            final BluetoothGattCharacteristic notify = service.getCharacteristic(UUID.fromString(notifyUuid));
+
+            // 开启蓝牙通知监听
+            mergeData = new byte[0];
+            BleManager.getInstance().notify(
+                    bleDevices.get(0),
+                    notify.getService().getUuid().toString(),
+                    notify.getUuid().toString(),
+                    new BleNotifyCallback() {
+                        @Override
+                        public void onNotifySuccess() {
+                            Log.e("xxx", " notify success ");
+
+                            byte[] data = new byte[]{(byte) 0, 1};
+                            data = BytesUtil.byteMergerAll(data, (byte[]) objdata[0]);
+                            // 协议拼接
+                            final byte[] spliceData = spliceOder(funCode, data);
+                            BleManager.getInstance().write(
+                                    bleDevices.get(0),
+                                    gattCharacteristicA1.getService().getUuid().toString(),
+                                    gattCharacteristicA1.getUuid().toString(),
+                                    spliceData,
+                                    new BleWriteCallback() {
+                                        @Override
+                                        public void onWriteSuccess(final int current, final int total, final byte[] justWrite) {
+                                            // 返回消息
+                                            //   callback.onWriteSuccess(0,0,mergeData);
+
+                                            Log.e("xxx", " 更新返回 " + Arrays.toString(justWrite));
+
+                                            // 消息超时（一定时间无返回）时关闭等待
+                                            mHandler.removeMessages(MSG_TIMEOUT);
+                                            mHandler.sendMessageDelayed(
+                                                    mHandler.obtainMessage(MSG_TIMEOUT, callback),
+                                                    BleManager.getInstance().getOperateTimeout());
+                                        }
+
+                                        @Override
+                                        public void onWriteFailure(final BleException exception) {
+                                            callback.onWriteFailure(exception);
+                                            // 关闭通知
+                                            BleManager.getInstance().stopNotify(
+                                                    bleDevices.get(0),
+                                                    notify.getService().getUuid().toString(),
+                                                    notify.getUuid().toString());
+                                        }
+                                    });
+                        }
+
+                        @Override
+                        public void onNotifyFailure(final BleException exception) {
+                            Log.e("xxx", " notify onNotifyFailure " + exception.toString());
+                        }
+
+                        @Override
+                        public void onCharacteristicChanged(byte[] data) {
+                            Log.e("xxx", " notify onCharacteristicChanged " + Arrays.toString(data));
+                          /*  mergeData = BytesUtil.byteMergerAll(mergeData, data);
+                            for (int i = 0; i < data.length; i++) {
+                                if (data[i] == -17) {
+
+                                    // 返回消息
+                                    callback.onWriteSuccess(0, 0, mergeData);
+
+                                    // 关闭超时通知
+                                    mHandler.removeMessages(MSG_TIMEOUT);
+                                    BleManager.getInstance().stopNotify(
+                                            bleDevices.get(0),
+                                            notify.getService().getUuid().toString(),
+                                            notify.getUuid().toString());
+
+                                    break;
+                                }
+                            }*/
+                        }
+                    });
+        } else {
+            callback.onWriteFailure(new OtherException("请先连接蓝牙设备"));
+        }
 
     }
 

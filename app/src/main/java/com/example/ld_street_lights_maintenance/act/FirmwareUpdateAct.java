@@ -259,9 +259,6 @@ public class FirmwareUpdateAct extends BaseActivity {
         // 固件包大小
         byte[] totalSizeBt = BytesUtil.intBytesHL((int) totalSize, 4);
         data = BytesUtil.byteMergerAll(data, totalSizeBt);
-        Log.e("xxx", ">>>>>>>>>>>>>>>>>>> data = 设备类型: " + deviceType + " 固件id:" + Arrays.toString(firmwareId) + " 版本号 高、中、 低:" + Arrays.toString(data) + " 固件包大小 :" + Arrays.toString(totalSizeBt));
-        Log.e("xxx", ">>>>>>>>>>>>>>>>>>> data = " + Arrays.toString(data));
-        Log.e("xxx", "固件包大小：" + totalSize);
         sendOrder(funCode, data, OrderPhotoPopupUtils.RWStart.WRITE, true);
 
 
@@ -343,7 +340,7 @@ public class FirmwareUpdateAct extends BaseActivity {
                 // 确认升级
                 Log.e("xx", "确认升级~");
                 // 获取更新包每次发送承接的长度
-               int sendLeng = BytesUtil.bytesIntHL(new byte[]{data[5],data[6]});
+                int sendLeng = BytesUtil.bytesIntHL(new byte[]{data[5], data[6]});
                 // 发送固件
                 sendFirmware(sendLeng);
 
@@ -352,48 +349,65 @@ public class FirmwareUpdateAct extends BaseActivity {
                 showToast("升级失败固件包参数有误~");
             }
 
-        }else if(data[2] == 38){ // 返回设备固件数据包确认
-              //
-            Log.e("xx", "升级" + Arrays.toString(data) );
+        } else if (data[2] == 38) { // 返回设备固件数据包确认
+            //
+            Log.e("xx", "升级" + Arrays.toString(data));
         }
 
     }
 
 
     /**
-     *  发送固件包到下位机升级固件
+     * 发送固件包到下位机升级固件
+     *
      * @param sendLeng 发送包单次承接的长度
      */
-    private Object[] firmwareData = null;
     private void sendFirmware(final int sendLeng) {
 
-      new Thread(new Runnable() {
-          @Override
-          public void run() {
-              if (firmwarePackageFile != null) {
-                  FileInputStream fis = null;
-                  try {
-                      fis = new FileInputStream(firmwarePackageFile);
-                      byte[] buffer = new byte[fis.available()];
-                      fis.read(buffer);
-                      fis.close();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if (firmwarePackageFile != null) {
+                    FileInputStream fis = null;
+                    try {
+                        fis = new FileInputStream(firmwarePackageFile);
+                        byte[] buffer = new byte[fis.available()];
+                        fis.read(buffer);
+                        fis.close();
 
-                      Object[] objdata = BytesUtil.splitAry(buffer, sendLeng);
-                      firmwareData = objdata;
-                      int bytesLeng = objdata.length;
+                        Log.e("xx", "buffer = " + Arrays.toString(buffer));
 
-                   //   包序号_高8位 包序号_低8位 数据包（根据数据包大小决定）
-                      byte[] funCode = new byte[]{0, 37};
-                      byte[] data = new byte[]{(byte) 0, 0};
-                      data = BytesUtil.byteMergerAll(data, (byte[]) objdata[0]);
-                      sendOrder(funCode, data, OrderPhotoPopupUtils.RWStart.WRITE, true);
+                        try {
+                            BlePusher.writeUpdate( buffer, sendLeng,new BleWriteCallback() {
+                                @Override
+                                public void onWriteSuccess(int current, int total, byte[] data) {
 
-                  } catch (Exception e) {
-                      e.printStackTrace();
-                  }
-              }
-          }
-      }).start();
+                                    // 解析数据
+                                    parseDatas(data);
+                                    stopProgress();
+                                }
+
+                                @Override
+                                public void onWriteFailure(BleException exception) {
+                                    if (exception instanceof TimeoutException) {
+                                        showToast("写入失败: 当前蓝牙信号较弱，请尝试靠近~");
+                                    } else {
+                                        showToast("写入失败:" + exception.toString());
+                                    }
+                                    stopProgress();
+                                }
+                            });
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }).start();
 
     }
 
