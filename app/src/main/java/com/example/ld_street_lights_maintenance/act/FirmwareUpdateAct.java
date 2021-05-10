@@ -360,7 +360,7 @@ public class FirmwareUpdateAct extends BaseActivity {
     /**
      * 发送固件包到下位机升级固件
      *
-     * @param sendLeng 发送包单次承接的长度
+     * @param sendLeng 发送包拼接的长度
      */
     private void sendFirmware(final int sendLeng) {
 
