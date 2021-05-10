@@ -362,8 +362,13 @@ public class FirmwareUpdateAct extends BaseActivity {
         } else if (data[2] == 38) { // 返回设备固件数据包确认
             // -18, 0, 38, 0, 2, 0, -128, -87, -68, -17
             int index = BytesUtil.bytesIntHL(new byte[]{data[5], data[6]});
-            Log.e("xx", "固件升级返回 index " + index);
-            Log.e("xx", "固件升级返回" + Arrays.toString(data));
+            Log.e("xx", "固件升级返回 "+ "("+index+")" + Arrays.toString(data) );
+            final byte[] funCode = new byte[]{0, 37};
+            byte[] packageNumber = BytesUtil.intBytesHL(index+1,2); // 包序号
+            final byte[] dataUp = BytesUtil.byteMergerAll(packageNumber, (byte[]) datas[index]);
+
+            sendOrder(funCode, dataUp, OrderPhotoPopupUtils.RWStart.WRITE, true);
+
         }
 
     }
@@ -389,7 +394,6 @@ public class FirmwareUpdateAct extends BaseActivity {
                         fis.close();
 
                         Log.e("xx", "buffer = " + Arrays.toString(buffer));
-                        Log.e("xx", "sendLeng = " + sendLeng);
 
                         //     final Object[] objdata = BytesUtil.splitAry(datas, sendLeng-10);
                         final Object[] objdata = BytesUtil.splitAry(buffer, sendLeng - 10);
@@ -398,7 +402,6 @@ public class FirmwareUpdateAct extends BaseActivity {
                         final byte[] funCode = new byte[]{0, 37};
                         byte[] packageNumber = new byte[]{0, 0}; // 包序号
                         final byte[] data = BytesUtil.byteMergerAll(packageNumber, (byte[]) objdata[0]);
-
 
                         sendOrder(funCode, data, OrderPhotoPopupUtils.RWStart.WRITE, true);
 
