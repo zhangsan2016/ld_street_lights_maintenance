@@ -67,7 +67,7 @@ public class FirmwareUpdateAct extends BaseActivity {
     }
 
     private void initView() {
-        ImageView iv_break =  this.findViewById(R.id.iv_firmware_update_break);
+        ImageView iv_break = this.findViewById(R.id.iv_firmware_update_break);
         iv_break.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -362,12 +362,12 @@ public class FirmwareUpdateAct extends BaseActivity {
         } else if (data[2] == 38) { // 返回设备固件数据包确认
             // -18, 0, 38, 0, 2, 0, -128, -87, -68, -17
             int index = BytesUtil.bytesIntHL(new byte[]{data[5], data[6]});
-            Log.e("xx", "固件升级返回 "+ "("+index+")" + Arrays.toString(data) );
-            final byte[] funCode = new byte[]{0, 37};
-            byte[] packageNumber = BytesUtil.intBytesHL(index+1,2); // 包序号
-            final byte[] dataUp = BytesUtil.byteMergerAll(packageNumber, (byte[]) datas[index]);
+            Log.e("xx", "固件升级返回 " + "(" + index + ")" + Arrays.toString(data));
 
-            sendOrder(funCode, dataUp, OrderPhotoPopupUtils.RWStart.WRITE, true);
+         /*   final byte[] funCode = new byte[]{0, 37};
+            byte[] packageNumber = BytesUtil.intBytesHL(index + 1, 2); // 包序号
+            final byte[] dataUp = BytesUtil.byteMergerAll(packageNumber, (byte[]) datas[index]);
+            sendOrder(funCode, dataUp, OrderPhotoPopupUtils.RWStart.WRITE, true);*/
 
         }
 
@@ -380,6 +380,7 @@ public class FirmwareUpdateAct extends BaseActivity {
      * @param sendLeng 发送包的长度
      */
     Object[] datas = new Object[]{};
+
     private void sendFirmware(final int sendLeng) {
 
         new Thread(new Runnable() {
@@ -395,40 +396,40 @@ public class FirmwareUpdateAct extends BaseActivity {
 
                         Log.e("xx", "buffer = " + Arrays.toString(buffer));
 
-                        //     final Object[] objdata = BytesUtil.splitAry(datas, sendLeng-10);
+                        /*
                         final Object[] objdata = BytesUtil.splitAry(buffer, sendLeng - 10);
                         datas = objdata; // 保存拆分数据
                         //   包序号_高8位 包序号_低8位 数据包（根据数据包大小决定）
                         final byte[] funCode = new byte[]{0, 37};
                         byte[] packageNumber = new byte[]{0, 0}; // 包序号
                         final byte[] data = BytesUtil.byteMergerAll(packageNumber, (byte[]) objdata[0]);
-
                         sendOrder(funCode, data, OrderPhotoPopupUtils.RWStart.WRITE, true);
+                        */
 
-
-                       /* try {
-                            BlePusher.writeUpdate( buffer, sendLeng,new BleWriteCallback() {
+                        try {
+                            BlePusher.writeUpdate(buffer, sendLeng, new BleWriteCallback() {
                                 @Override
                                 public void onWriteSuccess(int current, int total, byte[] data) {
 
                                     // 解析数据
-                                    parseDatas(data);
+                                   // parseDatas(data);
+                                    showToast("固件升级成功~");
                                     stopProgress();
                                 }
 
                                 @Override
                                 public void onWriteFailure(BleException exception) {
                                     if (exception instanceof TimeoutException) {
-                                        showToast("写入失败: 当前蓝牙信号较弱，请尝试靠近~");
+                                        showToast("固件升级失败: 当前蓝牙信号较弱，请尝试靠近~");
                                     } else {
-                                        showToast("写入失败:" + exception.toString());
+                                        showToast("固件升级失败:" + exception.toString());
                                     }
                                     stopProgress();
                                 }
                             });
                         } catch (Exception e) {
                             e.printStackTrace();
-                        }*/
+                        }
 
 
                     } catch (Exception e) {

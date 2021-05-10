@@ -29,6 +29,7 @@ import com.clj.fastble.exception.TimeoutException;
 import com.clj.fastble.utils.HexUtil;
 import com.example.ld_street_lights_maintenance.crc.CopyOfcheckCRC;
 import com.example.ld_street_lights_maintenance.fragment.mainfragment.BuleFragment;
+import com.example.ld_street_lights_maintenance.view.OrderPhotoPopupUtils;
 
 import java.util.Arrays;
 import java.util.List;
@@ -155,7 +156,7 @@ public class BlePusher {
     }
 
 
-    public static void  check(){
+    public static void check() {
         final List<BleDevice> bleDevices = BleManager.getInstance().getAllConnectedDevice();
         BluetoothGatt mBluetoothGatt = BleManager.getInstance().getBluetoothGatt(bleDevices.get(0));
         // 获取服务
@@ -192,7 +193,6 @@ public class BlePusher {
     /**
      * 拼接指令
      * 协议组成：帧头 - 功能码 - 数据长度 - 数据 - crc - 帧尾部
-     *
      * @param funCode        功能码
      * @param data           数据
      * @param isListenInform 是否监听通知
@@ -204,7 +204,7 @@ public class BlePusher {
 
         // 协议拼接
         final byte[] spliceData = spliceOder(funCode, data);
-        Log.e("xxx", ">>>>>>>>>>>>>>>>>>> 发送的数据 " + "("+spliceData.length+")" + Arrays.toString(spliceData));
+        Log.e("xxx", ">>>>>>>>>>>>>>>>>>> 发送的数据 " + "(" + spliceData.length + ")" + Arrays.toString(spliceData));
 
         final List<BleDevice> bleDevices = BleManager.getInstance().getAllConnectedDevice();
         if (bleDevices.size() > 0) {
@@ -230,85 +230,7 @@ public class BlePusher {
                             @Override
                             public void onNotifySuccess() {
                                 Log.e("xxx", " notify success ");
-                                // 长度大于20需要分包
-                                if (spliceData.length < 20) {
-                                    BleManager.getInstance().write(
-                                            bleDevices.get(0),
-                                            gattCharacteristicA2.getService().getUuid().toString(),
-                                            gattCharacteristicA2.getUuid().toString(),
-                                            new byte[]{01, 01}, new BleWriteCallback() {
-                                                @Override
-                                                public void onWriteSuccess(int current, int total, byte[] justWrite) {
-
-                                                    BleManager.getInstance().write(
-                                                            bleDevices.get(0),
-                                                            gattCharacteristicA1.getService().getUuid().toString(),
-                                                            gattCharacteristicA1.getUuid().toString(),
-                                                            spliceData,
-                                                            new BleWriteCallback() {
-                                                                @Override
-                                                                public void onWriteSuccess(final int current, final int total, final byte[] justWrite) {
-                                                                    // 返回消息
-                                                                    //   callback.onWriteSuccess(0,0,mergeData);
-
-                                                                    // 消息超时（一定时间无返回）时关闭等待
-                                                                    mHandler.removeMessages(MSG_TIMEOUT);
-                                                                    mHandler.sendMessageDelayed(
-                                                                            mHandler.obtainMessage(MSG_TIMEOUT, callback),
-                                                                            BleManager.getInstance().getOperateTimeout());
-                                                                }
-
-                                                                @Override
-                                                                public void onWriteFailure(final BleException exception) {
-                                                                    callback.onWriteFailure(exception);
-                                                                    // 关闭通知
-                                                                    BleManager.getInstance().stopNotify(
-                                                                            bleDevices.get(0),
-                                                                            notify.getService().getUuid().toString(),
-                                                                            notify.getUuid().toString());
-                                                                }
-                                                            });
-                                                }
-
-                                                @Override
-                                                public void onWriteFailure(BleException exception) {
-                                                    callback.onWriteFailure(exception);
-                                                    // 关闭通知
-                                                    BleManager.getInstance().stopNotify(
-                                                            bleDevices.get(0),
-                                                            notify.getService().getUuid().toString(),
-                                                            notify.getUuid().toString());
-
-                                                }
-                                            });
-
-
-                                } else {
-                                    // 分包
-                                    new Thread(new Runnable() {
-                                        @Override
-                                        public void run() {
-
-                                            Object[] objdata = BytesUtil.splitAry(spliceData, 20);
-                                            int bytesLeng = objdata.length;
-
-                                            for (int i = 0; i < bytesLeng; i++) {
-                                                byte[] bytedata = (byte[]) objdata[i];
-
-                                                // 用于同步线程
-                                                final CountDownLatch latch = new CountDownLatch(1);
-                                                splitWrite(bytesLeng, i + 1, bytedata, callback, gattCharacteristicA1, gattCharacteristicA2, bleDevices.get(0), latch);
-
-                                                try {
-                                                    //阻塞当前线程直到latch中数值为零才执行
-                                                    latch.await();
-                                                } catch (InterruptedException e) {
-                                                    e.printStackTrace();
-                                                }
-                                            }
-                                        }
-                                    }).start();
-                                }
+                                write(spliceData, bleDevices, gattCharacteristicA2, gattCharacteristicA1, callback, notify);
                             }
 
                             @Override
@@ -359,6 +281,89 @@ public class BlePusher {
 
         } else {
             throw new Exception("请先连接蓝牙设备");
+        }
+    }
+
+    private static void write(final byte[] spliceData, final List<BleDevice> bleDevices, final BluetoothGattCharacteristic gattCharacteristicA2, final BluetoothGattCharacteristic gattCharacteristicA1, final BleWriteCallback callback, final BluetoothGattCharacteristic notify) {
+        // 长度大于20需要分包
+        if (spliceData.length < 20) {
+            BleManager.getInstance().write(
+                    bleDevices.get(0),
+                    gattCharacteristicA2.getService().getUuid().toString(),
+                    gattCharacteristicA2.getUuid().toString(),
+                    new byte[]{01, 01}, new BleWriteCallback() {
+                        @Override
+                        public void onWriteSuccess(int current, int total, byte[] justWrite) {
+
+                            BleManager.getInstance().write(
+                                    bleDevices.get(0),
+                                    gattCharacteristicA1.getService().getUuid().toString(),
+                                    gattCharacteristicA1.getUuid().toString(),
+                                    spliceData,
+                                    new BleWriteCallback() {
+                                        @Override
+                                        public void onWriteSuccess(final int current, final int total, final byte[] justWrite) {
+                                            // 返回消息
+                                            //   callback.onWriteSuccess(0,0,mergeData);
+
+                                            // 消息超时（一定时间无返回）时关闭等待
+                                            mHandler.removeMessages(MSG_TIMEOUT);
+                                            mHandler.sendMessageDelayed(
+                                                    mHandler.obtainMessage(MSG_TIMEOUT, callback),
+                                                    BleManager.getInstance().getOperateTimeout());
+                                        }
+
+                                        @Override
+                                        public void onWriteFailure(final BleException exception) {
+                                            callback.onWriteFailure(exception);
+                                            // 关闭通知
+                                            BleManager.getInstance().stopNotify(
+                                                    bleDevices.get(0),
+                                                    notify.getService().getUuid().toString(),
+                                                    notify.getUuid().toString());
+                                        }
+                                    });
+                        }
+
+                        @Override
+                        public void onWriteFailure(BleException exception) {
+                            callback.onWriteFailure(exception);
+                            // 关闭通知
+                            BleManager.getInstance().stopNotify(
+                                    bleDevices.get(0),
+                                    notify.getService().getUuid().toString(),
+                                    notify.getUuid().toString());
+
+                        }
+                    });
+
+
+        } else {
+            // 分包
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+
+                    Object[] objdata = BytesUtil.splitAry(spliceData, 20);
+                    int bytesLeng = objdata.length;
+
+                    for (int i = 0; i < bytesLeng; i++) {
+                        byte[] bytedata = (byte[]) objdata[i];
+
+                        // 用于同步线程
+                        final CountDownLatch latch = new CountDownLatch(1);
+                        splitWrite(bytesLeng, i + 1, bytedata, callback, gattCharacteristicA1, gattCharacteristicA2, bleDevices.get(0), latch);
+
+                        try {
+                            //阻塞当前线程直到latch中数值为零才执行
+                            latch.await();
+                           // Thread.sleep(1000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }).start();
         }
     }
 
@@ -647,6 +652,7 @@ public class BlePusher {
 
             // 开启蓝牙通知监听
             mergeData = new byte[0];
+            final Object[] firData = BytesUtil.splitAry(datas, sendLeng - 10);
             BleManager.getInstance().notify(
                     bleDevices.get(0),
                     notify.getService().getUuid().toString(),
@@ -656,81 +662,15 @@ public class BlePusher {
                         public void onNotifySuccess() {
                             Log.e("xxx", " notify success ");
 
-                            //     final Object[] objdata = BytesUtil.splitAry(datas, sendLeng-10);
-                            final Object[] objdata = BytesUtil.splitAry(datas, sendLeng - 10);
                             //   包序号_高8位 包序号_低8位 数据包（根据数据包大小决定）
                             final byte[] funCode = new byte[]{0, 37};
+                            byte[] packageNumber = new byte[]{0, 0}; // 包序号
+                            byte[] spliceData = BytesUtil.byteMergerAll(packageNumber, (byte[]) firData[0]);
                             // 协议拼接
-                            final byte[] spliceData = spliceOder(funCode, (byte[]) objdata[0]);
+                            spliceData = spliceOder(funCode, spliceData);
+                            Log.e("xxx", " notify success firData.length = " + firData.length);
+                            write(spliceData, bleDevices, gattCharacteristicA2, gattCharacteristicA1, callback, notify);
 
-                            Log.e("xxx", " 更新 spliceData " + Arrays.toString(spliceData));
-                            BleManager.getInstance().write(
-                                    bleDevices.get(0),
-                                    gattCharacteristicA1.getService().getUuid().toString(),
-                                    gattCharacteristicA1.getUuid().toString(),
-                                    spliceData,
-                                    new BleWriteCallback() {
-                                        @Override
-                                        public void onWriteSuccess(final int current, final int total, final byte[] justWrite) {
-                                            // 返回消息
-                                            //   callback.onWriteSuccess(0,0,mergeData);
-
-                                            Log.e("xxx", " 更新返回 " + Arrays.toString(justWrite));
-
-                                            // 消息超时（一定时间无返回）时关闭等待
-                                            mHandler.removeMessages(MSG_TIMEOUT);
-                                            mHandler.sendMessageDelayed(
-                                                    mHandler.obtainMessage(MSG_TIMEOUT, callback),
-                                                    BleManager.getInstance().getOperateTimeout());
-                                        }
-
-                                        @Override
-                                        public void onWriteFailure(final BleException exception) {
-                                            callback.onWriteFailure(exception);
-                                            // 关闭通知
-                                            BleManager.getInstance().stopNotify(
-                                                    bleDevices.get(0),
-                                                    notify.getService().getUuid().toString(),
-                                                    notify.getUuid().toString());
-                                        }
-                                    });
-
-
-                           /* byte[] data = new byte[]{(byte) 0, 1};
-                            data = BytesUtil.byteMergerAll(data, (byte[]) objdata[0]);
-                            // 协议拼接
-                            final byte[] spliceData = spliceOder(funCode, data);
-                            Log.e("xxx", " 更新 spliceData " + Arrays.toString(spliceData));
-                            BleManager.getInstance().write(
-                                    bleDevices.get(0),
-                                    gattCharacteristicA1.getService().getUuid().toString(),
-                                    gattCharacteristicA1.getUuid().toString(),
-                                    spliceData,
-                                    new BleWriteCallback() {
-                                        @Override
-                                        public void onWriteSuccess(final int current, final int total, final byte[] justWrite) {
-                                            // 返回消息
-                                            //   callback.onWriteSuccess(0,0,mergeData);
-
-                                            Log.e("xxx", " 更新返回 " + Arrays.toString(justWrite));
-
-                                            // 消息超时（一定时间无返回）时关闭等待
-                                            mHandler.removeMessages(MSG_TIMEOUT);
-                                            mHandler.sendMessageDelayed(
-                                                    mHandler.obtainMessage(MSG_TIMEOUT, callback),
-                                                    BleManager.getInstance().getOperateTimeout());
-                                        }
-
-                                        @Override
-                                        public void onWriteFailure(final BleException exception) {
-                                            callback.onWriteFailure(exception);
-                                            // 关闭通知
-                                            BleManager.getInstance().stopNotify(
-                                                    bleDevices.get(0),
-                                                    notify.getService().getUuid().toString(),
-                                                    notify.getUuid().toString());
-                                        }
-                                    });*/
                         }
 
                         @Override
@@ -740,7 +680,40 @@ public class BlePusher {
 
                         @Override
                         public void onCharacteristicChanged(byte[] data) {
-                            Log.e("xxx", " notify onCharacteristicChanged " + Arrays.toString(data));
+                            Log.e("xxx", "writeUpdate notify onCharacteristicChanged " + Arrays.toString(data));
+
+                            if (data[2] == 38) {
+                                int index = BytesUtil.bytesIntHL(new byte[]{data[5], data[6]});
+                                if(index != firData.length){
+                                    // -18, 0, 38, 0, 2, 0, 0, 9, -67, -17
+                                    final byte[] funCode = new byte[]{0, 37};
+                                    byte[] packageNumber = BytesUtil.intBytesHL(index + 1, 2); // 包序号
+                                    byte[] spliceData = BytesUtil.byteMergerAll(packageNumber, (byte[]) firData[index+1]);
+                                    // 协议拼接
+                                    spliceData = spliceOder(funCode, spliceData);
+
+                                    Log.e("xxx", " writeUpdate onCharacteristicChanged spliceData=  " + Arrays.toString(spliceData));
+
+                                    write(spliceData, bleDevices, gattCharacteristicA2, gattCharacteristicA1, callback, notify);
+                                }else{
+                                    // 最后一条数据
+                                    // 验证 CRC ,看固件包传输是否完整
+                                    // 关闭超时通知
+                                    mHandler.removeMessages(MSG_TIMEOUT);
+                                    BleManager.getInstance().stopNotify(
+                                            bleDevices.get(0),
+                                            notify.getService().getUuid().toString(),
+                                            notify.getUuid().toString());
+
+                                    // 返回消息
+                                    callback.onWriteSuccess(0, 0, mergeData);
+
+                                    // 清空 mergeData
+                                    mergeData = new byte[0];
+                                }
+
+                            }
+
                           /*  mergeData = BytesUtil.byteMergerAll(mergeData, data);
                             for (int i = 0; i < data.length; i++) {
                                 if (data[i] == -17) {
