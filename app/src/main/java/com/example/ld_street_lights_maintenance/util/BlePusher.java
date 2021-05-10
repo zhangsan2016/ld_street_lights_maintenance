@@ -155,6 +155,40 @@ public class BlePusher {
     }
 
 
+    public static void  check(){
+        final List<BleDevice> bleDevices = BleManager.getInstance().getAllConnectedDevice();
+        BluetoothGatt mBluetoothGatt = BleManager.getInstance().getBluetoothGatt(bleDevices.get(0));
+        // 获取服务
+        BluetoothGattService service = mBluetoothGatt.getService(UUID.fromString(serviceUuid));
+        // 获取特征 获取一个描述符 84:C2:E4:03:02:04    0000ffa1-0000-1000-8000-00805f9b34fb
+        final BluetoothGattCharacteristic gattCharacteristicA1 = service.getCharacteristic(UUID.fromString(characteristicUuidA));
+        final BluetoothGattCharacteristic gattCharacteristicA2 = service.getCharacteristic(UUID.fromString(characteristicUuidB));
+        final BluetoothGattCharacteristic notify = service.getCharacteristic(UUID.fromString(notifyUuid));
+
+        BleManager.getInstance().notify(
+                bleDevices.get(0),
+                notify.getService().getUuid().toString(),
+                notify.getUuid().toString(),
+                new BleNotifyCallback() {
+
+                    @Override
+                    public void onNotifySuccess() {
+                        Log.e("xxx", " 手动 notify onNotifySuccess mergeData =" + Arrays.toString(mergeData));
+                    }
+
+                    @Override
+                    public void onNotifyFailure(BleException exception) {
+                        Log.e("xxx", "手动  notify onNotifyFailure mergeData =" + Arrays.toString(mergeData));
+                    }
+
+                    @Override
+                    public void onCharacteristicChanged(byte[] data) {
+                        Log.e("xxx", "手动  notify onCharacteristicChanged mergeData =" + Arrays.toString(mergeData));
+                    }
+                });
+    }
+
+
     /**
      * 拼接指令
      * 协议组成：帧头 - 功能码 - 数据长度 - 数据 - crc - 帧尾部
@@ -170,7 +204,7 @@ public class BlePusher {
 
         // 协议拼接
         final byte[] spliceData = spliceOder(funCode, data);
-        Log.e("xxx", ">>>>>>>>>>>>>>>>>>> 发送的数据 " + Arrays.toString(spliceData));
+        Log.e("xxx", ">>>>>>>>>>>>>>>>>>> 发送的数据 " + "("+spliceData.length+")" + Arrays.toString(spliceData));
 
         final List<BleDevice> bleDevices = BleManager.getInstance().getAllConnectedDevice();
         if (bleDevices.size() > 0) {
@@ -290,6 +324,7 @@ public class BlePusher {
                             public void onCharacteristicChanged(byte[] data) {
                                 Log.e("xxx", " notify onCharacteristicChanged " + Arrays.toString(data));
                                 mergeData = BytesUtil.byteMergerAll(mergeData, data);
+                                Log.e("xxx", " notify onCharacteristicChanged mergeData =" + Arrays.toString(mergeData));
                                 for (int i = 0; i < data.length; i++) {
                                     if (data[i] == -17) {
 
@@ -298,7 +333,6 @@ public class BlePusher {
                                     /*Intent intent = new Intent();
                                     intent.setAction(DATA_NOTIFY_FILTER);
                                     sendBroadcast(intent);*/
-
 
                                         // 关闭超时通知
                                         mHandler.removeMessages(MSG_TIMEOUT);
@@ -309,6 +343,9 @@ public class BlePusher {
 
                                         // 返回消息
                                         callback.onWriteSuccess(0, 0, mergeData);
+
+                                        // 清空 mergeData
+                                        mergeData = new byte[0];
 
                                         break;
                                     }
@@ -443,7 +480,7 @@ public class BlePusher {
     }
 
 
-    private static byte[] spliceOder(byte[] funCode, byte[] data) {
+    public static byte[] spliceOder(byte[] funCode, byte[] data) {
 
         //  协议组成：帧头 - 功能码 - 数据长度 - 数据 - crc - 帧尾部
         byte[] cBytes = BytesUtil.concat(new byte[]{head}, funCode);
@@ -623,17 +660,15 @@ public class BlePusher {
                             final Object[] objdata = BytesUtil.splitAry(datas, sendLeng - 10);
                             //   包序号_高8位 包序号_低8位 数据包（根据数据包大小决定）
                             final byte[] funCode = new byte[]{0, 37};
-
-                            byte[] data = new byte[]{(byte) 0, 1};
-                            data = BytesUtil.byteMergerAll(data, (byte[]) objdata[0]);
                             // 协议拼接
-                            final byte[] spliceData = spliceOder(funCode, data);
+                            final byte[] spliceData = spliceOder(funCode, (byte[]) objdata[0]);
+
                             Log.e("xxx", " 更新 spliceData " + Arrays.toString(spliceData));
                             BleManager.getInstance().write(
                                     bleDevices.get(0),
                                     gattCharacteristicA1.getService().getUuid().toString(),
                                     gattCharacteristicA1.getUuid().toString(),
-                                    data,
+                                    spliceData,
                                     new BleWriteCallback() {
                                         @Override
                                         public void onWriteSuccess(final int current, final int total, final byte[] justWrite) {

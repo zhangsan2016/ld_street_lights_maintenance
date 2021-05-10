@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -44,6 +45,8 @@ import okhttp3.Callback;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
 
+import static com.example.ld_street_lights_maintenance.util.BlePusher.spliceOder;
+
 public class FirmwareUpdateAct extends BaseActivity {
     private Spinner sp_firmware;
     private TextView tv_endpoint;
@@ -64,6 +67,13 @@ public class FirmwareUpdateAct extends BaseActivity {
     }
 
     private void initView() {
+        ImageView iv_break =  this.findViewById(R.id.iv_firmware_update_break);
+        iv_break.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
         sp_firmware = this.findViewById(R.id.sp_firmware);
         tv_endpoint = this.findViewById(R.id.tv_endpoint);
@@ -350,8 +360,10 @@ public class FirmwareUpdateAct extends BaseActivity {
             }
 
         } else if (data[2] == 38) { // 返回设备固件数据包确认
-            //
-            Log.e("xx", "升级" + Arrays.toString(data));
+            // -18, 0, 38, 0, 2, 0, -128, -87, -68, -17
+            int index = BytesUtil.bytesIntHL(new byte[]{data[5], data[6]});
+            Log.e("xx", "固件升级返回 index " + index);
+            Log.e("xx", "固件升级返回" + Arrays.toString(data));
         }
 
     }
@@ -360,8 +372,9 @@ public class FirmwareUpdateAct extends BaseActivity {
     /**
      * 发送固件包到下位机升级固件
      *
-     * @param sendLeng 发送包拼接的长度
+     * @param sendLeng 发送包的长度
      */
+    Object[] datas = new Object[]{};
     private void sendFirmware(final int sendLeng) {
 
         new Thread(new Runnable() {
@@ -376,8 +389,21 @@ public class FirmwareUpdateAct extends BaseActivity {
                         fis.close();
 
                         Log.e("xx", "buffer = " + Arrays.toString(buffer));
+                        Log.e("xx", "sendLeng = " + sendLeng);
 
-                        try {
+                        //     final Object[] objdata = BytesUtil.splitAry(datas, sendLeng-10);
+                        final Object[] objdata = BytesUtil.splitAry(buffer, sendLeng - 10);
+                        datas = objdata; // 保存拆分数据
+                        //   包序号_高8位 包序号_低8位 数据包（根据数据包大小决定）
+                        final byte[] funCode = new byte[]{0, 37};
+                        byte[] packageNumber = new byte[]{0, 0}; // 包序号
+                        final byte[] data = BytesUtil.byteMergerAll(packageNumber, (byte[]) objdata[0]);
+
+
+                        sendOrder(funCode, data, OrderPhotoPopupUtils.RWStart.WRITE, true);
+
+
+                       /* try {
                             BlePusher.writeUpdate( buffer, sendLeng,new BleWriteCallback() {
                                 @Override
                                 public void onWriteSuccess(int current, int total, byte[] data) {
@@ -399,7 +425,7 @@ public class FirmwareUpdateAct extends BaseActivity {
                             });
                         } catch (Exception e) {
                             e.printStackTrace();
-                        }
+                        }*/
 
 
                     } catch (Exception e) {
@@ -427,4 +453,7 @@ public class FirmwareUpdateAct extends BaseActivity {
         return false;
     }
 
+    public void check(View view) {
+        BlePusher.check();
+    }
 }
