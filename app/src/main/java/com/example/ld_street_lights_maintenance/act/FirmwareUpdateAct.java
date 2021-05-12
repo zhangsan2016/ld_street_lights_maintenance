@@ -179,7 +179,7 @@ public class FirmwareUpdateAct extends BaseActivity {
                 // 升级
                 upgrade(response.body());
 
-                stopProgress();
+              //  stopProgress();
             }
         });
 

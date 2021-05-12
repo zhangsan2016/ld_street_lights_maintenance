@@ -266,7 +266,7 @@ public class NfcNdefActivity extends BaseNfcActivity {
         initListening();
 
         //初始化定位
-        initLocation();
+      //  initLocation();
 
         // 登录获取 token
         getToken();
@@ -289,7 +289,6 @@ public class NfcNdefActivity extends BaseNfcActivity {
 
     /**
      * 初始化定位
-     *
      * @author hongming.wang
      * @since 2.8.0
      */

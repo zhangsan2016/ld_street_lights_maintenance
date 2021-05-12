@@ -27,6 +27,7 @@ import com.clj.fastble.exception.GattException;
 import com.clj.fastble.exception.OtherException;
 import com.clj.fastble.exception.TimeoutException;
 import com.clj.fastble.utils.HexUtil;
+import com.example.ld_street_lights_maintenance.crc.CRC16;
 import com.example.ld_street_lights_maintenance.crc.CopyOfcheckCRC;
 import com.example.ld_street_lights_maintenance.fragment.mainfragment.BuleFragment;
 import com.example.ld_street_lights_maintenance.view.OrderPhotoPopupUtils;
@@ -652,7 +653,7 @@ public class BlePusher {
 
             // 开启蓝牙通知监听
             mergeData = new byte[0];
-            final Object[] firData = BytesUtil.splitAry(datas, sendLeng - 10);
+            final Object[] firData = BytesUtil.splitAry(datas, sendLeng-2);
             BleManager.getInstance().notify(
                     bleDevices.get(0),
                     notify.getService().getUuid().toString(),
@@ -684,6 +685,7 @@ public class BlePusher {
 
                             if (data[2] == 38) {
                                 int index = BytesUtil.bytesIntHL(new byte[]{data[5], data[6]});
+                                Log.e("xxx", "writeUpdate notify onCharacteristicChanged index = " + index + " firData.length = " + firData.length);
                                 if(index != firData.length){
                                     // -18, 0, 38, 0, 2, 0, 0, 9, -67, -17
                                     final byte[] funCode = new byte[]{0, 37};
@@ -695,23 +697,34 @@ public class BlePusher {
                                     Log.e("xxx", " writeUpdate onCharacteristicChanged spliceData=  " + Arrays.toString(spliceData));
 
                                     write(spliceData, bleDevices, gattCharacteristicA2, gattCharacteristicA1, callback, notify);
+
                                 }else{
                                     // 最后一条数据
                                     // 验证 CRC ,看固件包传输是否完整
-                                    // 关闭超时通知
-                                    mHandler.removeMessages(MSG_TIMEOUT);
-                                    BleManager.getInstance().stopNotify(
-                                            bleDevices.get(0),
-                                            notify.getService().getUuid().toString(),
-                                            notify.getUuid().toString());
-
-                                    // 返回消息
-                                    callback.onWriteSuccess(0, 0, mergeData);
+                                    int crc = CRC16.calcCrc16(datas);
+                                    Log.e("xxx", " writeUpdate onCharacteristicChanged  crc =  " + crc);
+                                    // 功能码
+                                    byte[] funCode = new byte[]{0, 39};
+                                    byte[] spliceData = BytesUtil.intBytesHL(crc,2);
+                                    // 协议拼接
+                                    spliceData = spliceOder(funCode, spliceData);
+                                    write(spliceData, bleDevices, gattCharacteristicA2, gattCharacteristicA1, callback, notify);
 
                                     // 清空 mergeData
                                     mergeData = new byte[0];
                                 }
 
+                            }else if (data[2] == 39){
+                                Log.e("xxx", " writeUpdate onCharacteristicChanged  最后一条crc =  " + Arrays.toString(data));
+                                // 关闭超时通知
+                                mHandler.removeMessages(MSG_TIMEOUT);
+                                BleManager.getInstance().stopNotify(
+                                        bleDevices.get(0),
+                                        notify.getService().getUuid().toString(),
+                                        notify.getUuid().toString());
+
+                                // 返回消息
+                                callback.onWriteSuccess(0, 0, mergeData);
                             }
 
                           /*  mergeData = BytesUtil.byteMergerAll(mergeData, data);
