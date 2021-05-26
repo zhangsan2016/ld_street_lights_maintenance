@@ -800,10 +800,18 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
 
         } else if (data[2] == 26) {
             Log.e("xx", "返回电参");
+            String txt = "读取电参："
+                    + " 电压:" + BytesUtil.bytesIntHL(new byte[]{data[5], data[6]})
+                    + " 电流:" + BytesUtil.bytesIntHL(new byte[]{data[7], data[8]})
+                    + " 功率:" + BytesUtil.bytesIntHL(new byte[]{data[9], data[10]})
+                    + " 电能:" + BytesUtil.bytesIntHL(new byte[]{data[11], data[12], data[13], data[14]})
+                    + " 功率因数:" + BytesUtil.bytesIntHL(new byte[]{data[15], data[16]})
+                    + "\n";
+            addText(txt_data, txt);
         } else if (data[2] == 32) {
             Log.e("xx", "返回设备ID号" + "\n");
             //  [-18, 0, 32, 0, 23, 52, 48, 48, 55, 48, 48, 48, 48, 56, 54, 52, 56, 51, 49, 48, 53, 53, 48, 52, 50, 51, 54, 51, 20, 35, -17, 0, 0, 0, 0, 0, 0, 20, -27, 4]
-            String txt = "设备ID为：" + "52, 48, 48, 55, 48, 48, 48, 48, 56, 54, 52, 56, 51, 49, 48, 53, 53, 48, 52, 50, 51, 54, 51," + "\n";
+            String txt = "设备ID为："  + data[5] + data[6] + data[7] + data[8] + data[9] + data[10] + data[11] + data[12] + data[13]  + data[14]  + data[15] + data[16] + "\n";
             addText(txt_data, txt);
 
         } else if (data[2] == 34) {

@@ -79,7 +79,7 @@
             android:layout_height="30dp"
             android:layout_below="@id/cd_electricity"
             android:background="@drawable/button_drawable"
-            android:text="一键读取所有配置信息返回"
+            android:text="一键读取所有配置信息"
             android:textColor="@color/white" />
 
         <Button

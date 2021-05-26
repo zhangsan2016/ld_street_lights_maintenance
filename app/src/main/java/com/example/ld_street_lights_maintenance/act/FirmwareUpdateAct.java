@@ -179,7 +179,7 @@ public class FirmwareUpdateAct extends BaseActivity {
                 // 升级
                 upgrade(response.body());
 
-              //  stopProgress();
+                //  stopProgress();
             }
         });
 
@@ -297,7 +297,7 @@ public class FirmwareUpdateAct extends BaseActivity {
                         showToast("读取成功~");
                         Log.e("xxx", ">>>>>>>>>>>>>>>>>>> 读取 当前读取返回数据成功 " + Arrays.toString(data));
                     }
-                    stopProgress();
+                   // stopProgress();
                 }
 
                 @Override
@@ -412,9 +412,14 @@ public class FirmwareUpdateAct extends BaseActivity {
                                 public void onWriteSuccess(int current, int total, byte[] data) {
 
                                     // 解析数据
-                                   // parseDatas(data);
-                                    showToast("固件升级成功~");
+                                    // parseDatas(data);
+                                    if (data[5] == 1) {
+                                        showToast("固件升级成功~");
+                                    } else{
+                                        showToast("固件升级失败~");
+                                    }
                                     stopProgress();
+
                                 }
 
                                 @Override
