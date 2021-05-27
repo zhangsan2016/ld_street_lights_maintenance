@@ -829,15 +829,61 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
 
             Log.e("xx", "一键读取所有配置信息返回");
             // -18, 0, 48, 0, 56, 17, 0, 100, 20, 0, 80, 23, 0, 30, 1, 0, 40, 4, 0, 80, 9, 0, 0, 18, 0, 0, 21, 23, 0, 1, 0, 0, 3, 0, 0, 5, 0, 0, 8, 0, 0, 97, -88, 46, -32, 1, -12, 0, 0, 0, 20, -1, 1, 0, 30, 0, 5, 1, -60, 0, 1, -65, -56, -17, 0, 0, 0, 0, 77, 81
-            String txt = "";
-            addText(txt_data, txt);
+            StringBuilder txt = new StringBuilder();
+            txt.append("一键读取所有状态信息: ");
+            txt.append("\n主灯定时: \n");
+            for (int i = 0; i < 6; i++) {
+                txt.append( + data[(i*3)+5] + ":" + data[(i*3)+5+1] + "   " + data[(i*3)+5+2] + "%" + "\n");
+            }
+            txt.append("副灯定时: \n");
+            for (int i = 0; i < 6; i++) {
+                txt.append( + data[(i*3)+23] + ":" + data[(i*3)+23+1] + "   " + data[(i*3)+23+2] + "%" + "\n");
+            }
+            txt.append( "电压上限:"+ BytesUtil.bytesIntHL(new byte[]{data[41], data[42]})  + "\n");
+            txt.append( "电压下限:"+ BytesUtil.bytesIntHL(new byte[]{data[43], data[44]})  + "\n");
+            txt.append( "电流上限:"+ BytesUtil.bytesIntHL(new byte[]{data[45], data[46]})  + "\n");
+            txt.append( "电流下限:"+ BytesUtil.bytesIntHL(new byte[]{data[45], data[46]})  + "\n");
+            txt.append( "漏电流上限:"+ BytesUtil.bytesIntHL(new byte[]{data[47], data[48]})  + "\n");
+
+            txt.append( "电参报警使能:"+ BytesUtil.byteToBit(data[49])  + "\n");
+            if(data[50] == 1){
+                txt.append( "照度开关: 开" + "\n");
+            }else{
+                txt.append( "照度开关: 关" + "\n");
+            }
+            txt.append( "照度上限:"+ BytesUtil.bytesIntHL(new byte[]{data[51], data[52]})  + "\n");
+            txt.append( "照度下限:"+ BytesUtil.bytesIntHL(new byte[]{data[53], data[54]})  + "\n");
+            if(data[55] == 1){
+                txt.append( "经纬度开关: 开" + "\n");
+            }else{
+                txt.append( "经纬度开关: 关" + "\n");
+            }
+            txt.append( "角度精度:"+ data[56]  + "\n");
+            if(data[57] == 1){
+                txt.append( "倾斜报警开关: 开" + "\n");
+            }else{
+                txt.append( "倾斜报警开关: 关" + "\n");
+            }
+            if(data[58] == 1){
+                txt.append( "测试模式开关: 开" + "\n");
+            }else{
+                txt.append( "测试模式开关: 关" + "\n");
+            }
+
+
+            addText(txt_data, txt.toString());
 
         } else if (data[2] == 50) {
 
             Log.e("xx", "一键读取所有状态信息返回");
             // -18, 0, 50, 0, 46, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 16, 0, 0, 0, 26, -27, 4, 9, 36, -40, -17, 0, 0, 0, 0, -60, 0
-            String txt = "";
-            addText(txt_data, txt);
+            StringBuilder txt = new StringBuilder();
+          /*  txt.append("一键读取所有状态信息: ");
+            txt.append("主灯定时: \n");
+            for (int i = 0; i < 6; i++) {
+                txt.append( + data[(i*3)+5] + ":" + data[(i*3)+5+1] + " " + data[(i*3)+2] + "%" + "\n");
+            }*/
+            addText(txt_data, txt.toString());
 
         } else if (data[2] == 81) {
             Log.e("xx", "使能电参异常报警返回");
