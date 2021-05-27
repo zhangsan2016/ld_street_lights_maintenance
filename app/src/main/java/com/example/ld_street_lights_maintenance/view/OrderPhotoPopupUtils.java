@@ -767,7 +767,7 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
      */
     private void parseDatas(byte[] data) {
 
-        addText(txt_data, Arrays.toString(data) + "\n");
+       // addText(txt_data, Arrays.toString(data) + "\n");
         //使用 crc 校验数据
         if (!checkDataCrc(data)) {
             Log.e("xx", "CRC 校验失败~");
@@ -830,7 +830,7 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
             Log.e("xx", "一键读取所有配置信息返回");
             // -18, 0, 48, 0, 56, 17, 0, 100, 20, 0, 80, 23, 0, 30, 1, 0, 40, 4, 0, 80, 9, 0, 0, 18, 0, 0, 21, 23, 0, 1, 0, 0, 3, 0, 0, 5, 0, 0, 8, 0, 0, 97, -88, 46, -32, 1, -12, 0, 0, 0, 20, -1, 1, 0, 30, 0, 5, 1, -60, 0, 1, -65, -56, -17, 0, 0, 0, 0, 77, 81
             StringBuilder txt = new StringBuilder();
-            txt.append("一键读取所有状态信息: ");
+            txt.append("一键读取所有配置信息: ");
             txt.append("\n主灯定时: \n");
             for (int i = 0; i < 6; i++) {
                 txt.append( + data[(i*3)+5] + ":" + data[(i*3)+5+1] + "   " + data[(i*3)+5+2] + "%" + "\n");
@@ -875,14 +875,32 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
 
         } else if (data[2] == 50) {
 
-            Log.e("xx", "一键读取所有状态信息返回");
-            // -18, 0, 50, 0, 46, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 16, 0, 0, 0, 26, -27, 4, 9, 36, -40, -17, 0, 0, 0, 0, -60, 0
+            Log.e("xx", "一键读取所有状态信息");
+            // -18, 0, 50, 0, 46, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9, 0, 0, 0, 95, -27, 5, 27, 10, 8, 58, 0, 0, 0, 0, 20, 0, 9, 104, -5, -17, 0, 0, 0, 0, 0, 0
             StringBuilder txt = new StringBuilder();
-          /*  txt.append("一键读取所有状态信息: ");
-            txt.append("主灯定时: \n");
-            for (int i = 0; i < 6; i++) {
-                txt.append( + data[(i*3)+5] + ":" + data[(i*3)+5+1] + " " + data[(i*3)+2] + "%" + "\n");
-            }*/
+            txt.append("一键读取所有状态信息: \n");
+            txt.append("报警灯状态: " + BytesUtil.byteToBit(data[5]) + "\n");
+            txt.append("主灯亮度: " + data[6] + "\n");
+            txt.append("副灯亮度: " + data[7] + "\n");
+            txt.append("电压: " + BytesUtil.bytesIntHL(new byte[]{data[8], data[9]}) + "\n");
+            txt.append("电流: " + BytesUtil.bytesIntHL(new byte[]{data[10], data[11]}) + "\n");
+            txt.append("功率: " + BytesUtil.bytesIntHL(new byte[]{data[12], data[13]}) + "\n");
+            txt.append("电能: " + BytesUtil.bytesIntHL(new byte[]{data[14], data[15]}) + "\n");
+            txt.append("功率因数: " + BytesUtil.bytesIntHL(new byte[]{data[16], data[17]}) + "\n");
+            txt.append("漏电流: " + BytesUtil.bytesIntHL(new byte[]{data[18], data[19]}) + "\n");
+            txt.append("报警状态: " + BytesUtil.byteToBit(data[20]) + "\n");
+            txt.append("版本号: " + data[21] + data[22] + data[23] + "\n");
+            txt.append("子设备版本号: " + data[24] + data[25] + data[26] + "\n");
+            txt.append("经度: " + BytesUtil.bytesIntHL(new byte[]{data[28], data[29]}) + "\n");
+            txt.append("纬度: " + BytesUtil.bytesIntHL(new byte[]{data[31], data[32]}) + "\n");
+            txt.append("信号值: " + data[33] + "\n");
+            txt.append("重启次数: " + BytesUtil.bytesIntHL(new byte[]{data[34], data[35], data[36], data[37]}) + "\n");
+            txt.append("当前时间: " + data[38] + "年_" + data[39] + "月_" + data[40] + "日 " + data[41] + ":" + data[42]  + ":" + data[43] + "\n");
+            txt.append("GPS关灯时间: " + data[44] + ":" + data[45] + "\n");
+            txt.append("GPS开灯时间: " + data[46] + ":" + data[47] + "\n");
+            txt.append("温度: " + data[48] + "\n");
+            txt.append("光照度: " + BytesUtil.bytesIntHL(new byte[]{data[49], data[50]}) + "\n");
+
             addText(txt_data, txt.toString());
 
         } else if (data[2] == 81) {
