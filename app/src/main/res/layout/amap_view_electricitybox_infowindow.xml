@@ -42,7 +42,7 @@
                 android:layout_marginRight="14dp"
                 android:layout_weight="1"
                 android:singleLine="true"
-                android:text="电箱："
+                android:text="信号强度："
                 android:textSize="12sp" />
 
             <TextView
@@ -54,7 +54,7 @@
                 android:layout_marginRight="14dp"
                 android:layout_weight="1"
                 android:singleLine="true"
-                android:text="电箱："
+                android:text="环境照度："
                 android:textSize="12sp" />
 
         </LinearLayout>
@@ -74,7 +74,7 @@
                 android:layout_marginRight="14dp"
                 android:layout_weight="1"
                 android:singleLine="true"
-                android:text="电箱："
+                android:text="A相电压："
                 android:textSize="12sp" />
 
             <TextView
@@ -86,7 +86,7 @@
                 android:layout_marginRight="14dp"
                 android:layout_weight="1"
                 android:singleLine="true"
-                android:text="电箱："
+                android:text="B相电压："
                 android:textSize="12sp" />
 
         </LinearLayout>
@@ -105,7 +105,7 @@
                 android:layout_marginRight="14dp"
                 android:layout_weight="1"
                 android:singleLine="true"
-                android:text="电箱："
+                android:text="C相电压："
                 android:textSize="12sp" />
 
             <TextView
@@ -122,36 +122,7 @@
 
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
 
-            <TextView
-                style="@style/amap_view_infowindow_marker_text_style"
-                android:layout_width="0dp"
-                android:layout_height="17dp"
-                android:layout_marginLeft="14dp"
-                android:layout_marginTop="2dp"
-                android:layout_marginRight="14dp"
-                android:layout_weight="1"
-                android:singleLine="true"
-                android:text="电箱："
-                android:textSize="12sp" />
-
-            <TextView
-                style="@style/amap_view_infowindow_marker_text_style"
-                android:layout_width="0dp"
-                android:layout_height="17dp"
-                android:layout_marginLeft="14dp"
-                android:layout_marginTop="2dp"
-                android:layout_marginRight="14dp"
-                android:layout_weight="1"
-                android:singleLine="true"
-                android:text="电箱："
-                android:textSize="12sp" />
-
-        </LinearLayout>
 
 
         <View

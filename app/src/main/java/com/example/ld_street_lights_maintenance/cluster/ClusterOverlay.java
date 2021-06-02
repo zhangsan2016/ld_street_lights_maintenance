@@ -466,35 +466,63 @@ public class ClusterOverlay implements AMap.OnCameraChangeListener,
 
 
     @Override
-    public View getInfoWindow(Marker marker) {
-
-        View view = LayoutInflater.from(mContext).inflate(R.layout.amap_view_infowindow, null);
-        LinearLayout navigation = (LinearLayout) view.findViewById(R.id.navigation_LL);
-        LinearLayout call = (LinearLayout) view.findViewById(R.id.call_LL);
-        TextView nameTV = (TextView) view.findViewById(R.id.agent_name);
-        TextView addrTV = (TextView) view.findViewById(R.id.agent_addr);
+    public View getInfoWindow(final Marker marker) {
 
         Cluster cluster = (Cluster) marker.getObject();
         List<ClusterItem> clusterItems = cluster.getClusterItems();
         final RegionItem regionItem = (RegionItem) clusterItems.get(0);
 
-        nameTV.setText(regionItem.getDeviceLamp().getNAME());
-
-        navigation.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                LogUtil.e("xxxx navigation 被点击 = " + regionItem.getDeviceLamp().toString());
-                Toast.makeText(mContext, "查看", Toast.LENGTH_SHORT).show();
-            }
-        });
-        call.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        LogUtil.e("xxxx call 被点击");
-                                        Toast.makeText(mContext, "控制", Toast.LENGTH_SHORT).show();
+        View view = null;
+        if(regionItem.getDeviceLamp().getTYPE() == 1){
+            // 电箱 类型1
+            view = LayoutInflater.from(mContext).inflate(R.layout.amap_view_electricitybox_infowindow, null);
+            TextView nameTV = (TextView) view.findViewById(R.id.agent_name);
+            LinearLayout navigation = (LinearLayout) view.findViewById(R.id.navigation_LL);
+            LinearLayout call = (LinearLayout) view.findViewById(R.id.call_LL);
+            navigation.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    LogUtil.e("xxxx navigation 被点击 = " + regionItem.getDeviceLamp().toString());
+                    Toast.makeText(mContext, "查看", Toast.LENGTH_SHORT).show();
+                }
+            });
+            call.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            Toast.makeText(mContext, "控制", Toast.LENGTH_SHORT).show();
+                                            LogUtil.e("xx marker = " + regionItem.getDeviceLamp());
+                                        }
                                     }
-                                }
-        );
+            );
+
+        }else{
+            // 路灯 类型2
+             view = LayoutInflater.from(mContext).inflate(R.layout.amap_view_lamp_infowindow, null);
+            LinearLayout navigation = (LinearLayout) view.findViewById(R.id.navigation_LL);
+            LinearLayout call = (LinearLayout) view.findViewById(R.id.call_LL);
+            TextView nameTV = (TextView) view.findViewById(R.id.agent_name);
+            TextView addrTV = (TextView) view.findViewById(R.id.agent_addr);
+
+            nameTV.setText(regionItem.getDeviceLamp().getNAME());
+
+            navigation.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    LogUtil.e("xxxx navigation 被点击 = " + regionItem.getDeviceLamp().toString());
+                    Toast.makeText(mContext, "查看", Toast.LENGTH_SHORT).show();
+                }
+            });
+            call.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            Toast.makeText(mContext, "控制", Toast.LENGTH_SHORT).show();
+                                            LogUtil.e("xx marker = " + regionItem.getDeviceLamp());
+                                        }
+                                    }
+            );
+        }
+
+
         return view;
     }
 

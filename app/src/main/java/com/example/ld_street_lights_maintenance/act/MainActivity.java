@@ -17,6 +17,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowInsets;
 import android.view.WindowManager;
 import android.widget.PopupWindow;
 import android.widget.RadioButton;
@@ -35,6 +36,8 @@ import com.example.ld_street_lights_maintenance.view.SettingsPopupUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import kotlin.Suppress;
 
 public class MainActivity extends BaseMainActivity {
 
@@ -59,7 +62,6 @@ public class MainActivity extends BaseMainActivity {
             final int bits = WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS;
             winParams.flags |= bits;
         }
-
 
         // 隐藏状态栏
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);

@@ -928,5 +928,102 @@ public class DeviceLampJson {
         public void setManufacturer(String manufacturer) {
             this.manufacturer = manufacturer;
         }
+
+        @Override
+        public String toString() {
+            return "DataBean{" +
+                    "UUID='" + UUID + '\'' +
+                    ", LAT='" + LAT + '\'' +
+                    ", LNG='" + LNG + '\'' +
+                    ", NAME='" + NAME + '\'' +
+                    ", TYPE=" + TYPE +
+                    ", PROJECT='" + PROJECT + '\'' +
+                    ", SUBGROUP='" + SUBGROUP + '\'' +
+                    ", ADDR='" + ADDR + '\'' +
+                    ", IPADDR='" + IPADDR + '\'' +
+                    ", _id=" + _id +
+                    ", FUUID='" + FUUID + '\'' +
+                    ", subgroups='" + subgroups + '\'' +
+                    ", admin='" + admin + '\'' +
+                    ", code='" + code + '\'' +
+                    ", members='" + members + '\'' +
+                    ", config=" + config +
+                    ", report_config=" + report_config +
+                    ", Energy=" + Energy +
+                    ", FirDimming=" + FirDimming +
+                    ", Illu=" + Illu +
+                    ", STATE=" + STATE +
+                    ", Temp=" + Temp +
+                    ", ts_mqtt=" + ts_mqtt +
+                    ", Power=" + Power +
+                    ", Warning_state=" + Warning_state +
+                    ", _countBad=" + _countBad +
+                    ", _countBadCurrent=" + _countBadCurrent +
+                    ", _countBadLeak=" + _countBadLeak +
+                    ", _countBadTemp=" + _countBadTemp +
+                    ", _countBadVoltage=" + _countBadVoltage +
+                    ", _countMessage=" + _countMessage +
+                    ", _lastStatsDate='" + _lastStatsDate + '\'' +
+                    ", __countMessage=" + __countMessage +
+                    ", Fif_tp_Fir=" + Fif_tp_Fir +
+                    ", Fif_tp_Sec=" + Fif_tp_Sec +
+                    ", Fif_tt_Fir='" + Fif_tt_Fir + '\'' +
+                    ", Fif_tt_Sec='" + Fif_tt_Sec + '\'' +
+                    ", Fir_tp_Fir=" + Fir_tp_Fir +
+                    ", Fir_tp_Sec=" + Fir_tp_Sec +
+                    ", Fir_tt_Fir='" + Fir_tt_Fir + '\'' +
+                    ", Fir_tt_Sec='" + Fir_tt_Sec + '\'' +
+                    ", Four_tp_Fir=" + Four_tp_Fir +
+                    ", Four_tp_Sec=" + Four_tp_Sec +
+                    ", Four_tt_Fir='" + Four_tt_Fir + '\'' +
+                    ", Four_tt_Sec='" + Four_tt_Sec + '\'' +
+                    ", Sec_tp_Fir=" + Sec_tp_Fir +
+                    ", Sec_tp_Sec=" + Sec_tp_Sec +
+                    ", Sec_tt_Fir='" + Sec_tt_Fir + '\'' +
+                    ", Sec_tt_Sec='" + Sec_tt_Sec + '\'' +
+                    ", Six_tp_Fir=" + Six_tp_Fir +
+                    ", Six_tp_Sec=" + Six_tp_Sec +
+                    ", Six_tt_Fir='" + Six_tt_Fir + '\'' +
+                    ", Six_tt_Sec='" + Six_tt_Sec + '\'' +
+                    ", Thir_tp_Fir=" + Thir_tp_Fir +
+                    ", Thir_tp_Sec=" + Thir_tp_Sec +
+                    ", Thir_tt_Fir='" + Thir_tt_Fir + '\'' +
+                    ", Thir_tt_Sec='" + Thir_tt_Sec + '\'' +
+                    ", Current=" + Current +
+                    ", Voltage=" + Voltage +
+                    ", C_downthreshold=" + C_downthreshold +
+                    ", C_upthreshold=" + C_upthreshold +
+                    ", Leak_c_enable=" + Leak_c_enable +
+                    ", Leak_c_threshold=" + Leak_c_threshold +
+                    ", V_downthreshold=" + V_downthreshold +
+                    ", V_upthreshold=" + V_upthreshold +
+                    ", _countOn=" + _countOn +
+                    ", _countBadOn=" + _countBadOn +
+                    ", _countBadOff=" + _countBadOff +
+                    ", Leak_cur=" + Leak_cur +
+                    ", LampDiameter='" + LampDiameter + '\'' +
+                    ", Power_Manufacturer='" + Power_Manufacturer + '\'' +
+                    ", Lamp_RatedCurrent='" + Lamp_RatedCurrent + '\'' +
+                    ", Lamp_Ratedvoltage='" + Lamp_Ratedvoltage + '\'' +
+                    ", lampType='" + lampType + '\'' +
+                    ", Lamp_Manufacturer='" + Lamp_Manufacturer + '\'' +
+                    ", Lamp_Num='" + Lamp_Num + '\'' +
+                    ", PoleProductionDate='" + PoleProductionDate + '\'' +
+                    ", Pole_height='" + Pole_height + '\'' +
+                    ", Rated_power='" + Rated_power + '\'' +
+                    ", Subcommunicate_mode='" + Subcommunicate_mode + '\'' +
+                    ", _countOffline=" + _countOffline +
+                    ", info='" + info + '\'' +
+                    ", stream_url='" + stream_url + '\'' +
+                    ", stream_user='" + stream_user + '\'' +
+                    ", stream_password='" + stream_password + '\'' +
+                    ", road_direction='" + road_direction + '\'' +
+                    ", cam_id='" + cam_id + '\'' +
+                    ", onvif_port='" + onvif_port + '\'' +
+                    ", manufacturer='" + manufacturer + '\'' +
+                    '}';
+        }
     }
+
+
 }
