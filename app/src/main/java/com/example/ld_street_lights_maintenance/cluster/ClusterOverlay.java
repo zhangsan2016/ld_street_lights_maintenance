@@ -1,6 +1,7 @@
 package com.example.ld_street_lights_maintenance.cluster;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Handler;
 import android.os.HandlerThread;
@@ -28,6 +29,7 @@ import com.amap.api.maps.model.MarkerOptions;
 import com.amap.api.maps.model.animation.AlphaAnimation;
 import com.amap.api.maps.model.animation.Animation;
 import com.example.ld_street_lights_maintenance.R;
+import com.example.ld_street_lights_maintenance.act.CurrentDeviceActivity;
 import com.example.ld_street_lights_maintenance.util.LogUtil;
 
 import java.util.ArrayList;
@@ -517,6 +519,10 @@ public class ClusterOverlay implements AMap.OnCameraChangeListener,
                                         public void onClick(View v) {
                                             Toast.makeText(mContext, "控制", Toast.LENGTH_SHORT).show();
                                             LogUtil.e("xx marker = " + regionItem.getDeviceLamp());
+
+                                            Intent deviceIntent = new Intent(mContext, CurrentDeviceActivity.class);
+                                            deviceIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK );
+                                            mContext.startActivity(deviceIntent);
                                         }
                                     }
             );

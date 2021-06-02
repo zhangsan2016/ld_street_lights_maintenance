@@ -167,7 +167,7 @@
 
         <activity android:name=".act.DeviceTiming" />
         <activity android:name=".act.FirmwareUpdateAct" />
-
+        <activity android:name=".act.CurrentDeviceActivity" />
 
 
         <service android:name="com.amap.api.location.APSService" />

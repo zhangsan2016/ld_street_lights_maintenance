@@ -13,8 +13,6 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.example.ld_street_lights_maintenance.R;
 import com.example.ld_street_lights_maintenance.view.MySlidingTabLayout;
-import com.flyco.tablayout.SlidingTabLayout;
-import com.flyco.tablayout.listener.OnTabSelectListener;
 
 import java.util.ArrayList;
 
