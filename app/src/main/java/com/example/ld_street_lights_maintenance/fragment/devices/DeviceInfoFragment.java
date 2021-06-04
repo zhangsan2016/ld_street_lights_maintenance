@@ -10,15 +10,14 @@ import android.widget.TextView;
 import androidx.fragment.app.Fragment;
 
 import com.example.ld_street_lights_maintenance.R;
+import com.example.ld_street_lights_maintenance.fragment.popwindow.SimpleCardFragment;
 
 
-@SuppressLint("ValidFragment")
 public class DeviceInfoFragment extends Fragment {
     private String mTitle;
 
     public static DeviceInfoFragment getInstance(String title) {
         DeviceInfoFragment sf = new DeviceInfoFragment();
-        sf.mTitle = title;
         return sf;
     }
 
