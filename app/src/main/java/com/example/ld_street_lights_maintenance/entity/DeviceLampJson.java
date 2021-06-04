@@ -1,8 +1,9 @@
 package com.example.ld_street_lights_maintenance.entity;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class DeviceLampJson {
+public class DeviceLampJson  {
 
 
 
@@ -34,7 +35,7 @@ public class DeviceLampJson {
         this.data = data;
     }
 
-    public static class DataBean {
+    public static class DataBean implements Serializable {
         /**
          * UUID : 000000000000000000000021
          * LAT : 29.803991

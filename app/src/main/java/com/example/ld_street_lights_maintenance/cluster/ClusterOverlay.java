@@ -3,6 +3,7 @@ package com.example.ld_street_lights_maintenance.cluster;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Looper;
@@ -493,11 +494,18 @@ public class ClusterOverlay implements AMap.OnCameraChangeListener,
                                         public void onClick(View v) {
                                             Toast.makeText(mContext, "控制", Toast.LENGTH_SHORT).show();
                                             LogUtil.e("xx marker = " + regionItem.getDeviceLamp());
+
+                                            Intent deviceIntent = new Intent(mContext, CurrentDeviceActivity.class);
+                                            deviceIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK );
+                                            Bundle bundle = new Bundle();
+                                            bundle.putSerializable("device_info",regionItem.getDeviceLamp());
+                                            deviceIntent.putExtras(bundle);
+                                            mContext.startActivity(deviceIntent);
                                         }
                                     }
             );
 
-        }else{
+        }else if(regionItem.getDeviceLamp().getTYPE() == 2){
             // 路灯 类型2
              view = LayoutInflater.from(mContext).inflate(R.layout.amap_view_lamp_infowindow, null);
             LinearLayout navigation = (LinearLayout) view.findViewById(R.id.navigation_LL);
@@ -522,6 +530,9 @@ public class ClusterOverlay implements AMap.OnCameraChangeListener,
 
                                             Intent deviceIntent = new Intent(mContext, CurrentDeviceActivity.class);
                                             deviceIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK );
+                                            Bundle bundle = new Bundle();
+                                            bundle.putSerializable("device_info",regionItem.getDeviceLamp());
+                                            deviceIntent.putExtras(bundle);
                                             mContext.startActivity(deviceIntent);
                                         }
                                     }
