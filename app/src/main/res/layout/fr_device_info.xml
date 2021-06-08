@@ -29,10 +29,11 @@
                     android:text="UUID  " />
 
                 <TextView
+                    android:id="@+id/tv_device_info_UUID"
                     style="@style/fr_device_info_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="546544s65df" />
+                    android:text="" />
 
             </LinearLayout>
 
@@ -51,10 +52,11 @@
                     android:text="名称  " />
 
                 <TextView
+                    android:id="@+id/tv_device_info_name"
                     style="@style/fr_device_info_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="洛丁光电20号展厅" />
+                    android:text="" />
 
             </LinearLayout>
 
@@ -636,6 +638,7 @@
                     android:text="类型  " />
 
                 <TextView
+                    android:id="@+id/tv_device_info_type"
                     style="@style/fr_device_info_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
@@ -656,6 +659,7 @@
                     android:text="经度  " />
 
                 <TextView
+                    android:id="@+id/tv_device_info_longitude"
                     style="@style/fr_device_info_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
@@ -676,6 +680,7 @@
                     android:text="纬度  " />
 
                 <TextView
+                    android:id="@+id/tv_device_info_latitude"
                     style="@style/fr_device_info_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
@@ -1176,6 +1181,7 @@
                     android:text="项目  " />
 
                 <TextView
+                    android:id="@+id/tv_device_info_project"
                     style="@style/fr_device_info_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
@@ -1196,6 +1202,7 @@
                     android:text="父设备UUID  " />
 
                 <TextView
+                    android:id="@+id/tv_device_info_FUUID"
                     style="@style/fr_device_info_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />

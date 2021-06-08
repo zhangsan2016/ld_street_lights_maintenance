@@ -34,22 +34,30 @@ public class CurrentDeviceActivity extends BaseActivity {
 
         LogUtil.e("DeviceLampJson.DataBean = " + device.toString());
 
-        // 根据类型显示界面
-        if (device.getTYPE() == 1) {
-            // 电箱类型
-            mTitles = new String[]{"查看","控制","历史消息"};
-            for (String title : mTitles) {
-                mFragments.add(SimpleCardFragment.getInstance(title));
-            }
 
-        } else if (device.getTYPE() == 2) {
-            // 路灯类型
-            mTitles = new String[]{"查看","控制","历史消息"};
-            for (String title : mTitles) {
-                mFragments.add(DeviceInfoFragment.getInstance(title));
+        if(device != null){
+
+            // 根据类型显示界面
+            if (device.getTYPE() == 1) {
+                // 电箱类型
+                mTitles = new String[]{"查看","控制","历史消息"};
+                for (String title : mTitles) {
+                    mFragments.add(SimpleCardFragment.getInstance(title));
+                }
+
+            } else if (device.getTYPE() == 2) {
+                // 路灯类型
+                mTitles = new String[]{"查看","控制","历史消息"};
+                for (String title : mTitles) {
+                    if (title.equals("查看")){
+                        mFragments.add(DeviceInfoFragment.getInstance(device));
+                    }else {
+                        mFragments.add(SimpleCardFragment.getInstance(title));
+                    }
+
+                }
             }
         }
-
 
 
         SlidingTabLayout st_device = this.findViewById(R.id.st_device);
