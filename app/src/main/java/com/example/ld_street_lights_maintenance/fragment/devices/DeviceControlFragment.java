@@ -37,20 +37,7 @@ public class DeviceControlFragment extends Fragment {
 
     private void initView(View v) {
         if (device != null) {
-            TextView tv_device_info_name = v.findViewById(R.id.tv_device_info_name);
-            tv_device_info_name.setText(device.getNAME());
-            TextView tv_device_info_UUID = v.findViewById(R.id.tv_device_info_UUID);
-            tv_device_info_UUID.setText(device.getUUID());
-            TextView tv_device_info_type = v.findViewById(R.id.tv_device_info_type);
-            tv_device_info_type.setText(device.getTYPE()+"");
-            TextView tv_device_info_longitude = v.findViewById(R.id.tv_device_info_longitude);
-            tv_device_info_longitude.setText(device.getLNG());
-            TextView tv_device_info_latitude = v.findViewById(R.id.tv_device_info_latitude);
-            tv_device_info_latitude.setText(device.getLAT());
-            TextView tv_device_info_project = v.findViewById(R.id.tv_device_info_project);
-            tv_device_info_project.setText(device.getPROJECT());
-            TextView tv_device_info_FUUID = v.findViewById(R.id.tv_device_info_FUUID);
-            tv_device_info_FUUID.setText(device.getFUUID());
+
 
 
         }

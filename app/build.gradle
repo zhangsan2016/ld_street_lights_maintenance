@@ -67,6 +67,8 @@ dependencies {
     implementation 'com.android.support:multidex:1.0.3'
     /* 开发工具包 */
     implementation 'com.github.xiaowujiang:easy:1.0.6'
+    // SeekBar库   https://github.com/warkiz/IndicatorSeekBar
+    implementation 'com.github.warkiz.widget:indicatorseekbar:2.1.2'
 
 
 

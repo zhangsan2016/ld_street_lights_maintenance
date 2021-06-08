@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#191970"
@@ -23,10 +24,10 @@
 
                 <TextView
                     style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:gravity="right"
-                    android:text="UUID  " />
+                    android:text="预警状态  " />
 
                 <TextView
                     android:id="@+id/tv_device_info_UUID"
@@ -46,1431 +47,421 @@
 
                 <TextView
                     style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:gravity="right"
-                    android:text="名称  " />
+                    android:text="整体开关  " />
 
-                <TextView
-                    android:id="@+id/tv_device_info_name"
-                    style="@style/fr_device_info_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
-                    android:layout_height="wrap_content"
-                    android:gravity="right"
-                    android:text="版本号  " />
-
-                <TextView
-                    style="@style/fr_device_info_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
-                    android:layout_height="wrap_content"
-                    android:gravity="right"
-                    android:text="卡号  " />
-
-                <TextView
-                    style="@style/fr_device_info_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
-                    android:layout_height="wrap_content"
-                    android:gravity="right"
-                    android:text="电压  " />
-
-                <TextView
-                    style="@style/fr_device_info_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
-                    android:layout_height="wrap_content"
-                    android:gravity="right"
-                    android:text="电流  " />
-
-                <TextView
-                    style="@style/fr_device_info_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-            </LinearLayout>
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
-                    android:layout_height="wrap_content"
-                    android:gravity="right"
-                    android:text="功率  " />
-
-                <TextView
-                    style="@style/fr_device_info_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
-                    android:layout_height="wrap_content"
-                    android:gravity="right"
-                    android:text="功能  " />
-
-                <TextView
-                    style="@style/fr_device_info_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
-                    android:layout_height="wrap_content"
-                    android:gravity="right"
-                    android:text="电能  " />
-
-                <TextView
-                    style="@style/fr_device_info_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-            </LinearLayout>
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
-                    android:layout_height="wrap_content"
-                    android:gravity="right"
-                    android:text="漏电电流  " />
-
-                <TextView
-                    style="@style/fr_device_info_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-            </LinearLayout>
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
-                    android:layout_height="wrap_content"
-                    android:gravity="right"
-                    android:text="预报警状态  " />
-
-                <TextView
-                    style="@style/fr_device_info_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
-                    android:layout_height="wrap_content"
-                    android:gravity="right"
-                    android:text="传感器错  " />
-
-                <TextView
-                    style="@style/fr_device_info_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-            </LinearLayout>
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
-                    android:layout_height="wrap_content"
-                    android:gravity="right"
-                    android:text="全局亮度  " />
-
-                <TextView
-                    style="@style/fr_device_info_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
-                    android:layout_height="wrap_content"
-                    android:gravity="right"
-                    android:text="主灯亮度值  " />
-
-                <TextView
-                    style="@style/fr_device_info_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
-                    android:layout_height="wrap_content"
-                    android:gravity="right"
-                    android:text="副灯亮度值  " />
-
-                <TextView
-                    style="@style/fr_device_info_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
-                    android:layout_height="wrap_content"
-                    android:gravity="right"
-                    android:text="灯光报警模式  " />
-
-                <TextView
-                    style="@style/fr_device_info_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
-                    android:layout_height="wrap_content"
-                    android:gravity="right"
-                    android:text="汇报时间  " />
-
-                <TextView
-                    style="@style/fr_device_info_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
-                    android:layout_height="wrap_content"
-                    android:gravity="right"
-                    android:text="照度  " />
-
-                <TextView
-                    style="@style/fr_device_info_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
-                    android:layout_height="wrap_content"
-                    android:gravity="right"
-                    android:text="温度  " />
-
-                <TextView
-                    style="@style/fr_device_info_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
-                    android:layout_height="wrap_content"
-                    android:gravity="right"
-                    android:text="湿度  " />
-
-                <TextView
-                    style="@style/fr_device_info_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
-                    android:layout_height="wrap_content"
-                    android:gravity="right"
-                    android:text="频率  " />
-
-                <TextView
-                    style="@style/fr_device_info_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
-                    android:layout_height="wrap_content"
-                    android:gravity="right"
-                    android:text="照度锁  " />
-
-                <TextView
-                    style="@style/fr_device_info_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
-                    android:layout_height="wrap_content"
-                    android:gravity="right"
-                    android:text="GPS开灯时间  " />
-
-                <TextView
-                    style="@style/fr_device_info_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
-                    android:layout_height="wrap_content"
-                    android:gravity="right"
-                    android:text="GPS关灯时间  " />
-
-                <TextView
-                    style="@style/fr_device_info_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
-                    android:layout_height="wrap_content"
-                    android:gravity="right"
-                    android:text="分组  " />
-
-                <TextView
-                    style="@style/fr_device_info_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
-                    android:layout_height="wrap_content"
-                    android:gravity="right"
-                    android:text="Gps csq  " />
-
-                <TextView
-                    style="@style/fr_device_info_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
-                    android:layout_height="wrap_content"
-                    android:gravity="right"
-                    android:text="基站经度  " />
-
-                <TextView
-                    style="@style/fr_device_info_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
-                    android:layout_height="wrap_content"
-                    android:gravity="right"
-                    android:text="基站纬度  " />
-
-                <TextView
-                    style="@style/fr_device_info_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
-                    android:layout_height="wrap_content"
-                    android:gravity="right"
-                    android:text="GPS经度  " />
-
-                <TextView
-                    style="@style/fr_device_info_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
-                    android:layout_height="wrap_content"
-                    android:gravity="right"
-                    android:text="GPS纬度  " />
-
-                <TextView
-                    style="@style/fr_device_info_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
-                    android:layout_height="wrap_content"
-                    android:gravity="right"
-                    android:text="类型  " />
-
-                <TextView
-                    android:id="@+id/tv_device_info_type"
-                    style="@style/fr_device_info_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
-                    android:layout_height="wrap_content"
-                    android:gravity="right"
-                    android:text="经度  " />
-
-                <TextView
-                    android:id="@+id/tv_device_info_longitude"
-                    style="@style/fr_device_info_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
-                    android:layout_height="wrap_content"
-                    android:gravity="right"
-                    android:text="纬度  " />
-
-                <TextView
-                    android:id="@+id/tv_device_info_latitude"
-                    style="@style/fr_device_info_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
-                    android:layout_height="wrap_content"
-                    android:gravity="right"
-                    android:text="主一时间  " />
-
-                <TextView
-                    style="@style/fr_device_info_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
-                    android:layout_height="wrap_content"
-                    android:gravity="right"
-                    android:text="主一亮度  " />
-
-                <TextView
-                    style="@style/fr_device_info_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
-                    android:layout_height="wrap_content"
-                    android:gravity="right"
-                    android:text="主二时间  " />
-
-                <TextView
-                    style="@style/fr_device_info_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
-                    android:layout_height="wrap_content"
-                    android:gravity="right"
-                    android:text="主二亮度  " />
-
-                <TextView
-                    style="@style/fr_device_info_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
-                    android:layout_height="wrap_content"
-                    android:gravity="right"
-                    android:text="主三时间  " />
-
-                <TextView
-                    style="@style/fr_device_info_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
-                    android:layout_height="wrap_content"
-                    android:gravity="right"
-                    android:text="主三亮度  " />
-
-                <TextView
-                    style="@style/fr_device_info_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
-                    android:layout_height="wrap_content"
-                    android:gravity="right"
-                    android:text="主四时间  " />
-
-                <TextView
-                    style="@style/fr_device_info_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
-                    android:layout_height="wrap_content"
-                    android:gravity="right"
-                    android:text="主四亮度  " />
-
-                <TextView
-                    style="@style/fr_device_info_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
-                    android:layout_height="wrap_content"
-                    android:gravity="right"
-                    android:text="主五时间  " />
-
-                <TextView
-                    style="@style/fr_device_info_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
-                    android:layout_height="wrap_content"
-                    android:gravity="right"
-                    android:text="主五亮度  " />
-
-                <TextView
-                    style="@style/fr_device_info_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
-                    android:layout_height="wrap_content"
-                    android:gravity="right"
-                    android:text="主六时间  " />
-
-                <TextView
-                    style="@style/fr_device_info_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
-                    android:layout_height="wrap_content"
-                    android:gravity="right"
-                    android:text="主六亮度  " />
-
-                <TextView
-                    style="@style/fr_device_info_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
-                    android:layout_height="wrap_content"
-                    android:gravity="right"
-                    android:text="辅一时间  " />
-
-                <TextView
-                    style="@style/fr_device_info_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
-                    android:layout_height="wrap_content"
-                    android:gravity="right"
-                    android:text="辅一亮度  " />
-
-                <TextView
-                    style="@style/fr_device_info_text"
+                <Button
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
-                    android:layout_height="wrap_content"
-                    android:gravity="right"
-                    android:text="辅二时间  " />
+                    android:layout_height="30dp"
+                    android:layout_marginLeft="10dp"
+                    android:background="@drawable/border_line_while"
+                    android:text="关"
+                    android:textColor="@color/white"
+                    android:textSize="18sp" />
 
-                <TextView
-                    style="@style/fr_device_info_text"
+                <Button
+                    style="@style/fr_device_bt"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="30dp"
+                    android:layout_marginLeft="10dp"
+                    android:background="#1E90FF"
+                    android:text="开"
+                    android:textColor="@color/white"
+                    android:textSize="18sp" />
 
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="10dp"
                 android:orientation="horizontal">
 
                 <TextView
                     style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:gravity="right"
-                    android:text="辅二亮度  " />
-
-                <TextView
-                    style="@style/fr_device_info_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:orientation="horizontal">
+                    android:text="快速调灯  " />
 
-                <TextView
-                    style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
+                <com.warkiz.widget.IndicatorSeekBar
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="right"
-                    android:text="辅三时间  " />
-
-                <TextView
-                    style="@style/fr_device_info_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    app:isb_indicator_color="@color/colorPrimary"
+                    app:isb_indicator_text_color="@color/colorAccent"
+                    app:isb_indicator_text_size="18sp"
+                    app:isb_max="100"
+                    app:isb_min="0"
+                    app:isb_only_thumb_draggable="false"
+                    app:isb_progress="0"
+                    app:isb_show_indicator="circular_bubble"
+                    app:isb_show_tick_marks_type="oval"
+                    app:isb_show_tick_texts="true"
+                    app:isb_thumb_color="@color/colorTitle"
+                    app:isb_thumb_size="20dp"
+                    app:isb_tick_marks_drawable="@mipmap/ic_launcher"
+                    app:isb_tick_marks_size="13dp"
+                    app:isb_tick_texts_color="@color/blue_45a7ff"
+                    app:isb_tick_texts_size="15sp"
+                    app:isb_track_background_color="@color/colorPrimary"
+                    app:isb_track_background_size="2dp"
+                    app:isb_track_progress_color="@color/colorPrimary"
+                    app:isb_track_progress_size="4dp" />
 
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="10dp"
                 android:orientation="horizontal">
 
                 <TextView
                     style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:gravity="right"
-                    android:text="辅三亮度  " />
-
-                <TextView
-                    style="@style/fr_device_info_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:orientation="horizontal">
+                    android:text="主灯  " />
 
-                <TextView
-                    style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
+                <com.warkiz.widget.IndicatorSeekBar
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="right"
-                    android:text="辅四时间  " />
-
-                <TextView
-                    style="@style/fr_device_info_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    app:isb_indicator_color="@color/colorPrimary"
+                    app:isb_indicator_text_color="@color/colorAccent"
+                    app:isb_indicator_text_size="18sp"
+                    app:isb_max="100"
+                    app:isb_min="0"
+                    app:isb_only_thumb_draggable="false"
+                    app:isb_progress="0"
+                    app:isb_show_indicator="circular_bubble"
+                    app:isb_show_tick_marks_type="oval"
+                    app:isb_show_tick_texts="true"
+                    app:isb_thumb_color="@color/colorTitle"
+                    app:isb_thumb_size="20dp"
+                    app:isb_tick_marks_drawable="@mipmap/ic_launcher"
+                    app:isb_tick_marks_size="13dp"
+                    app:isb_tick_texts_color="@color/blue_45a7ff"
+                    app:isb_tick_texts_size="15sp"
+                    app:isb_track_background_color="@color/colorPrimary"
+                    app:isb_track_background_size="2dp"
+                    app:isb_track_progress_color="@color/colorPrimary"
+                    app:isb_track_progress_size="4dp" />
 
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="10dp"
                 android:orientation="horizontal">
 
                 <TextView
                     style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:gravity="right"
-                    android:text="辅四亮度  " />
-
-                <TextView
-                    style="@style/fr_device_info_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-            </LinearLayout>
+                    android:text="辅灯  " />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
+                <com.warkiz.widget.IndicatorSeekBar
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="right"
-                    android:text="辅五时间  " />
+                    app:isb_indicator_color="@color/colorPrimary"
+                    app:isb_indicator_text_color="@color/colorAccent"
+                    app:isb_indicator_text_size="18sp"
+                    app:isb_max="100"
+                    app:isb_min="0"
+                    app:isb_only_thumb_draggable="false"
+                    app:isb_progress="0"
+                    app:isb_show_indicator="circular_bubble"
+                    app:isb_show_tick_marks_type="oval"
+                    app:isb_show_tick_texts="true"
+                    app:isb_thumb_color="@color/colorTitle"
+                    app:isb_thumb_size="20dp"
+                    app:isb_tick_marks_drawable="@mipmap/ic_launcher"
+                    app:isb_tick_marks_size="13dp"
+                    app:isb_tick_texts_color="@color/blue_45a7ff"
+                    app:isb_tick_texts_size="15sp"
+                    app:isb_track_background_color="@color/colorPrimary"
+                    app:isb_track_background_size="2dp"
+                    app:isb_track_progress_color="@color/colorPrimary"
+                    app:isb_track_progress_size="4dp" />
 
-                <TextView
-                    style="@style/fr_device_info_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="10dp"
                 android:orientation="horizontal">
 
                 <TextView
                     style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:gravity="right"
-                    android:text="辅五亮度  " />
-
-                <TextView
-                    style="@style/fr_device_info_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:text="区域类型  " />
 
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
+                <com.example.ld_street_lights_maintenance.view.FlowRadioGroup
+                    android:id="@+id/radiogroup1"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="right"
-                    android:text="辅六时间  " />
+                    android:orientation="horizontal">
 
-                <TextView
-                    style="@style/fr_device_info_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="普通"
+                        android:textColor="@color/white" />
 
-            </LinearLayout>
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="岔路口"
+                        android:textColor="@color/white" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:orientation="horizontal">
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="出入口"
+                        android:textColor="@color/white" />
 
-                <TextView
-                    style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
-                    android:layout_height="wrap_content"
-                    android:gravity="right"
-                    android:text="辅六亮度  " />
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="重点区"
+                        android:textColor="@color/white" />
+                </com.example.ld_street_lights_maintenance.view.FlowRadioGroup>
 
-                <TextView
-                    style="@style/fr_device_info_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
 
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="10dp"
                 android:orientation="horizontal">
 
                 <TextView
                     style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:gravity="right"
-                    android:text="项目  " />
+                    android:text="清除报警  " />
 
-                <TextView
-                    android:id="@+id/tv_device_info_project"
-                    style="@style/fr_device_info_text"
+                <Button
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="30dp"
+                    android:layout_marginLeft="10dp"
+                    android:background="@drawable/border_line_while"
+                    android:text="清除"
+                    android:textColor="@color/white"
+                    android:textSize="18sp" />
 
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="10dp"
                 android:orientation="horizontal">
 
                 <TextView
                     style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:gravity="right"
-                    android:text="父设备UUID  " />
+                    android:text="灯光报警  " />
 
-                <TextView
-                    android:id="@+id/tv_device_info_FUUID"
-                    style="@style/fr_device_info_text"
+                <Button
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
-                    android:layout_height="wrap_content"
-                    android:gravity="right"
-                    android:text="灯杆直径  " />
+                    android:layout_height="30dp"
+                    android:layout_marginLeft="10dp"
+                    android:background="@drawable/border_line_while"
+                    android:text="关闭"
+                    android:textColor="@color/white"
+                    android:textSize="18sp" />
 
-                <TextView
-                    style="@style/fr_device_info_text"
+                <Button
+                    style="@style/fr_device_bt"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="30dp"
+                    android:layout_marginLeft="10dp"
+                    android:background="#1E90FF"
+                    android:text="闪烁"
+                    android:textColor="@color/white"
+                    android:textSize="18sp" />
 
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="10dp"
                 android:orientation="horizontal">
 
                 <TextView
                     style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:gravity="right"
-                    android:text="电源出厂商  " />
+                    android:text="红外设置  " />
 
-                <TextView
-                    style="@style/fr_device_info_text"
+                <Button
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
-                    android:layout_height="wrap_content"
-                    android:gravity="right"
-                    android:text="灯具额定电流  " />
+                    android:layout_height="30dp"
+                    android:layout_marginLeft="10dp"
+                    android:background="@drawable/border_line_while"
+                    android:text="关"
+                    android:textColor="@color/white"
+                    android:textSize="18sp" />
 
-                <TextView
-                    style="@style/fr_device_info_text"
+                <Button
+                    style="@style/fr_device_bt"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="30dp"
+                    android:layout_marginLeft="10dp"
+                    android:background="#1E90FF"
+                    android:text="开"
+                    android:textColor="@color/white"
+                    android:textSize="18sp" />
 
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="10dp"
                 android:orientation="horizontal">
 
                 <TextView
                     style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:gravity="right"
-                    android:text="灯具额定电流  " />
+                    android:text="日出开关  " />
 
-                <TextView
-                    style="@style/fr_device_info_text"
+                <Button
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
-                    android:layout_height="wrap_content"
-                    android:gravity="right"
-                    android:text="灯具额定电压  " />
+                    android:layout_height="30dp"
+                    android:layout_marginLeft="10dp"
+                    android:background="@drawable/border_line_while"
+                    android:text="关"
+                    android:textColor="@color/white"
+                    android:textSize="18sp" />
 
-                <TextView
-                    style="@style/fr_device_info_text"
+                <Button
+                    style="@style/fr_device_bt"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="30dp"
+                    android:layout_marginLeft="10dp"
+                    android:background="#1E90FF"
+                    android:text="开"
+                    android:textColor="@color/white"
+                    android:textSize="18sp" />
 
             </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:orientation="horizontal">
 
-                <TextView
-                    style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
-                    android:layout_height="wrap_content"
-                    android:gravity="right"
-                    android:text="灯具类型  " />
-
-                <TextView
-                    style="@style/fr_device_info_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
 
-            </LinearLayout>
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="10dp"
                 android:orientation="horizontal">
 
                 <TextView
                     style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:gravity="right"
-                    android:text="灯具厂商  " />
+                    android:text="获取状态  " />
 
-                <TextView
-                    style="@style/fr_device_info_text"
+                <Button
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="30dp"
+                    android:layout_marginLeft="10dp"
+                    android:background="@drawable/border_line_while"
+                    android:text="获取"
+                    android:textColor="@color/white"
+                    android:textSize="18sp" />
 
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="10dp"
                 android:orientation="horizontal">
 
                 <TextView
                     style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:gravity="right"
-                    android:text="灯具数  " />
-
-                <TextView
-                    style="@style/fr_device_info_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:text="角度校准  " />
 
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
-                    android:layout_height="wrap_content"
-                    android:gravity="right"
-                    android:text="灯具出厂日期  " />
+                <EditText
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"></EditText>
 
-                <TextView
-                    style="@style/fr_device_info_text"
+                <Button
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="30dp"
+                    android:layout_marginLeft="10dp"
+                    android:background="@drawable/border_line_while"
+                    android:text="校准"
+                    android:textColor="@color/white"
+                    android:textSize="18sp" />
 
             </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
-                    android:layout_height="wrap_content"
-                    android:gravity="right"
-                    android:text="灯具出厂日期  " />
-
-                <TextView
-                    style="@style/fr_device_info_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
 
-            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="20dp"
                 android:orientation="horizontal">
 
                 <TextView
                     style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:gravity="right"
-                    android:text="灯杆高度  " />
+                    android:text="指令码  " />
 
-                <TextView
-                    style="@style/fr_device_info_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"></EditText>
 
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="10dp"
                 android:orientation="horizontal">
 
                 <TextView
+                    android:paddingTop="10dp"
                     style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="start"
                     android:gravity="right"
-                    android:text="总额定功率  " />
+                    android:text="令码  " />
 
-                <TextView
-                    style="@style/fr_device_info_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                <EditText
+                    android:layout_width="match_parent"
+                    android:background="@drawable/edit_background"
+                    android:layout_height="100dp"></EditText>
 
             </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
-                    android:layout_height="wrap_content"
-                    android:gravity="right"
-                    android:text="通讯方式  " />
 
-                <TextView
-                    style="@style/fr_device_info_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-            </LinearLayout>
 
             <View
                 android:layout_width="match_parent"
+                android:singleLine="false"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="50dp" />
 
