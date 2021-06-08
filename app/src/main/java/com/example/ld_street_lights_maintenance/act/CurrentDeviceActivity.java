@@ -2,6 +2,9 @@ package com.example.ld_street_lights_maintenance.act;
 
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -35,6 +38,8 @@ public class CurrentDeviceActivity extends BaseActivity {
         LogUtil.e("DeviceLampJson.DataBean = " + device.toString());
 
 
+       initView();
+
         if(device != null){
 
             // 根据类型显示界面
@@ -51,7 +56,7 @@ public class CurrentDeviceActivity extends BaseActivity {
                 for (String title : mTitles) {
                     if (title.equals("查看")){
                         mFragments.add(DeviceInfoFragment.getInstance(device));
-                    }else {
+                    }else if(title.equals("控制")) {
                         mFragments.add(SimpleCardFragment.getInstance(title));
                     }
 
@@ -67,6 +72,18 @@ public class CurrentDeviceActivity extends BaseActivity {
         st_device.setViewPager(vp);
 
 
+    }
+
+    private void initView() {
+        TextView title_text = this.findViewById(R.id.title_text);
+        title_text.setText(device.getNAME());
+        Button title_back = this.findViewById(R.id.title_back);
+        title_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
 
