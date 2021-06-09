@@ -10,6 +10,10 @@ import androidx.fragment.app.Fragment;
 
 import com.example.ld_street_lights_maintenance.R;
 import com.example.ld_street_lights_maintenance.entity.DeviceLampJson;
+import com.example.ld_street_lights_maintenance.util.LogUtil;
+import com.warkiz.widget.IndicatorSeekBar;
+import com.warkiz.widget.OnSeekChangeListener;
+import com.warkiz.widget.SeekParams;
 
 
 public class DeviceControlFragment extends Fragment {
@@ -36,8 +40,28 @@ public class DeviceControlFragment extends Fragment {
     }
 
     private void initView(View v) {
-        if (device != null) {
 
+        if (device != null) {
+            IndicatorSeekBar sb_quickly_adjustable_lamp =v.findViewById(R.id.sb_quickly_adjustable_lamp);
+            sb_quickly_adjustable_lamp.setOnSeekChangeListener(new OnSeekChangeListener() {
+                @Override
+                public void onSeeking(SeekParams seekParams) {
+
+                }
+
+                @Override
+                public void onStartTrackingTouch(IndicatorSeekBar seekBar) {
+
+                }
+
+                @Override
+                public void onStopTrackingTouch(IndicatorSeekBar seekBar) {
+                    LogUtil.e("xx seekBar = " + seekBar.getProgress());
+
+
+
+                }
+            });
 
 
         }

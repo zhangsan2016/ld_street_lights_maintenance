@@ -87,6 +87,7 @@
                     android:text="快速调灯  " />
 
                 <com.warkiz.widget.IndicatorSeekBar
+                    android:id="@+id/sb_quickly_adjustable_lamp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:isb_indicator_color="@color/colorPrimary"
@@ -126,6 +127,7 @@
                     android:text="主灯  " />
 
                 <com.warkiz.widget.IndicatorSeekBar
+                    android:id="@+id/sb_main_adjustable_lamp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:isb_indicator_color="@color/colorPrimary"
@@ -165,6 +167,7 @@
                     android:text="辅灯  " />
 
                 <com.warkiz.widget.IndicatorSeekBar
+                    android:id="@+id/sb_subsidiary_adjustable_lamp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:isb_indicator_color="@color/colorPrimary"
