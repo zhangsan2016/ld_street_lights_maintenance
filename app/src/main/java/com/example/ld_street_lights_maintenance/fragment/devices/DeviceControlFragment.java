@@ -285,6 +285,23 @@ public class DeviceControlFragment extends Fragment {
                 }
             });
 
+            Button bt_device_send_order = v.findViewById(R.id.bt_device_send_order);
+            final EditText et_order_code = v.findViewById(R.id.et_order_code);
+            final EditText et_order = v.findViewById(R.id.et_order);
+            /*String checktext =  "{\"Alarm_Light_Mode\":\"OFF\"}";
+            et_order.setText(checktext);*/
+            bt_device_send_order.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (!et_order.getText().toString().equals("") && !et_order_code.getText().toString().equals("")){
+                        String param4 = "{\"UUID\": \"" + device.getUUID() + "\",\"Confirm\":" + et_order_code.getText().toString() + ",\"options\":"+ et_order.getText().toString()  +"}";
+                        sendOrder(param4, HttpConfiguration.DEVICE_CONTROL_URL);
+                    }else{
+                        showToast("请先输入指令码和指令~");
+
+                    }
+                }
+            });
 
         }
     }

@@ -452,6 +452,9 @@
                     android:text="指令码  " />
 
                 <EditText
+                    android:id="@+id/et_order_code"
+                    android:inputType="number"
+                    android:textColor="@color/white"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"></EditText>
 
@@ -473,6 +476,7 @@
                     android:text="令码  " />
 
                 <EditText
+                    android:id="@+id/et_order"
                     android:layout_width="match_parent"
                     android:layout_height="100dp"
                     android:background="@drawable/edit_background"
@@ -487,6 +491,7 @@
                 android:layout_marginTop="10dp">
 
                 <Button
+                    android:id="@+id/bt_device_send_order"
                     android:layout_width="wrap_content"
                     android:layout_height="30dp"
                     android:layout_alignParentRight="true"
