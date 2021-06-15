@@ -209,30 +209,34 @@
                     android:text="区域类型  " />
 
                 <com.example.ld_street_lights_maintenance.view.FlowRadioGroup
-                    android:id="@+id/radiogroup1"
+                    android:id="@+id/frg_area_type"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
                     <RadioButton
+                        android:id="@+id/rb_area_type_1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="普通"
                         android:textColor="@color/white" />
 
                     <RadioButton
+                        android:id="@+id/rb_area_type_2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="岔路口"
                         android:textColor="@color/white" />
 
                     <RadioButton
+                        android:id="@+id/rb_area_type_3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="出入口"
                         android:textColor="@color/white" />
 
                     <RadioButton
+                        android:id="@+id/rb_area_type_4"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="重点区"

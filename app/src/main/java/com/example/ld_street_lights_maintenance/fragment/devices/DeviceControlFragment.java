@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,6 +27,7 @@ import com.example.ld_street_lights_maintenance.util.HttpConfiguration;
 import com.example.ld_street_lights_maintenance.util.HttpUtil;
 import com.example.ld_street_lights_maintenance.util.LogUtil;
 import com.example.ld_street_lights_maintenance.util.SpUtils;
+import com.example.ld_street_lights_maintenance.view.FlowRadioGroup;
 import com.google.gson.Gson;
 import com.warkiz.widget.IndicatorSeekBar;
 import com.warkiz.widget.OnSeekChangeListener;
@@ -166,10 +168,38 @@ public class DeviceControlFragment extends Fragment {
                 }
             });
 
+            FlowRadioGroup frg_area_type = v.findViewById(R.id.frg_area_type);
+            frg_area_type.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(RadioGroup group, int checkedId) {
+                    switch (checkedId) {
+                        case R.id.rb_area_type_1:
+                            String param = "{\"UUID\": \""+ device.getUUID() +"\",\"Confirm\": 289,\"options\": {\"Group0_ID\":1,\"Group1_ID\":0,\"Group2_ID\":0,\"Group3_ID\":0}}";
+                            sendOrder(param);
+                            break;
+                        case R.id.rb_area_type_2:
+                            String param2 = "{\"UUID\": \""+ device.getUUID() +"\",\"Confirm\": 289,\"options\": {\"Group0_ID\":0,\"Group1_ID\":1,\"Group2_ID\":0,\"Group3_ID\":0}}";
+                            sendOrder(param2);
+                            break;
+                        case R.id.rb_area_type_3:
+                            String param3 = "{\"UUID\": \""+ device.getUUID() +"\",\"Confirm\": 289,\"options\": {\"Group0_ID\":0,\"Group1_ID\":0,\"Group2_ID\":1,\"Group3_ID\":0}}";
+                            sendOrder(param3);
+                            break;
+                        case R.id.rb_area_type_4:
+                            String param4 = "{\"UUID\": \""+ device.getUUID() +"\",\"Confirm\": 289,\"options\": {\"Group0_ID\":0,\"Group1_ID\":0,\"Group2_ID\":0,\"Group3_ID\":1}}";
+                            sendOrder(param4);
+                            break;
+
+                    }
+                }
+            });
+
 
 
         }
     }
+
+
 
 
 
