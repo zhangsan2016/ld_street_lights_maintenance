@@ -205,6 +205,27 @@ public class DeviceControlFragment extends Fragment {
                 }
             });
 
+            Button bt_alarm_light_glint = v.findViewById(R.id.bt_alarm_light_glint);
+            bt_alarm_light_glint.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String param4 = "{\"UUID\": \""+ device.getUUID() +"\",\"Confirm\": 270,\"options\": {\"Alarm_Light_Mode\":\"OFF\"}}";
+                    sendOrder(param4, HttpConfiguration.DEVICE_CONTROL_URL);
+                }
+            });
+
+            Button bt_alarm_light_clear = v.findViewById(R.id.bt_alarm_light_clear);
+            bt_alarm_light_clear.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String param4 = "{\"UUID\": \""+ device.getUUID() +"\",\"Confirm\": 270,\"options\": {\"Alarm_Light_Mode\":\"FLASH\"}}";
+                    sendOrder(param4, HttpConfiguration.DEVICE_CONTROL_URL);
+                }
+            });
+
+
+
+
 
 
 
