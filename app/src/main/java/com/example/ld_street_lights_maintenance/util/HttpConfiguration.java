@@ -70,6 +70,8 @@ public class HttpConfiguration {
     public static String  DEVICE_LIST_URL =_urlBase + CONTENT_TYPE_DEVICE_LIST;
     // 设备控制
     public static String  DEVICE_CONTROL_URL =_urlBase + DEVICE_CONTROL;
+    // 清除报警
+    public static String  CLEAN_ALARM_URL =_urlBase + CLEAN_ALARM;
 
 
 }

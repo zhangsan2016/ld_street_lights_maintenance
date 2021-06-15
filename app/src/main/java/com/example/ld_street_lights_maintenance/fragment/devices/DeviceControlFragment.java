@@ -105,7 +105,7 @@ public class DeviceControlFragment extends Fragment {
 
                   //  String param = "{\"UUID\": \"" + device.getUUID() +"\",\"Confirm\": 297,\"options\": {\"accuracy\": " + seekBar.getProgress() +"}}";
                     String param = "{\"UUID\": \""+ device.getUUID() +"\",\"Confirm\": 260,\"options\": {\"Dimming\":" + seekBar.getProgress() +"}}";
-                    sendOrder(param);
+                    sendOrder(param, HttpConfiguration.DEVICE_CONTROL_URL);
 
                 }
             });
@@ -125,7 +125,7 @@ public class DeviceControlFragment extends Fragment {
                 public void onStopTrackingTouch(IndicatorSeekBar seekBar) {
                     LogUtil.e("xx seekBar = " + seekBar.getProgress());
                     String param = "{\"UUID\": \""+ device.getUUID() +"\",\"Confirm\": 260,\"options\": {\"FirDimming\":" + seekBar.getProgress() +"}}";
-                    sendOrder(param);
+                    sendOrder(param, HttpConfiguration.DEVICE_CONTROL_URL);
 
                 }
             });
@@ -145,7 +145,7 @@ public class DeviceControlFragment extends Fragment {
                 public void onStopTrackingTouch(IndicatorSeekBar seekBar) {
                     LogUtil.e("xx seekBar = " + seekBar.getProgress());
                     String param = "{\"UUID\": \""+ device.getUUID() +"\",\"Confirm\": 260,\"options\": {\"SecDimming\":" + seekBar.getProgress() +"}}";
-                    sendOrder(param);
+                    sendOrder(param, HttpConfiguration.DEVICE_CONTROL_URL);
 
                 }
             });
@@ -155,7 +155,7 @@ public class DeviceControlFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     String param = "{\"UUID\": \""+ device.getUUID() +"\",\"Confirm\": 260,\"options\": {\"Dimming\":" + 0 +"}}";
-                    sendOrder(param);
+                    sendOrder(param, HttpConfiguration.DEVICE_CONTROL_URL);
                 }
             });
 
@@ -164,7 +164,7 @@ public class DeviceControlFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     String param = "{\"UUID\": \""+ device.getUUID() +"\",\"Confirm\": 260,\"options\": {\"Dimming\":" + 100 +"}}";
-                    sendOrder(param);
+                    sendOrder(param, HttpConfiguration.DEVICE_CONTROL_URL);
                 }
             });
 
@@ -175,24 +175,37 @@ public class DeviceControlFragment extends Fragment {
                     switch (checkedId) {
                         case R.id.rb_area_type_1:
                             String param = "{\"UUID\": \""+ device.getUUID() +"\",\"Confirm\": 289,\"options\": {\"Group0_ID\":1,\"Group1_ID\":0,\"Group2_ID\":0,\"Group3_ID\":0}}";
-                            sendOrder(param);
+                            sendOrder(param, HttpConfiguration.DEVICE_CONTROL_URL);
                             break;
                         case R.id.rb_area_type_2:
                             String param2 = "{\"UUID\": \""+ device.getUUID() +"\",\"Confirm\": 289,\"options\": {\"Group0_ID\":0,\"Group1_ID\":1,\"Group2_ID\":0,\"Group3_ID\":0}}";
-                            sendOrder(param2);
+                            sendOrder(param2, HttpConfiguration.DEVICE_CONTROL_URL);
                             break;
                         case R.id.rb_area_type_3:
                             String param3 = "{\"UUID\": \""+ device.getUUID() +"\",\"Confirm\": 289,\"options\": {\"Group0_ID\":0,\"Group1_ID\":0,\"Group2_ID\":1,\"Group3_ID\":0}}";
-                            sendOrder(param3);
+                            sendOrder(param3, HttpConfiguration.DEVICE_CONTROL_URL);
                             break;
                         case R.id.rb_area_type_4:
                             String param4 = "{\"UUID\": \""+ device.getUUID() +"\",\"Confirm\": 289,\"options\": {\"Group0_ID\":0,\"Group1_ID\":0,\"Group2_ID\":0,\"Group3_ID\":1}}";
-                            sendOrder(param4);
+                            sendOrder(param4, HttpConfiguration.DEVICE_CONTROL_URL);
                             break;
 
                     }
                 }
             });
+
+            Button bt_alarm_clear = v.findViewById(R.id.bt_alarm_clear);
+            bt_alarm_clear.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                  //  String param4 = "{\"UUID\": \""+ device.getUUID() +"\"}";
+                    String param4 = "{\"UUID\": \""+ device.getUUID() +"\"}";
+                   sendOrder(param4, HttpConfiguration.CLEAN_ALARM_URL);
+                  //  sendOrder(param4, " https://iot.sz-luoding.com:888/api/device/clearAlarm");
+                }
+            });
+
+
 
 
 
@@ -200,13 +213,9 @@ public class DeviceControlFragment extends Fragment {
     }
 
 
+    private void sendOrder(String param,String url) {
 
-
-
-    private void sendOrder(String param) {
-
-
-        String url =  HttpConfiguration.DEVICE_CONTROL_URL;
+       // String url =  HttpConfiguration.DEVICE_CONTROL_URL;
         LogUtil.e("xx param = " + param);
         LogUtil.e("xx url = " + url);
         LogUtil.e("xx getToken = " + getToken());
