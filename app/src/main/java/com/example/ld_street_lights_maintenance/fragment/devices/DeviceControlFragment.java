@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -64,7 +65,6 @@ public class DeviceControlFragment extends Fragment {
     };
 
 
-
     public static DeviceControlFragment getInstance(DeviceLampJson.DataBean device) {
         DeviceControlFragment sf = new DeviceControlFragment();
         sf.device = device;
@@ -88,7 +88,7 @@ public class DeviceControlFragment extends Fragment {
     private void initView(View v) {
 
         if (device != null) {
-            IndicatorSeekBar sb_quickly_adjustable_lamp =v.findViewById(R.id.sb_quickly_adjustable_lamp);
+            IndicatorSeekBar sb_quickly_adjustable_lamp = v.findViewById(R.id.sb_quickly_adjustable_lamp);
             sb_quickly_adjustable_lamp.setOnSeekChangeListener(new OnSeekChangeListener() {
                 @Override
                 public void onSeeking(SeekParams seekParams) {
@@ -103,13 +103,13 @@ public class DeviceControlFragment extends Fragment {
                 @Override
                 public void onStopTrackingTouch(IndicatorSeekBar seekBar) {
 
-                  //  String param = "{\"UUID\": \"" + device.getUUID() +"\",\"Confirm\": 297,\"options\": {\"accuracy\": " + seekBar.getProgress() +"}}";
-                    String param = "{\"UUID\": \""+ device.getUUID() +"\",\"Confirm\": 260,\"options\": {\"Dimming\":" + seekBar.getProgress() +"}}";
+                    //  String param = "{\"UUID\": \"" + device.getUUID() +"\",\"Confirm\": 297,\"options\": {\"accuracy\": " + seekBar.getProgress() +"}}";
+                    String param = "{\"UUID\": \"" + device.getUUID() + "\",\"Confirm\": 260,\"options\": {\"Dimming\":" + seekBar.getProgress() + "}}";
                     sendOrder(param, HttpConfiguration.DEVICE_CONTROL_URL);
 
                 }
             });
-            IndicatorSeekBar sb_main_adjustable_lamp =v.findViewById(R.id.sb_main_adjustable_lamp);
+            IndicatorSeekBar sb_main_adjustable_lamp = v.findViewById(R.id.sb_main_adjustable_lamp);
             sb_main_adjustable_lamp.setOnSeekChangeListener(new OnSeekChangeListener() {
                 @Override
                 public void onSeeking(SeekParams seekParams) {
@@ -124,12 +124,12 @@ public class DeviceControlFragment extends Fragment {
                 @Override
                 public void onStopTrackingTouch(IndicatorSeekBar seekBar) {
                     LogUtil.e("xx seekBar = " + seekBar.getProgress());
-                    String param = "{\"UUID\": \""+ device.getUUID() +"\",\"Confirm\": 260,\"options\": {\"FirDimming\":" + seekBar.getProgress() +"}}";
+                    String param = "{\"UUID\": \"" + device.getUUID() + "\",\"Confirm\": 260,\"options\": {\"FirDimming\":" + seekBar.getProgress() + "}}";
                     sendOrder(param, HttpConfiguration.DEVICE_CONTROL_URL);
 
                 }
             });
-            IndicatorSeekBar sb_subsidiary_adjustable_lamp =v.findViewById(R.id.sb_subsidiary_adjustable_lamp);
+            IndicatorSeekBar sb_subsidiary_adjustable_lamp = v.findViewById(R.id.sb_subsidiary_adjustable_lamp);
             sb_subsidiary_adjustable_lamp.setOnSeekChangeListener(new OnSeekChangeListener() {
                 @Override
                 public void onSeeking(SeekParams seekParams) {
@@ -144,17 +144,17 @@ public class DeviceControlFragment extends Fragment {
                 @Override
                 public void onStopTrackingTouch(IndicatorSeekBar seekBar) {
                     LogUtil.e("xx seekBar = " + seekBar.getProgress());
-                    String param = "{\"UUID\": \""+ device.getUUID() +"\",\"Confirm\": 260,\"options\": {\"SecDimming\":" + seekBar.getProgress() +"}}";
+                    String param = "{\"UUID\": \"" + device.getUUID() + "\",\"Confirm\": 260,\"options\": {\"SecDimming\":" + seekBar.getProgress() + "}}";
                     sendOrder(param, HttpConfiguration.DEVICE_CONTROL_URL);
 
                 }
             });
 
-           Button bt_overall_off = v.findViewById(R.id.bt_overall_off);
+            Button bt_overall_off = v.findViewById(R.id.bt_overall_off);
             bt_overall_off.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    String param = "{\"UUID\": \""+ device.getUUID() +"\",\"Confirm\": 260,\"options\": {\"Dimming\":" + 0 +"}}";
+                    String param = "{\"UUID\": \"" + device.getUUID() + "\",\"Confirm\": 260,\"options\": {\"Dimming\":" + 0 + "}}";
                     sendOrder(param, HttpConfiguration.DEVICE_CONTROL_URL);
                 }
             });
@@ -163,7 +163,7 @@ public class DeviceControlFragment extends Fragment {
             bt_overall_on.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    String param = "{\"UUID\": \""+ device.getUUID() +"\",\"Confirm\": 260,\"options\": {\"Dimming\":" + 100 +"}}";
+                    String param = "{\"UUID\": \"" + device.getUUID() + "\",\"Confirm\": 260,\"options\": {\"Dimming\":" + 100 + "}}";
                     sendOrder(param, HttpConfiguration.DEVICE_CONTROL_URL);
                 }
             });
@@ -174,19 +174,19 @@ public class DeviceControlFragment extends Fragment {
                 public void onCheckedChanged(RadioGroup group, int checkedId) {
                     switch (checkedId) {
                         case R.id.rb_area_type_1:
-                            String param = "{\"UUID\": \""+ device.getUUID() +"\",\"Confirm\": 289,\"options\": {\"Group0_ID\":1,\"Group1_ID\":0,\"Group2_ID\":0,\"Group3_ID\":0}}";
+                            String param = "{\"UUID\": \"" + device.getUUID() + "\",\"Confirm\": 289,\"options\": {\"Group0_ID\":1,\"Group1_ID\":0,\"Group2_ID\":0,\"Group3_ID\":0}}";
                             sendOrder(param, HttpConfiguration.DEVICE_CONTROL_URL);
                             break;
                         case R.id.rb_area_type_2:
-                            String param2 = "{\"UUID\": \""+ device.getUUID() +"\",\"Confirm\": 289,\"options\": {\"Group0_ID\":0,\"Group1_ID\":1,\"Group2_ID\":0,\"Group3_ID\":0}}";
+                            String param2 = "{\"UUID\": \"" + device.getUUID() + "\",\"Confirm\": 289,\"options\": {\"Group0_ID\":0,\"Group1_ID\":1,\"Group2_ID\":0,\"Group3_ID\":0}}";
                             sendOrder(param2, HttpConfiguration.DEVICE_CONTROL_URL);
                             break;
                         case R.id.rb_area_type_3:
-                            String param3 = "{\"UUID\": \""+ device.getUUID() +"\",\"Confirm\": 289,\"options\": {\"Group0_ID\":0,\"Group1_ID\":0,\"Group2_ID\":1,\"Group3_ID\":0}}";
+                            String param3 = "{\"UUID\": \"" + device.getUUID() + "\",\"Confirm\": 289,\"options\": {\"Group0_ID\":0,\"Group1_ID\":0,\"Group2_ID\":1,\"Group3_ID\":0}}";
                             sendOrder(param3, HttpConfiguration.DEVICE_CONTROL_URL);
                             break;
                         case R.id.rb_area_type_4:
-                            String param4 = "{\"UUID\": \""+ device.getUUID() +"\",\"Confirm\": 289,\"options\": {\"Group0_ID\":0,\"Group1_ID\":0,\"Group2_ID\":0,\"Group3_ID\":1}}";
+                            String param4 = "{\"UUID\": \"" + device.getUUID() + "\",\"Confirm\": 289,\"options\": {\"Group0_ID\":0,\"Group1_ID\":0,\"Group2_ID\":0,\"Group3_ID\":1}}";
                             sendOrder(param4, HttpConfiguration.DEVICE_CONTROL_URL);
                             break;
 
@@ -198,10 +198,10 @@ public class DeviceControlFragment extends Fragment {
             bt_alarm_clear.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                  //  String param4 = "{\"UUID\": \""+ device.getUUID() +"\"}";
-                    String param4 = "{\"UUID\": \""+ device.getUUID() +"\"}";
-                   sendOrder(param4, HttpConfiguration.CLEAN_ALARM_URL);
-                  //  sendOrder(param4, " https://iot.sz-luoding.com:888/api/device/clearAlarm");
+                    //  String param4 = "{\"UUID\": \""+ device.getUUID() +"\"}";
+                    String param4 = "{\"UUID\": \"" + device.getUUID() + "\"}";
+                    sendOrder(param4, HttpConfiguration.CLEAN_ALARM_URL);
+                    //  sendOrder(param4, " https://iot.sz-luoding.com:888/api/device/clearAlarm");
                 }
             });
 
@@ -209,7 +209,7 @@ public class DeviceControlFragment extends Fragment {
             bt_alarm_light_glint.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    String param4 = "{\"UUID\": \""+ device.getUUID() +"\",\"Confirm\": 270,\"options\": {\"Alarm_Light_Mode\":\"OFF\"}}";
+                    String param4 = "{\"UUID\": \"" + device.getUUID() + "\",\"Confirm\": 270,\"options\": {\"Alarm_Light_Mode\":\"OFF\"}}";
                     sendOrder(param4, HttpConfiguration.DEVICE_CONTROL_URL);
                 }
             });
@@ -218,7 +218,7 @@ public class DeviceControlFragment extends Fragment {
             bt_alarm_light_clear.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    String param4 = "{\"UUID\": \""+ device.getUUID() +"\",\"Confirm\": 270,\"options\": {\"Alarm_Light_Mode\":\"FLASH\"}}";
+                    String param4 = "{\"UUID\": \"" + device.getUUID() + "\",\"Confirm\": 270,\"options\": {\"Alarm_Light_Mode\":\"FLASH\"}}";
                     sendOrder(param4, HttpConfiguration.DEVICE_CONTROL_URL);
                 }
             });
@@ -228,7 +228,7 @@ public class DeviceControlFragment extends Fragment {
             bt_infrared_off.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    String param4 = "{\"UUID\": \""+ device.getUUID() +"\",\"Confirm\": 234,\"options\": {\"IR_Dimming_en\":\"0\"}}";
+                    String param4 = "{\"UUID\": \"" + device.getUUID() + "\",\"Confirm\": 234,\"options\": {\"IR_Dimming_en\":\"0\"}}";
                     sendOrder(param4, HttpConfiguration.DEVICE_CONTROL_URL);
                 }
             });
@@ -237,24 +237,62 @@ public class DeviceControlFragment extends Fragment {
             bt_infrared_on.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    String param4 = "{\"UUID\": \""+ device.getUUID() +"\",\"Confirm\": 234,\"options\": {\"IR_Dimming_en\":\"1\"}}";
+                    String param4 = "{\"UUID\": \"" + device.getUUID() + "\",\"Confirm\": 234,\"options\": {\"IR_Dimming_en\":\"1\"}}";
                     sendOrder(param4, HttpConfiguration.DEVICE_CONTROL_URL);
                 }
             });
 
+            Button bt_Sun_Light_off = v.findViewById(R.id.bt_Sun_Light_off);
+            bt_Sun_Light_off.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String param4 = "{\"UUID\": \"" + device.getUUID() + "\",\"Confirm\": 280,\"options\": {\"Sun_Light_Enable\":\"0\"}}";
+                    sendOrder(param4, HttpConfiguration.DEVICE_CONTROL_URL);
+                }
+            });
 
+            Button bt_Sun_Light_on = v.findViewById(R.id.bt_Sun_Light_on);
+            bt_Sun_Light_on.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String param4 = "{\"UUID\": \"" + device.getUUID() + "\",\"Confirm\": 280,\"options\": {\"Sun_Light_Enable\":\"0\"}}";
+                    sendOrder(param4, HttpConfiguration.DEVICE_CONTROL_URL);
+                }
+            });
 
+            Button bt_get_status = v.findViewById(R.id.bt_get_status);
+            bt_get_status.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String param4 = "{\"UUID\": \"" + device.getUUID() + "\",\"Confirm\": \"232\"}";
+                    sendOrder(param4, HttpConfiguration.DEVICE_CONTROL_URL);
+                }
+            });
 
+            Button bt_device_accuracy = v.findViewById(R.id.bt_device_accuracy);
+            final EditText et_device_accuracy = v.findViewById(R.id.et_device_accuracy);
+            bt_device_accuracy.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String accuracy =  et_device_accuracy.getText().toString();
+                    if (accuracy != null && !accuracy.equals("")){
+                        String param4 = "{\"UUID\": \"" + device.getUUID() + "\",\"Confirm\": 297,\"options\": {\"accuracy\":"+ accuracy  +"}}";
+                        sendOrder(param4, HttpConfiguration.DEVICE_CONTROL_URL);
+                    }else{
+                        showToast("请先输入角度校准值~");
+                    }
 
+                }
+            });
 
 
         }
     }
 
 
-    private void sendOrder(String param,String url) {
+    private void sendOrder(String param, String url) {
 
-       // String url =  HttpConfiguration.DEVICE_CONTROL_URL;
+        // String url =  HttpConfiguration.DEVICE_CONTROL_URL;
         LogUtil.e("xx param = " + param);
         LogUtil.e("xx url = " + url);
         LogUtil.e("xx getToken = " + getToken());
@@ -268,11 +306,11 @@ public class DeviceControlFragment extends Fragment {
 
             @Override
             public void onResponse(Call call, final Response response) throws IOException {
-               String  data =  response.body().string();
+                String data = response.body().string();
                 LogUtil.e("xx data = " + data);
-                if(data.equals("OK") ){
+                if (data.equals("OK")) {
                     showToast("指令发送成功~");
-                }else{
+                } else {
                     showToast("指令发送失败，请检查当前网络~");
                 }
 
@@ -280,9 +318,9 @@ public class DeviceControlFragment extends Fragment {
         }, getToken(), requestBody);
     }
 
-    private String getToken(){
+    private String getToken() {
         Gson gson = new Gson();
-        LoginInfo loginInfo =  gson.fromJson((String) SpUtils.getValue(SpUtils.LOGIN_INFO, ""), LoginInfo.class);
+        LoginInfo loginInfo = gson.fromJson((String) SpUtils.getValue(SpUtils.LOGIN_INFO, ""), LoginInfo.class);
         return loginInfo.getData().getToken().getToken();
     }
 

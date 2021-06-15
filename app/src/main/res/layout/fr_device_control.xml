@@ -357,6 +357,7 @@
                     android:text="日出开关  " />
 
                 <Button
+                    android:id="@+id/bt_Sun_Light_off"
                     android:layout_width="wrap_content"
                     android:layout_height="30dp"
                     android:layout_marginLeft="10dp"
@@ -366,6 +367,7 @@
                     android:textSize="18sp" />
 
                 <Button
+                    android:id="@+id/bt_Sun_Light_on"
                     style="@style/fr_device_bt"
                     android:layout_width="wrap_content"
                     android:layout_height="30dp"
@@ -392,6 +394,7 @@
                     android:text="获取状态  " />
 
                 <Button
+                    android:id="@+id/bt_get_status"
                     android:layout_width="wrap_content"
                     android:layout_height="30dp"
                     android:layout_marginLeft="10dp"
@@ -416,10 +419,14 @@
                     android:text="角度校准  " />
 
                 <EditText
+                    android:id="@+id/et_device_accuracy"
+                    android:inputType="number"
+                    android:textColor="@color/white"
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"></EditText>
 
                 <Button
+                    android:id="@+id/bt_device_accuracy"
                     android:layout_width="wrap_content"
                     android:layout_height="30dp"
                     android:layout_marginLeft="10dp"
