@@ -321,6 +321,7 @@
                     android:text="红外设置  " />
 
                 <Button
+                    android:id="@+id/bt_infrared_off"
                     android:layout_width="wrap_content"
                     android:layout_height="30dp"
                     android:layout_marginLeft="10dp"
@@ -330,6 +331,7 @@
                     android:textSize="18sp" />
 
                 <Button
+                    android:id="@+id/bt_infrared_on"
                     style="@style/fr_device_bt"
                     android:layout_width="wrap_content"
                     android:layout_height="30dp"
