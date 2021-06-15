@@ -1,23 +1,67 @@
 package com.example.ld_street_lights_maintenance.fragment.devices;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
+import com.amap.api.maps.CameraUpdateFactory;
+import com.amap.api.maps.model.LatLng;
+import com.amap.api.maps.model.LatLngBounds;
 import com.example.ld_street_lights_maintenance.R;
+import com.example.ld_street_lights_maintenance.cluster.Cluster;
+import com.example.ld_street_lights_maintenance.common.MyApplication;
 import com.example.ld_street_lights_maintenance.entity.DeviceLampJson;
+import com.example.ld_street_lights_maintenance.entity.LoginInfo;
+import com.example.ld_street_lights_maintenance.entity.ProjectInfo;
+import com.example.ld_street_lights_maintenance.util.HttpConfiguration;
+import com.example.ld_street_lights_maintenance.util.HttpUtil;
 import com.example.ld_street_lights_maintenance.util.LogUtil;
+import com.example.ld_street_lights_maintenance.util.SpUtils;
+import com.google.gson.Gson;
 import com.warkiz.widget.IndicatorSeekBar;
 import com.warkiz.widget.OnSeekChangeListener;
 import com.warkiz.widget.SeekParams;
 
+import java.io.IOException;
+import java.util.List;
+import java.util.concurrent.CountDownLatch;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.FormBody;
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+
 
 public class DeviceControlFragment extends Fragment {
     private DeviceLampJson.DataBean device = null;
+    // 显示Toast
+    private static final int SHOW_TOAST = 20;
+
+    private Handler baseHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case SHOW_TOAST:
+                    String text = (String) msg.obj;
+                    Toast.makeText(getActivity(), text, Toast.LENGTH_SHORT).show();
+                    break;
+
+            }
+        }
+    };
+
+
 
     public static DeviceControlFragment getInstance(DeviceLampJson.DataBean device) {
         DeviceControlFragment sf = new DeviceControlFragment();
@@ -56,17 +100,119 @@ public class DeviceControlFragment extends Fragment {
 
                 @Override
                 public void onStopTrackingTouch(IndicatorSeekBar seekBar) {
+
+                  //  String param = "{\"UUID\": \"" + device.getUUID() +"\",\"Confirm\": 297,\"options\": {\"accuracy\": " + seekBar.getProgress() +"}}";
+                    String param = "{\"UUID\": \""+ device.getUUID() +"\",\"Confirm\": 260,\"options\": {\"Dimming\":" + seekBar.getProgress() +"}}";
+                    sendOrder(param);
+
+                }
+            });
+            IndicatorSeekBar sb_main_adjustable_lamp =v.findViewById(R.id.sb_main_adjustable_lamp);
+            sb_main_adjustable_lamp.setOnSeekChangeListener(new OnSeekChangeListener() {
+                @Override
+                public void onSeeking(SeekParams seekParams) {
+
+                }
+
+                @Override
+                public void onStartTrackingTouch(IndicatorSeekBar seekBar) {
+
+                }
+
+                @Override
+                public void onStopTrackingTouch(IndicatorSeekBar seekBar) {
                     LogUtil.e("xx seekBar = " + seekBar.getProgress());
+                    String param = "{\"UUID\": \""+ device.getUUID() +"\",\"Confirm\": 260,\"options\": {\"FirDimming\":" + seekBar.getProgress() +"}}";
+                    sendOrder(param);
 
+                }
+            });
+            IndicatorSeekBar sb_subsidiary_adjustable_lamp =v.findViewById(R.id.sb_subsidiary_adjustable_lamp);
+            sb_subsidiary_adjustable_lamp.setOnSeekChangeListener(new OnSeekChangeListener() {
+                @Override
+                public void onSeeking(SeekParams seekParams) {
 
+                }
+
+                @Override
+                public void onStartTrackingTouch(IndicatorSeekBar seekBar) {
+
+                }
+
+                @Override
+                public void onStopTrackingTouch(IndicatorSeekBar seekBar) {
+                    LogUtil.e("xx seekBar = " + seekBar.getProgress());
+                    String param = "{\"UUID\": \""+ device.getUUID() +"\",\"Confirm\": 260,\"options\": {\"SecDimming\":" + seekBar.getProgress() +"}}";
+                    sendOrder(param);
 
                 }
             });
 
+           Button bt_overall_off = v.findViewById(R.id.bt_overall_off);
+            bt_overall_off.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String param = "{\"UUID\": \""+ device.getUUID() +"\",\"Confirm\": 260,\"options\": {\"Dimming\":" + 0 +"}}";
+                    sendOrder(param);
+                }
+            });
+
+            Button bt_overall_on = v.findViewById(R.id.bt_overall_on);
+            bt_overall_on.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String param = "{\"UUID\": \""+ device.getUUID() +"\",\"Confirm\": 260,\"options\": {\"Dimming\":" + 100 +"}}";
+                    sendOrder(param);
+                }
+            });
+
+
 
         }
-
-
-
     }
+
+
+
+    private void sendOrder(String param) {
+
+
+        String url =  HttpConfiguration.DEVICE_CONTROL_URL;
+        LogUtil.e("xx param = " + param);
+        LogUtil.e("xx url = " + url);
+        LogUtil.e("xx getToken = " + getToken());
+
+        RequestBody requestBody = FormBody.create(param, MediaType.parse("application/json"));
+        HttpUtil.sendHttpRequest(url, new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                showToast("连接服务器异常！");
+            }
+
+            @Override
+            public void onResponse(Call call, final Response response) throws IOException {
+               String  data =  response.body().string();
+                LogUtil.e("xx data = " + data);
+                if(data.equals("OK") ){
+                    showToast("指令发送成功~");
+                }else{
+                    showToast("指令发送失败，请检查当前网络~");
+                }
+
+            }
+        }, getToken(), requestBody);
+    }
+
+    private String getToken(){
+        Gson gson = new Gson();
+        LoginInfo loginInfo =  gson.fromJson((String) SpUtils.getValue(SpUtils.LOGIN_INFO, ""), LoginInfo.class);
+        return loginInfo.getData().getToken().getToken();
+    }
+
+    protected void showToast(String msg) {
+        Message message = baseHandler.obtainMessage();
+        message.what = SHOW_TOAST;
+        message.obj = msg;
+        baseHandler.sendMessage(message);
+    }
+
 }
