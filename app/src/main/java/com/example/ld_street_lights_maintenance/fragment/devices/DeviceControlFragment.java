@@ -228,7 +228,7 @@ public class DeviceControlFragment extends Fragment {
             bt_infrared_off.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    String param4 = "{\"UUID\": \""+ device.getUUID() +"\",\"Confirm\": 270,\"options\": {\"IR_Dimming_en\":\"0\"}}";
+                    String param4 = "{\"UUID\": \""+ device.getUUID() +"\",\"Confirm\": 234,\"options\": {\"IR_Dimming_en\":\"0\"}}";
                     sendOrder(param4, HttpConfiguration.DEVICE_CONTROL_URL);
                 }
             });
@@ -237,7 +237,7 @@ public class DeviceControlFragment extends Fragment {
             bt_infrared_on.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    String param4 = "{\"UUID\": \""+ device.getUUID() +"\",\"Confirm\": 270,\"options\": {\"IR_Dimming_en\":\"1\"}}";
+                    String param4 = "{\"UUID\": \""+ device.getUUID() +"\",\"Confirm\": 234,\"options\": {\"IR_Dimming_en\":\"1\"}}";
                     sendOrder(param4, HttpConfiguration.DEVICE_CONTROL_URL);
                 }
             });
