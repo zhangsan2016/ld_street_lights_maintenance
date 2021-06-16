@@ -13,6 +13,7 @@ import androidx.viewpager.widget.ViewPager;
 import com.example.ld_street_lights_maintenance.R;
 import com.example.ld_street_lights_maintenance.base.BaseActivity;
 import com.example.ld_street_lights_maintenance.entity.DeviceLampJson;
+import com.example.ld_street_lights_maintenance.fragment.devices.DeviceControlFragment1;
 import com.example.ld_street_lights_maintenance.fragment.devices.DeviceControlFragment2;
 import com.example.ld_street_lights_maintenance.fragment.devices.DeviceHistoryFragment2;
 import com.example.ld_street_lights_maintenance.fragment.devices.DeviceInfoFragment2;
@@ -51,7 +52,7 @@ public class CurrentDeviceActivity extends BaseActivity {
                     if (title.equals("查看")){
                         mFragments.add(DeviceInfoFragment2.getInstance(device));
                     }else if(title.equals("控制")) {
-                        mFragments.add(DeviceControlFragment2.getInstance(device));
+                        mFragments.add(DeviceControlFragment1.getInstance(device));
                     }else if(title.equals("历史消息")){
                         mFragments.add(DeviceHistoryFragment2.getInstance(device));
                     }

@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#191970"
+    android:orientation="vertical">
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/fr_device_info_text"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="right"
+                    android:text="在线状态  " />
+
+                <TextView
+                    style="@style/fr_device_info_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/fr_device_info_text"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="right"
+                    android:text="继电器开关  " />
+
+                <ToggleButton
+                    android:id="@+id/tb_relay_switch"
+                    android:layout_width="55dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginRight="15dp"
+                    android:background="@drawable/togglebutton"
+                    android:text="sdfsdf"
+                    android:textOff=""
+                    android:textOn="" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/fr_device_info_text"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="right"
+                    android:text="整体开关  " />
+
+                <Button
+                    android:id="@+id/bt_overall_off"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_marginLeft="10dp"
+                    android:background="@drawable/border_line_while"
+                    android:text="关"
+                    android:textColor="@color/white"
+                    android:textSize="18sp" />
+
+                <Button
+                    android:id="@+id/bt_overall_on"
+                    style="@style/fr_device_bt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_marginLeft="10dp"
+                    android:background="@drawable/border_line_while"
+                    android:text="开"
+                    android:textColor="@color/white"
+                    android:textSize="18sp" />
+
+            </LinearLayout>
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/fr_device_info_text"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="right"
+                    android:text="主灯  " />
+
+                <com.warkiz.widget.IndicatorSeekBar
+                    android:id="@+id/sb_main_adjustable_lamp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:isb_indicator_color="@color/colorPrimary"
+                    app:isb_indicator_text_color="@color/colorAccent"
+                    app:isb_indicator_text_size="18sp"
+                    app:isb_max="100"
+                    app:isb_min="0"
+                    app:isb_only_thumb_draggable="false"
+                    app:isb_progress="0"
+                    app:isb_show_indicator="circular_bubble"
+                    app:isb_show_tick_marks_type="oval"
+                    app:isb_show_tick_texts="true"
+                    app:isb_thumb_color="@color/colorTitle"
+                    app:isb_thumb_size="20dp"
+                    app:isb_tick_marks_drawable="@mipmap/ic_launcher"
+                    app:isb_tick_marks_size="13dp"
+                    app:isb_tick_texts_color="@color/blue_45a7ff"
+                    app:isb_tick_texts_size="15sp"
+                    app:isb_track_background_color="@color/colorPrimary"
+                    app:isb_track_background_size="2dp"
+                    app:isb_track_progress_color="@color/colorPrimary"
+                    app:isb_track_progress_size="4dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/fr_device_info_text"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="right"
+                    android:text="辅灯  " />
+
+                <com.warkiz.widget.IndicatorSeekBar
+                    android:id="@+id/sb_subsidiary_adjustable_lamp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:isb_indicator_color="@color/colorPrimary"
+                    app:isb_indicator_text_color="@color/colorAccent"
+                    app:isb_indicator_text_size="18sp"
+                    app:isb_max="100"
+                    app:isb_min="0"
+                    app:isb_only_thumb_draggable="false"
+                    app:isb_progress="0"
+                    app:isb_show_indicator="circular_bubble"
+                    app:isb_show_tick_marks_type="oval"
+                    app:isb_show_tick_texts="true"
+                    app:isb_thumb_color="@color/colorTitle"
+                    app:isb_thumb_size="20dp"
+                    app:isb_tick_marks_drawable="@mipmap/ic_launcher"
+                    app:isb_tick_marks_size="13dp"
+                    app:isb_tick_texts_color="@color/blue_45a7ff"
+                    app:isb_tick_texts_size="15sp"
+                    app:isb_track_background_color="@color/colorPrimary"
+                    app:isb_track_background_size="2dp"
+                    app:isb_track_progress_color="@color/colorPrimary"
+                    app:isb_track_progress_size="4dp" />
+
+            </LinearLayout>
+
+
+
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="50dp"
+                android:singleLine="false" />
+
+
+        </LinearLayout>
+
+
+    </ScrollView>
+
+
+</LinearLayout>
