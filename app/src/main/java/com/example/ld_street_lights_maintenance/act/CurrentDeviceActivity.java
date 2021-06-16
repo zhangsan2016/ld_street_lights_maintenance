@@ -1,6 +1,5 @@
 package com.example.ld_street_lights_maintenance.act;
 
-import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -14,10 +13,9 @@ import androidx.viewpager.widget.ViewPager;
 import com.example.ld_street_lights_maintenance.R;
 import com.example.ld_street_lights_maintenance.base.BaseActivity;
 import com.example.ld_street_lights_maintenance.entity.DeviceLampJson;
-import com.example.ld_street_lights_maintenance.fragment.devices.DeviceControlFragment;
-import com.example.ld_street_lights_maintenance.fragment.devices.DeviceHistoryFragment;
-import com.example.ld_street_lights_maintenance.fragment.devices.DeviceInfoFragment;
-import com.example.ld_street_lights_maintenance.fragment.popwindow.SimpleCardFragment;
+import com.example.ld_street_lights_maintenance.fragment.devices.DeviceControlFragment2;
+import com.example.ld_street_lights_maintenance.fragment.devices.DeviceHistoryFragment2;
+import com.example.ld_street_lights_maintenance.fragment.devices.DeviceInfoFragment2;
 import com.example.ld_street_lights_maintenance.util.LogUtil;
 import com.flyco.tablayout.SlidingTabLayout;
 
@@ -49,7 +47,15 @@ public class CurrentDeviceActivity extends BaseActivity {
                 // 电箱类型
                 mTitles = new String[]{"查看","控制","历史消息"};
                 for (String title : mTitles) {
-                    mFragments.add(SimpleCardFragment.getInstance(title));
+
+                    if (title.equals("查看")){
+                        mFragments.add(DeviceInfoFragment2.getInstance(device));
+                    }else if(title.equals("控制")) {
+                        mFragments.add(DeviceControlFragment2.getInstance(device));
+                    }else if(title.equals("历史消息")){
+                        mFragments.add(DeviceHistoryFragment2.getInstance(device));
+                    }
+
                 }
 
             } else if (device.getTYPE() == 2) {
@@ -57,11 +63,11 @@ public class CurrentDeviceActivity extends BaseActivity {
                 mTitles = new String[]{"查看","控制","历史消息"};
                 for (String title : mTitles) {
                     if (title.equals("查看")){
-                        mFragments.add(DeviceInfoFragment.getInstance(device));
+                        mFragments.add(DeviceInfoFragment2.getInstance(device));
                     }else if(title.equals("控制")) {
-                        mFragments.add(DeviceControlFragment.getInstance(device));
+                        mFragments.add(DeviceControlFragment2.getInstance(device));
                     }else if(title.equals("历史消息")){
-                        mFragments.add(DeviceHistoryFragment.getInstance(device));
+                        mFragments.add(DeviceHistoryFragment2.getInstance(device));
                     }
 
                 }

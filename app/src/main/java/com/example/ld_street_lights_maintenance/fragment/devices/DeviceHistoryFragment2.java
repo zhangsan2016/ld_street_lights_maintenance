@@ -6,12 +6,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 
 import com.example.ld_street_lights_maintenance.R;
-import com.example.ld_street_lights_maintenance.act.MainActivity;
 import com.example.ld_street_lights_maintenance.entity.DeviceHistoryJson;
 import com.example.ld_street_lights_maintenance.entity.DeviceLampJson;
 import com.example.ld_street_lights_maintenance.entity.LoginInfo;
@@ -32,15 +30,15 @@ import okhttp3.MediaType;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-public class DeviceHistoryFragment extends Fragment {
+public class DeviceHistoryFragment2 extends Fragment {
 
     private DeviceLampJson.DataBean device = null;
     private ListView lv_history;
     private List<String> list = new ArrayList<>();
     private   ArrayAdapter<String> adapter;
 
-    public static DeviceHistoryFragment getInstance(DeviceLampJson.DataBean device) {
-        DeviceHistoryFragment dhf = new DeviceHistoryFragment();
+    public static DeviceHistoryFragment2 getInstance(DeviceLampJson.DataBean device) {
+        DeviceHistoryFragment2 dhf = new DeviceHistoryFragment2();
         dhf.device = device;
         return dhf;
     }
@@ -52,7 +50,7 @@ public class DeviceHistoryFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fr_device_history, null);
+        View v = inflater.inflate(R.layout.fr_device_history2, null);
         initView(v);
 
         lv_history = v.findViewById(R.id.lv_history);

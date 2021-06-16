@@ -1,6 +1,5 @@
 package com.example.ld_street_lights_maintenance.fragment.devices;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,14 +10,13 @@ import androidx.fragment.app.Fragment;
 
 import com.example.ld_street_lights_maintenance.R;
 import com.example.ld_street_lights_maintenance.entity.DeviceLampJson;
-import com.example.ld_street_lights_maintenance.fragment.popwindow.SimpleCardFragment;
 
 
-public class DeviceInfoFragment extends Fragment {
+public class DeviceInfoFragment2 extends Fragment {
     private DeviceLampJson.DataBean device = null;
 
-    public static DeviceInfoFragment getInstance(DeviceLampJson.DataBean device) {
-        DeviceInfoFragment sf = new DeviceInfoFragment();
+    public static DeviceInfoFragment2 getInstance(DeviceLampJson.DataBean device) {
+        DeviceInfoFragment2 sf = new DeviceInfoFragment2();
         sf.device = device;
         return sf;
     }
@@ -30,7 +28,7 @@ public class DeviceInfoFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fr_device_info, null);
+        View v = inflater.inflate(R.layout.fr_device_info2, null);
 
         initView(v);
 

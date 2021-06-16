@@ -23,7 +23,7 @@
 
                 <TextView
                     style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:gravity="right"
                     android:text="UUID  " />
@@ -46,7 +46,7 @@
 
                 <TextView
                     style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:gravity="right"
                     android:text="名称  " />
@@ -68,7 +68,7 @@
 
                 <TextView
                     style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:gravity="right"
                     android:text="版本号  " />
@@ -88,7 +88,7 @@
 
                 <TextView
                     style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:gravity="right"
                     android:text="卡号  " />
@@ -108,7 +108,7 @@
 
                 <TextView
                     style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:gravity="right"
                     android:text="电压  " />
@@ -128,7 +128,7 @@
 
                 <TextView
                     style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:gravity="right"
                     android:text="电流  " />
@@ -149,7 +149,7 @@
 
                 <TextView
                     style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:gravity="right"
                     android:text="功率  " />
@@ -169,7 +169,7 @@
 
                 <TextView
                     style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:gravity="right"
                     android:text="功能  " />
@@ -189,7 +189,7 @@
 
                 <TextView
                     style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:gravity="right"
                     android:text="电能  " />
@@ -210,7 +210,7 @@
 
                 <TextView
                     style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:gravity="right"
                     android:text="漏电电流  " />
@@ -231,7 +231,7 @@
 
                 <TextView
                     style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:gravity="right"
                     android:text="预报警状态  " />
@@ -251,7 +251,7 @@
 
                 <TextView
                     style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:gravity="right"
                     android:text="传感器错  " />
@@ -272,7 +272,7 @@
 
                 <TextView
                     style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:gravity="right"
                     android:text="全局亮度  " />
@@ -292,7 +292,7 @@
 
                 <TextView
                     style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:gravity="right"
                     android:text="主灯亮度值  " />
@@ -312,7 +312,7 @@
 
                 <TextView
                     style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:gravity="right"
                     android:text="副灯亮度值  " />
@@ -332,7 +332,7 @@
 
                 <TextView
                     style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:gravity="right"
                     android:text="灯光报警模式  " />
@@ -352,7 +352,7 @@
 
                 <TextView
                     style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:gravity="right"
                     android:text="汇报时间  " />
@@ -372,7 +372,7 @@
 
                 <TextView
                     style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:gravity="right"
                     android:text="照度  " />
@@ -392,7 +392,7 @@
 
                 <TextView
                     style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:gravity="right"
                     android:text="温度  " />
@@ -412,7 +412,7 @@
 
                 <TextView
                     style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:gravity="right"
                     android:text="湿度  " />
@@ -432,7 +432,7 @@
 
                 <TextView
                     style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:gravity="right"
                     android:text="频率  " />
@@ -452,7 +452,7 @@
 
                 <TextView
                     style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:gravity="right"
                     android:text="照度锁  " />
@@ -472,7 +472,7 @@
 
                 <TextView
                     style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:gravity="right"
                     android:text="GPS开灯时间  " />
@@ -492,7 +492,7 @@
 
                 <TextView
                     style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:gravity="right"
                     android:text="GPS关灯时间  " />
@@ -512,7 +512,7 @@
 
                 <TextView
                     style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:gravity="right"
                     android:text="分组  " />
@@ -532,7 +532,7 @@
 
                 <TextView
                     style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:gravity="right"
                     android:text="Gps csq  " />
@@ -552,7 +552,7 @@
 
                 <TextView
                     style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:gravity="right"
                     android:text="基站经度  " />
@@ -572,7 +572,7 @@
 
                 <TextView
                     style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:gravity="right"
                     android:text="基站纬度  " />
@@ -592,7 +592,7 @@
 
                 <TextView
                     style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:gravity="right"
                     android:text="GPS经度  " />
@@ -612,7 +612,7 @@
 
                 <TextView
                     style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:gravity="right"
                     android:text="GPS纬度  " />
@@ -632,7 +632,7 @@
 
                 <TextView
                     style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:gravity="right"
                     android:text="类型  " />
@@ -653,7 +653,7 @@
 
                 <TextView
                     style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:gravity="right"
                     android:text="经度  " />
@@ -674,7 +674,7 @@
 
                 <TextView
                     style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:gravity="right"
                     android:text="纬度  " />
@@ -695,7 +695,7 @@
 
                 <TextView
                     style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:gravity="right"
                     android:text="主一时间  " />
@@ -715,7 +715,7 @@
 
                 <TextView
                     style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:gravity="right"
                     android:text="主一亮度  " />
@@ -735,7 +735,7 @@
 
                 <TextView
                     style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:gravity="right"
                     android:text="主二时间  " />
@@ -755,7 +755,7 @@
 
                 <TextView
                     style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:gravity="right"
                     android:text="主二亮度  " />
@@ -775,7 +775,7 @@
 
                 <TextView
                     style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:gravity="right"
                     android:text="主三时间  " />
@@ -795,7 +795,7 @@
 
                 <TextView
                     style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:gravity="right"
                     android:text="主三亮度  " />
@@ -815,7 +815,7 @@
 
                 <TextView
                     style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:gravity="right"
                     android:text="主四时间  " />
@@ -835,7 +835,7 @@
 
                 <TextView
                     style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:gravity="right"
                     android:text="主四亮度  " />
@@ -855,7 +855,7 @@
 
                 <TextView
                     style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:gravity="right"
                     android:text="主五时间  " />
@@ -875,7 +875,7 @@
 
                 <TextView
                     style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:gravity="right"
                     android:text="主五亮度  " />
@@ -895,7 +895,7 @@
 
                 <TextView
                     style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:gravity="right"
                     android:text="主六时间  " />
@@ -915,7 +915,7 @@
 
                 <TextView
                     style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:gravity="right"
                     android:text="主六亮度  " />
@@ -935,7 +935,7 @@
 
                 <TextView
                     style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:gravity="right"
                     android:text="辅一时间  " />
@@ -955,7 +955,7 @@
 
                 <TextView
                     style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:gravity="right"
                     android:text="辅一亮度  " />
@@ -975,7 +975,7 @@
 
                 <TextView
                     style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:gravity="right"
                     android:text="辅二时间  " />
@@ -995,7 +995,7 @@
 
                 <TextView
                     style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:gravity="right"
                     android:text="辅二亮度  " />
@@ -1015,7 +1015,7 @@
 
                 <TextView
                     style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:gravity="right"
                     android:text="辅三时间  " />
@@ -1035,7 +1035,7 @@
 
                 <TextView
                     style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:gravity="right"
                     android:text="辅三亮度  " />
@@ -1055,7 +1055,7 @@
 
                 <TextView
                     style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:gravity="right"
                     android:text="辅四时间  " />
@@ -1075,7 +1075,7 @@
 
                 <TextView
                     style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:gravity="right"
                     android:text="辅四亮度  " />
@@ -1095,7 +1095,7 @@
 
                 <TextView
                     style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:gravity="right"
                     android:text="辅五时间  " />
@@ -1115,7 +1115,7 @@
 
                 <TextView
                     style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:gravity="right"
                     android:text="辅五亮度  " />
@@ -1135,7 +1135,7 @@
 
                 <TextView
                     style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:gravity="right"
                     android:text="辅六时间  " />
@@ -1155,7 +1155,7 @@
 
                 <TextView
                     style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:gravity="right"
                     android:text="辅六亮度  " />
@@ -1175,7 +1175,7 @@
 
                 <TextView
                     style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:gravity="right"
                     android:text="项目  " />
@@ -1196,7 +1196,7 @@
 
                 <TextView
                     style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:gravity="right"
                     android:text="父设备UUID  " />
@@ -1217,7 +1217,7 @@
 
                 <TextView
                     style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:gravity="right"
                     android:text="灯杆直径  " />
@@ -1237,7 +1237,7 @@
 
                 <TextView
                     style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:gravity="right"
                     android:text="电源出厂商  " />
@@ -1257,7 +1257,7 @@
 
                 <TextView
                     style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:gravity="right"
                     android:text="灯具额定电流  " />
@@ -1277,7 +1277,7 @@
 
                 <TextView
                     style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:gravity="right"
                     android:text="灯具额定电流  " />
@@ -1297,7 +1297,7 @@
 
                 <TextView
                     style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:gravity="right"
                     android:text="灯具额定电压  " />
@@ -1317,7 +1317,7 @@
 
                 <TextView
                     style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:gravity="right"
                     android:text="灯具类型  " />
@@ -1337,7 +1337,7 @@
 
                 <TextView
                     style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:gravity="right"
                     android:text="灯具厂商  " />
@@ -1357,7 +1357,7 @@
 
                 <TextView
                     style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:gravity="right"
                     android:text="灯具数  " />
@@ -1377,7 +1377,7 @@
 
                 <TextView
                     style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:gravity="right"
                     android:text="灯具出厂日期  " />
@@ -1397,7 +1397,7 @@
 
                 <TextView
                     style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:gravity="right"
                     android:text="灯具出厂日期  " />
@@ -1417,7 +1417,7 @@
 
                 <TextView
                     style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:gravity="right"
                     android:text="灯杆高度  " />
@@ -1437,7 +1437,7 @@
 
                 <TextView
                     style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:gravity="right"
                     android:text="总额定功率  " />
@@ -1457,7 +1457,7 @@
 
                 <TextView
                     style="@style/fr_device_info_text"
-                    android:layout_width="120dp"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:gravity="right"
                     android:text="通讯方式  " />

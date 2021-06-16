@@ -1,6 +1,5 @@
 package com.example.ld_street_lights_maintenance.fragment.devices;
 
-import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -10,20 +9,13 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
-import com.amap.api.maps.CameraUpdateFactory;
-import com.amap.api.maps.model.LatLng;
-import com.amap.api.maps.model.LatLngBounds;
 import com.example.ld_street_lights_maintenance.R;
-import com.example.ld_street_lights_maintenance.cluster.Cluster;
-import com.example.ld_street_lights_maintenance.common.MyApplication;
 import com.example.ld_street_lights_maintenance.entity.DeviceLampJson;
 import com.example.ld_street_lights_maintenance.entity.LoginInfo;
-import com.example.ld_street_lights_maintenance.entity.ProjectInfo;
 import com.example.ld_street_lights_maintenance.util.HttpConfiguration;
 import com.example.ld_street_lights_maintenance.util.HttpUtil;
 import com.example.ld_street_lights_maintenance.util.LogUtil;
@@ -35,8 +27,6 @@ import com.warkiz.widget.OnSeekChangeListener;
 import com.warkiz.widget.SeekParams;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.concurrent.CountDownLatch;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -46,7 +36,7 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 
-public class DeviceControlFragment extends Fragment {
+public class DeviceControlFragment2 extends Fragment {
     private DeviceLampJson.DataBean device = null;
     // 显示Toast
     private static final int SHOW_TOAST = 20;
@@ -65,8 +55,8 @@ public class DeviceControlFragment extends Fragment {
     };
 
 
-    public static DeviceControlFragment getInstance(DeviceLampJson.DataBean device) {
-        DeviceControlFragment sf = new DeviceControlFragment();
+    public static DeviceControlFragment2 getInstance(DeviceLampJson.DataBean device) {
+        DeviceControlFragment2 sf = new DeviceControlFragment2();
         sf.device = device;
         return sf;
     }
@@ -78,7 +68,7 @@ public class DeviceControlFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fr_device_control, null);
+        View v = inflater.inflate(R.layout.fr_device_control2, null);
 
         initView(v);
 
