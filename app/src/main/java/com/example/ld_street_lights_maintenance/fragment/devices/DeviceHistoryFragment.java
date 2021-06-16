@@ -56,7 +56,7 @@ public class DeviceHistoryFragment extends Fragment {
         initView(v);
 
         lv_history = v.findViewById(R.id.lv_history);
-       adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, list);
+       adapter = new ArrayAdapter<String>(getActivity(), R.layout.simple_list_item, list);
         lv_history.setAdapter(adapter);
 
         // 获取历史记录
