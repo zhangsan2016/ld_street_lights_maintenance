@@ -68,10 +68,12 @@ public class HttpConfiguration {
     public static String DEVICE_LAMP_LIST_URL = _urlBase + CONTENT_TYPE_DEVICE_LAMP_LIST;
     // 获取当前项目下的所有设备信息
     public static String  DEVICE_LIST_URL =_urlBase + CONTENT_TYPE_DEVICE_LIST;
-    // 设备控制
+    // 设备控制地址
     public static String  DEVICE_CONTROL_URL =_urlBase + DEVICE_CONTROL;
-    // 清除报警
+    // 清除报警地址
     public static String  CLEAN_ALARM_URL =_urlBase + CLEAN_ALARM;
+    // 历史记录地址
+    public static String  HISTORY_METRICS_URL =_urlBase + HISTORY_METRICS;
 
 
 }

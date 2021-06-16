@@ -15,6 +15,7 @@ import com.example.ld_street_lights_maintenance.R;
 import com.example.ld_street_lights_maintenance.base.BaseActivity;
 import com.example.ld_street_lights_maintenance.entity.DeviceLampJson;
 import com.example.ld_street_lights_maintenance.fragment.devices.DeviceControlFragment;
+import com.example.ld_street_lights_maintenance.fragment.devices.DeviceHistoryFragment;
 import com.example.ld_street_lights_maintenance.fragment.devices.DeviceInfoFragment;
 import com.example.ld_street_lights_maintenance.fragment.popwindow.SimpleCardFragment;
 import com.example.ld_street_lights_maintenance.util.LogUtil;
@@ -60,7 +61,7 @@ public class CurrentDeviceActivity extends BaseActivity {
                     }else if(title.equals("控制")) {
                         mFragments.add(DeviceControlFragment.getInstance(device));
                     }else if(title.equals("历史消息")){
-                        mFragments.add(SimpleCardFragment.getInstance(title));
+                        mFragments.add(DeviceHistoryFragment.getInstance(device));
                     }
 
                 }
