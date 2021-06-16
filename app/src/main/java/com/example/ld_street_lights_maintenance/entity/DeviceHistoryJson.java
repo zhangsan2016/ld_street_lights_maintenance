@@ -208,7 +208,7 @@ public class DeviceHistoryJson {
                     ", code='" + code + '\'' +
                     ", type=" + type +
                     ", createdAt='" + createdAt + '\'' +
-                    '}' + "\n";
+                    '}';
         }
     }
 }
