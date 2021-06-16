@@ -87,6 +87,7 @@
                     android:textColor="@color/white"
                     android:textSize="18sp" />
 
+
                 <Button
                     android:id="@+id/bt_overall_on"
                     style="@style/fr_device_bt"
