@@ -187,7 +187,7 @@ public class BuleFragment extends BaseFragment implements View.OnClickListener {
             @Override
             public void onDisConnected(boolean isActiveDisConnected, BleDevice bleDevice, BluetoothGatt gatt, int status) {
 
-                mDeviceAdapter.removeDevice(bleDevice);
+              //  mDeviceAdapter.removeDevice(bleDevice);
                 mDeviceAdapter.notifyDataSetChanged();
 
                 if (isActiveDisConnected) {
