@@ -63,6 +63,7 @@
                     android:id="@+id/cd_electric_leakage"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:checked="true"
                     android:text="漏电报警" />
 
                 <CheckBox
@@ -71,6 +72,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
                     android:layout_toRightOf="@id/cd_electric_leakage"
+                    android:checked="true"
                     android:text="电压报警" />
 
 
@@ -85,6 +87,7 @@
                     android:id="@+id/cd_topple_over"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:checked="true"
                     android:text="倾倒报警" />
 
                 <CheckBox
@@ -93,6 +96,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
                     android:layout_toRightOf="@id/cd_topple_over"
+                    android:checked="true"
                     android:text="电流报警"></CheckBox>
 
                 <!--         android:background="@drawable/ripple_bg"  android:background="@color/tab_violet_bg"-->
@@ -122,6 +126,7 @@
                 android:id="@+id/cd_main_dimming"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:checked="true"
                 android:text="主灯调光" />
 
 
@@ -129,6 +134,7 @@
                 android:id="@+id/cd_auxiliary_dimming"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:checked="true"
                 android:text="辅灯调光" />
 
             <Button

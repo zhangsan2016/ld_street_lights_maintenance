@@ -44,6 +44,7 @@ import com.example.ld_street_lights_maintenance.util.BlePusher;
 import com.example.ld_street_lights_maintenance.util.BytesUtil;
 import com.example.ld_street_lights_maintenance.util.DensityUtil;
 
+import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.TimeZone;
@@ -273,7 +274,24 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
                 showProgress("正在写入...");
 
                 byte[] funCode = new byte[]{0, 05};
-                byte[] data = new byte[]{(byte) seekBar.getProgress(), 3};
+                byte[] data ={};
+
+                boolean md = cd_main_dimming.isChecked();
+                boolean ad = cd_auxiliary_dimming.isChecked();
+                if (md && ad) {
+                    data = new byte[]{(byte) seekBar.getProgress(), 3};
+                    Log.e("xxx", ">>>>>>>>>>>>>>>>>>> 主灯辅灯全开");
+                } else if (md) {
+                    data = new byte[]{(byte) seekBar.getProgress(), 1};
+                    Log.e("xxx", ">>>>>>>>>>>>>>>>>>> 主灯开");
+                } else if (ad) {
+                    data = new byte[]{(byte) seekBar.getProgress(), 2};
+                    Log.e("xxx", ">>>>>>>>>>>>>>>>>>> 辅灯开");
+                } else if (!md && !ad) {
+                   showToast("请选择主灯或辅灯~");
+                   stopProgress();
+                   return;
+                }
 
                 sendOrder(funCode, data, RWStart.WRITE, true);
                 Log.i("TAG", "onStopTrackingTouch=" + seekBar.getProgress());
@@ -811,7 +829,14 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
         } else if (data[2] == 32) {
             Log.e("xx", "返回设备ID号" + "\n");
             //  [-18, 0, 32, 0, 23, 52, 48, 48, 55, 48, 48, 48, 48, 56, 54, 52, 56, 51, 49, 48, 53, 53, 48, 52, 50, 51, 54, 51, 20, 35, -17, 0, 0, 0, 0, 0, 0, 20, -27, 4]
-            String txt = "设备ID为："  + data[5] + data[6] + data[7] + data[8] + data[9] + data[10] + data[11] + data[12] + data[13]  + data[14]  + data[15] + data[16] + "\n";
+            //  String txt = "设备ID为："  + data[5] + data[6] + data[7] + data[8] + data[9] + data[10] + data[11] + data[12] + data[13]  + data[14]  + data[15] + data[16] + "\n";
+            String txt = null;
+            try {
+                txt = new String(new byte[]{data[5] , data[6] , data[7] , data[8] , data[9] , data[10] , data[11] , data[12] , data[13]  , data[14]  , data[15] , data[16]},"ascii") + "\n";
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+
             addText(txt_data, txt);
 
         } else if (data[2] == 34) {
