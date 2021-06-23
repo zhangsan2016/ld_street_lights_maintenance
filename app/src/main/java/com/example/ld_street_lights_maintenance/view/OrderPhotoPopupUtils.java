@@ -819,11 +819,11 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
         } else if (data[2] == 26) {
             Log.e("xx", "返回电参");
             String txt = "读取电参："
-                    + " 电压:" + BytesUtil.bytesIntHL(new byte[]{data[5], data[6]})
-                    + " 电流:" + BytesUtil.bytesIntHL(new byte[]{data[7], data[8]})
-                    + " 功率:" + BytesUtil.bytesIntHL(new byte[]{data[9], data[10]})
+                    + " 电压:" + (BytesUtil.bytesIntHL(new byte[]{data[5], data[6]}) / 100
+                    + " 电流:" + (BytesUtil.bytesIntHL(new byte[]{data[7], data[8]})) / 100
+                    + " 功率:" + (BytesUtil.bytesIntHL(new byte[]{data[9], data[10]})) / 10
                     + " 电能:" + BytesUtil.bytesIntHL(new byte[]{data[11], data[12], data[13], data[14]})
-                    + " 功率因数:" + BytesUtil.bytesIntHL(new byte[]{data[15], data[16]})
+                    + " 功率因数:" + (BytesUtil.bytesIntHL(new byte[]{data[15], data[16]})) / 1000)
                     + "\n";
             addText(txt_data, txt);
         } else if (data[2] == 32) {
@@ -907,14 +907,14 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
             txt.append("报警灯状态: " + BytesUtil.byteToBit(data[5]) + "\n");
             txt.append("主灯亮度: " + data[6] + "\n");
             txt.append("副灯亮度: " + data[7] + "\n");
-            txt.append("电压: " + BytesUtil.bytesIntHL(new byte[]{data[8], data[9]}) + "\n");
-            txt.append("电流: " + BytesUtil.bytesIntHL(new byte[]{data[10], data[11]}) + "\n");
-            txt.append("功率: " + BytesUtil.bytesIntHL(new byte[]{data[12], data[13]}) + "\n");
+            txt.append("电压: " + (BytesUtil.bytesIntHL(new byte[]{data[8], data[9]})) / 100 + "\n");
+            txt.append("电流: " + (BytesUtil.bytesIntHL(new byte[]{data[10], data[11]})) / 100 + "\n");
+            txt.append("功率: " + (BytesUtil.bytesIntHL(new byte[]{data[12], data[13]})) / 10 + "\n");
             txt.append("电能: " + BytesUtil.bytesIntHL(new byte[]{data[14], data[15]}) + "\n");
-            txt.append("功率因数: " + BytesUtil.bytesIntHL(new byte[]{data[16], data[17]}) + "\n");
+            txt.append("功率因数: " + (BytesUtil.bytesIntHL(new byte[]{data[16], data[17]})) / 1000 + "\n");
             txt.append("漏电流: " + BytesUtil.bytesIntHL(new byte[]{data[18], data[19]}) + "\n");
             txt.append("报警状态: " + BytesUtil.byteToBit(data[20]) + "\n");
-            txt.append("版本号: " + data[21] + data[22] + data[23] + "\n");
+            txt.append("版本号: " + data[21] + "_" + data[22] + "_" + data[23] + "\n");
             txt.append("子设备版本号: " + data[24] + data[25] + data[26] + "\n");
             txt.append("经度: " + BytesUtil.bytesIntHL(new byte[]{data[28], data[29]}) + "\n");
             txt.append("纬度: " + BytesUtil.bytesIntHL(new byte[]{data[31], data[32]}) + "\n");
