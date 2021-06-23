@@ -842,7 +842,7 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
         } else if (data[2] == 34) {
             Log.e("xx", "返回设备版本号");
             // -18, 0, 34, 0, 3, 0, 4, 9, -49, 11, -17, 0, 0, 0, 0, 52, 56, 51, 49, 48
-            String txt = "当前设备版本为：" + data[5] + "" + data[6] + "" + data[7] + "\n";
+            String txt = "当前设备版本为：" + data[5] + "-" + data[6] + "-" + data[7] + "\n";
             addText(txt_data, txt);
 
         } else if (data[2] == 46) {
