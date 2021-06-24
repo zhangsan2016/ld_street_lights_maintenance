@@ -193,6 +193,8 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
         bt_setting_alarming_protector.setOnClickListener(settingOnclick);
         Button bt_setting_illu_vpt = mPopView.findViewById(R.id.bt_setting_illu_vpt);
         bt_setting_illu_vpt.setOnClickListener(settingOnclick);
+        Button bt_setting_electricity_vpt = mPopView.findViewById(R.id.bt_setting_electricity_vpt);
+        bt_setting_electricity_vpt.setOnClickListener(settingOnclick);
         Button alarm_lamp_control = mPopView.findViewById(R.id.alarm_lamp_control);
         alarm_lamp_control.setOnClickListener(settingOnclick);
 
@@ -645,6 +647,36 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
                             })
                             .setNegativeButton("取消", null)
                             .show();
+                    break;
+                case R.id.bt_setting_electricity_vpt: // 电参阈值设置
+
+                    showToast("设置电参阈值");
+                   /* final View illu_vpt_dialog = LayoutInflater.from(mContext).inflate(R.layout.order_seting_illu_vpt_dialog, null);
+                    AlertDialog illuVptAlerdialog = new AlertDialog.Builder(mContext)
+                            .setTitle("照度阈值设置")
+                            .setView(illu_vpt_dialog)
+                            .setPositiveButton("设置", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface arg0, int arg1) {
+                                    EditText ed_lux_limit = illu_vpt_dialog.findViewById(R.id.ed_order_seting_lux_limit);
+                                    EditText ed_lux_lowerlimit = illu_vpt_dialog.findViewById(R.id.ed_order_seting_lux_lowerlimit);
+
+                                    if (ed_lux_limit.getText().toString().equals("") || ed_lux_lowerlimit.getText().toString().equals("")) {
+                                        showToast("照度阈值设置失败，阈值不能为空！");
+                                        return;
+                                    }
+
+                                    byte[] lux_limit = BytesUtil.intBytesHL(Integer.parseInt(ed_lux_limit.getText().toString()), 2);
+                                    byte[] lux_lowerlimit = BytesUtil.intBytesHL(Integer.parseInt(ed_lux_lowerlimit.getText().toString()), 2);
+                                    byte[] data = BytesUtil.byteMergerAll(lux_limit, lux_lowerlimit);
+
+                                    showProgress("正在写入...");
+                                    byte[] funCode = new byte[]{0, 84};
+                                    sendOrder(funCode, data, RWStart.WRITE, true);
+
+                                }
+                            })
+                            .setNegativeButton("取消", null)
+                            .show();*/
                     break;
                 case R.id.bt_setting_alarming_protector: // 使能电参异常报警
 

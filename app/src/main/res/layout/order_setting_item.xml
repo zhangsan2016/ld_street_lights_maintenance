@@ -45,38 +45,6 @@
             android:textColor="@color/white"
             android:textSize="16dp" />
 
-        <Button
-            android:id="@+id/bt_curve_timing"
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            android:layout_below="@id/cd_electricity"
-            android:background="@drawable/button_drawable"
-            android:gravity="center"
-            android:text="曲线定时"
-            android:textColor="@color/white"
-            android:textSize="16dp" />
-
-        <Button
-            android:id="@+id/bt_setting_dufup"
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            android:layout_gravity="center_horizontal"
-            android:background="@drawable/button_drawable"
-            android:gravity="center"
-            android:text="设备固件升级"
-            android:textColor="#ffffff"
-            android:textSize="16dp" />
-
-        <Button
-            android:id="@+id/bt_setting_illu_vpt"
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            android:layout_gravity="center_horizontal"
-            android:background="@drawable/button_drawable"
-            android:gravity="center"
-            android:text="照度阈值设置"
-            android:textColor="#ffffff"
-            android:textSize="16dp" />
 
 
         <Button
@@ -134,6 +102,40 @@
             android:textColor="#ffffff"
             android:textSize="16dp" />
 
+
+        <Button
+            android:id="@+id/bt_curve_timing"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_below="@id/cd_electricity"
+            android:background="@drawable/button_drawable"
+            android:gravity="center"
+            android:text="曲线定时"
+            android:textColor="@color/white"
+            android:textSize="16dp" />
+
+        <Button
+            android:id="@+id/bt_setting_dufup"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/button_drawable"
+            android:gravity="center"
+            android:text="设备固件升级"
+            android:textColor="#ffffff"
+            android:textSize="16dp" />
+
+        <Button
+            android:id="@+id/bt_setting_illu_vpt"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/button_drawable"
+            android:gravity="center"
+            android:text="照度阈值设置"
+            android:textColor="#ffffff"
+            android:textSize="16dp" />
+
         <Button
             android:id="@+id/alarm_lamp_control"
             android:layout_width="wrap_content"
@@ -144,6 +146,18 @@
             android:text="雾灯报警灯控制"
             android:textColor="#ffffff"
             android:textSize="16dp" />
+
+        <Button
+            android:id="@+id/bt_setting_electricity_vpt"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/button_drawable"
+            android:gravity="center"
+            android:text="电参阈值设置"
+            android:textColor="#ffffff"
+            android:textSize="16dp" />
+
 
         <Button
             android:id="@+id/bt_setting_collapse_alarmon"
