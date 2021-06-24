@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
+import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.WindowManager;
 
@@ -217,6 +218,24 @@ public class DensityUtil {
         }
         return sNavBarOverride;
     }
+
+    /**
+     * 测量 view 的宽高
+     * @param view
+     * @return
+     */
+    public static int[] unDisplayViewSize(View view) {
+        int size[] = new int[2];
+        int width = View.MeasureSpec.makeMeasureSpec(0,
+                View.MeasureSpec.UNSPECIFIED);
+        int height = View.MeasureSpec.makeMeasureSpec(0,
+                View.MeasureSpec.UNSPECIFIED);
+        view.measure(width, height);
+        size[0] = view.getMeasuredWidth();
+        size[1] = view.getMeasuredHeight();
+        return size;
+    }
+
 
 
 }

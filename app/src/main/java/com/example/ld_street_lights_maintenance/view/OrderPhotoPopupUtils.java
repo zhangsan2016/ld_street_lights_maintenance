@@ -38,11 +38,13 @@ import com.clj.fastble.exception.TimeoutException;
 import com.example.ld_street_lights_maintenance.R;
 import com.example.ld_street_lights_maintenance.act.DeviceTiming;
 import com.example.ld_street_lights_maintenance.act.FirmwareUpdateAct;
+import com.example.ld_street_lights_maintenance.act.MainActivity;
 import com.example.ld_street_lights_maintenance.crc.CopyOfcheckCRC;
 import com.example.ld_street_lights_maintenance.fragment.mainfragment.BuleFragment;
 import com.example.ld_street_lights_maintenance.util.BlePusher;
 import com.example.ld_street_lights_maintenance.util.BytesUtil;
 import com.example.ld_street_lights_maintenance.util.DensityUtil;
+import com.example.ld_street_lights_maintenance.util.LogUtil;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
@@ -195,7 +197,6 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
         alarm_lamp_control.setOnClickListener(settingOnclick);
 
 
-
         // 设置下拉 "读写指令" 布局
         txt_data = mPopView.findViewById(R.id.txt_data);
         txt_data.setOnTouchListener(touchListener); // 设置避免滑动冲突
@@ -277,7 +278,7 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
                 showProgress("正在写入...");
 
                 byte[] funCode = new byte[]{0, 05};
-                byte[] data ={};
+                byte[] data = {};
 
                 boolean md = cd_main_dimming.isChecked();
                 boolean ad = cd_auxiliary_dimming.isChecked();
@@ -291,9 +292,9 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
                     data = new byte[]{(byte) seekBar.getProgress(), 2};
                     Log.e("xxx", ">>>>>>>>>>>>>>>>>>> 辅灯开");
                 } else if (!md && !ad) {
-                   showToast("请选择主灯或辅灯~");
-                   stopProgress();
-                   return;
+                    showToast("请选择主灯或辅灯~");
+                    stopProgress();
+                    return;
                 }
 
                 sendOrder(funCode, data, RWStart.WRITE, true);
@@ -539,6 +540,69 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
         }
     }
 
+    private void initPopWindow(View v) {
+        View view = LayoutInflater.from(mContext).inflate(R.layout.alarm_lamp_popup_item, null, false);
+        Button bt_alarm_lamp_off = (Button) view.findViewById(R.id.bt_alarm_lamp_off);
+        Button bt_alarm_lamp_on = (Button) view.findViewById(R.id.bt_alarm_lamp_on);
+        Button bt_alarm_lamp_flicker = (Button) view.findViewById(R.id.bt_alarm_lamp_flicker);
+        //1.构造一个PopupWindow，参数依次是加载的View，宽高
+        final PopupWindow popWindow = new PopupWindow(view,
+                ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
+
+        // popWindow.setAnimationStyle(R.anim.anim_pop);  //设置加载动画
+
+        //这些为了点击非PopupWindow区域，PopupWindow会消失的，如果没有下面的
+        //代码的话，你会发现，当你把PopupWindow显示出来了，无论你按多少次后退键
+        //PopupWindow并不会关闭，而且退不出程序，加上下述代码可以解决这个问题
+        popWindow.setTouchable(true);
+        popWindow.setTouchInterceptor(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return false;
+                // 这里如果返回true的话，touch事件将被拦截
+                // 拦截后 PopupWindow的onTouchEvent不被调用，这样点击外部区域无法dismiss
+            }
+        });
+        popWindow.setBackgroundDrawable(new ColorDrawable(0x00000000));    //要为popWindow设置一个背景才有效
+
+
+        // 获取popupWindow布局测量后的宽高
+        int[] size = DensityUtil.unDisplayViewSize(view);
+        //设置popupWindow显示的位置，参数依次是参照View，x轴的偏移量，y轴的偏移量
+        popWindow.showAsDropDown(v, (v.getWidth()-size[0])/2,0);
+        LogUtil.e("xx v.getWidth() = " + v.getWidth() + "  v.getMeasuredWidth() = " + v.getMeasuredWidth() + " view.getWidth() =" + size[0] + "  "+ view.getMeasuredWidth());
+
+        //设置popupWindow里的按钮的事件
+        bt_alarm_lamp_off.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popWindow.dismiss();
+                byte[] funCode = new byte[]{0, 43};
+                byte[] data = new byte[]{1};
+                sendOrder(funCode, data, RWStart.WRITE, true);
+            }
+        });
+        bt_alarm_lamp_on.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popWindow.dismiss();
+                byte[] funCode = new byte[]{0, 43};
+                byte[] data = new byte[]{2};
+                sendOrder(funCode, data, RWStart.WRITE, true);
+            }
+        });
+        bt_alarm_lamp_flicker.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popWindow.dismiss();
+                byte[] funCode = new byte[]{0, 43};
+                byte[] data = new byte[]{3};
+                sendOrder(funCode, data, RWStart.WRITE, true);
+            }
+        });
+    }
+
+
 
     /**
      * 设置点击事件
@@ -551,7 +615,7 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
             byte[] data;
             switch (v.getId()) {
                 case R.id.bt_setting_dufup: // 设备固件升级
-                    Intent intentUpdate= new Intent(mContext,FirmwareUpdateAct.class);
+                    Intent intentUpdate = new Intent(mContext, FirmwareUpdateAct.class);
                     mContext.startActivity(intentUpdate);
                     break;
                 case R.id.bt_setting_illu_vpt: // 照度阈值设置
@@ -714,8 +778,7 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
                     sendOrder(funCode, data, RWStart.WRITE, false);
                     break;
                 case R.id.alarm_lamp_control:  // 雾灯报警灯开关
-                    showToast("雾灯报警灯开关");
-
+                    initPopWindow(v);
                     break;
 
 
@@ -793,7 +856,7 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
      */
     private void parseDatas(byte[] data) {
 
-       // addText(txt_data, Arrays.toString(data) + "\n");
+        // addText(txt_data, Arrays.toString(data) + "\n");
         //使用 crc 校验数据
         if (!checkDataCrc(data)) {
             Log.e("xx", "CRC 校验失败~");
@@ -840,7 +903,7 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
             //  String txt = "设备ID为："  + data[5] + data[6] + data[7] + data[8] + data[9] + data[10] + data[11] + data[12] + data[13]  + data[14]  + data[15] + data[16] + "\n";
             String txt = null;
             try {
-                txt = new String(new byte[]{data[5] , data[6] , data[7] , data[8] , data[9] , data[10] , data[11] , data[12] , data[13]  , data[14]  , data[15] , data[16]},"ascii") + "\n";
+                txt = new String(new byte[]{data[5], data[6], data[7], data[8], data[9], data[10], data[11], data[12], data[13], data[14], data[15], data[16]}, "ascii") + "\n";
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
@@ -866,41 +929,41 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
             txt.append("一键读取所有配置信息: ");
             txt.append("\n主灯定时: \n");
             for (int i = 0; i < 6; i++) {
-                txt.append( + data[(i*3)+5] + ":" + data[(i*3)+5+1] + "   " + data[(i*3)+5+2] + "%" + "\n");
+                txt.append(+data[(i * 3) + 5] + ":" + data[(i * 3) + 5 + 1] + "   " + data[(i * 3) + 5 + 2] + "%" + "\n");
             }
             txt.append("副灯定时: \n");
             for (int i = 0; i < 6; i++) {
-                txt.append( + data[(i*3)+23] + ":" + data[(i*3)+23+1] + "   " + data[(i*3)+23+2] + "%" + "\n");
+                txt.append(+data[(i * 3) + 23] + ":" + data[(i * 3) + 23 + 1] + "   " + data[(i * 3) + 23 + 2] + "%" + "\n");
             }
-            txt.append( "电压上限:"+ BytesUtil.bytesIntHL(new byte[]{data[41], data[42]})  + "\n");
-            txt.append( "电压下限:"+ BytesUtil.bytesIntHL(new byte[]{data[43], data[44]})  + "\n");
-            txt.append( "电流上限:"+ BytesUtil.bytesIntHL(new byte[]{data[45], data[46]})  + "\n");
-            txt.append( "电流下限:"+ BytesUtil.bytesIntHL(new byte[]{data[45], data[46]})  + "\n");
-            txt.append( "漏电流上限:"+ BytesUtil.bytesIntHL(new byte[]{data[47], data[48]})  + "\n");
+            txt.append("电压上限:" + BytesUtil.bytesIntHL(new byte[]{data[41], data[42]}) + "\n");
+            txt.append("电压下限:" + BytesUtil.bytesIntHL(new byte[]{data[43], data[44]}) + "\n");
+            txt.append("电流上限:" + BytesUtil.bytesIntHL(new byte[]{data[45], data[46]}) + "\n");
+            txt.append("电流下限:" + BytesUtil.bytesIntHL(new byte[]{data[45], data[46]}) + "\n");
+            txt.append("漏电流上限:" + BytesUtil.bytesIntHL(new byte[]{data[47], data[48]}) + "\n");
 
-            txt.append( "电参报警使能:"+ BytesUtil.byteToBit(data[49])  + "\n");
-            if(data[50] == 1){
-                txt.append( "照度开关: 开" + "\n");
-            }else{
-                txt.append( "照度开关: 关" + "\n");
+            txt.append("电参报警使能:" + BytesUtil.byteToBit(data[49]) + "\n");
+            if (data[50] == 1) {
+                txt.append("照度开关: 开" + "\n");
+            } else {
+                txt.append("照度开关: 关" + "\n");
             }
-            txt.append( "照度上限:"+ BytesUtil.bytesIntHL(new byte[]{data[51], data[52]})  + "\n");
-            txt.append( "照度下限:"+ BytesUtil.bytesIntHL(new byte[]{data[53], data[54]})  + "\n");
-            if(data[55] == 1){
-                txt.append( "经纬度开关: 开" + "\n");
-            }else{
-                txt.append( "经纬度开关: 关" + "\n");
+            txt.append("照度上限:" + BytesUtil.bytesIntHL(new byte[]{data[51], data[52]}) + "\n");
+            txt.append("照度下限:" + BytesUtil.bytesIntHL(new byte[]{data[53], data[54]}) + "\n");
+            if (data[55] == 1) {
+                txt.append("经纬度开关: 开" + "\n");
+            } else {
+                txt.append("经纬度开关: 关" + "\n");
             }
-            txt.append( "角度精度:"+ data[56]  + "\n");
-            if(data[57] == 1){
-                txt.append( "倾斜报警开关: 开" + "\n");
-            }else{
-                txt.append( "倾斜报警开关: 关" + "\n");
+            txt.append("角度精度:" + data[56] + "\n");
+            if (data[57] == 1) {
+                txt.append("倾斜报警开关: 开" + "\n");
+            } else {
+                txt.append("倾斜报警开关: 关" + "\n");
             }
-            if(data[58] == 1){
-                txt.append( "测试模式开关: 开" + "\n");
-            }else{
-                txt.append( "测试模式开关: 关" + "\n");
+            if (data[58] == 1) {
+                txt.append("测试模式开关: 开" + "\n");
+            } else {
+                txt.append("测试模式开关: 关" + "\n");
             }
 
 
@@ -928,7 +991,7 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
             txt.append("纬度: " + BytesUtil.bytesIntHL(new byte[]{data[31], data[32]}) + "\n");
             txt.append("信号值: " + data[33] + "\n");
             txt.append("重启次数: " + BytesUtil.bytesIntHL(new byte[]{data[34], data[35], data[36], data[37]}) + "\n");
-            txt.append("当前时间: " + data[38] + "年_" + data[39] + "月_" + data[40] + "日 " + data[41] + ":" + data[42]  + ":" + data[43] + "\n");
+            txt.append("当前时间: " + data[38] + "年_" + data[39] + "月_" + data[40] + "日 " + data[41] + ":" + data[42] + ":" + data[43] + "\n");
             txt.append("GPS关灯时间: " + data[44] + ":" + data[45] + "\n");
             txt.append("GPS开灯时间: " + data[46] + ":" + data[47] + "\n");
             txt.append("温度: " + data[48] + "\n");
