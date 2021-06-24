@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+    <!--
+
+    电压高_高8位 电压高_低8位
+    电压低_高8位 电压低_低8位
+    电流高_高8位 电流高_低8位
+    电流低_高8位 电流低_低8位
+    漏电流_高8位 漏电流_低8位
+    -->
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="15dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="电压上限">
+
+        </TextView>
+
+        <EditText
+            android:id="@+id/ed_order_seting_voltage_vpt_h"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:digits="0123456789"
+            android:inputType="number" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="电压下限">
+
+        </TextView>
+
+        <EditText
+            android:id="@+id/ed_order_seting_voltage_vpt_d"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:digits="0123456789"
+            android:inputType="number" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="电流上限">
+
+        </TextView>
+
+        <EditText
+            android:id="@+id/ed_order_seting_electricity_vpt_h"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:digits="0123456789"
+            android:inputType="number" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="电流下限">
+
+        </TextView>
+
+        <EditText
+            android:id="@+id/ed_order_seting_electricity_vpt_d"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:digits="0123456789"
+            android:inputType="number" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="漏电流阈值">
+
+        </TextView>
+
+        <EditText
+            android:id="@+id/ed_order_seting_dcl_vpt"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:digits="0123456789"
+            android:inputType="number" />
+
+    </LinearLayout>
+
+
+</LinearLayout>

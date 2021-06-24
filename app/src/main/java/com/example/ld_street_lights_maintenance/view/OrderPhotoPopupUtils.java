@@ -47,6 +47,7 @@ import com.example.ld_street_lights_maintenance.util.DensityUtil;
 import com.example.ld_street_lights_maintenance.util.LogUtil;
 
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.TimeZone;
@@ -570,8 +571,8 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
         // 获取popupWindow布局测量后的宽高
         int[] size = DensityUtil.unDisplayViewSize(view);
         //设置popupWindow显示的位置，参数依次是参照View，x轴的偏移量，y轴的偏移量
-        popWindow.showAsDropDown(v, (v.getWidth()-size[0])/2,0);
-        LogUtil.e("xx v.getWidth() = " + v.getWidth() + "  v.getMeasuredWidth() = " + v.getMeasuredWidth() + " view.getWidth() =" + size[0] + "  "+ view.getMeasuredWidth());
+        popWindow.showAsDropDown(v, (v.getWidth() - size[0]) / 2, 0);
+        LogUtil.e("xx v.getWidth() = " + v.getWidth() + "  v.getMeasuredWidth() = " + v.getMeasuredWidth() + " view.getWidth() =" + size[0] + "  " + view.getMeasuredWidth());
 
         //设置popupWindow里的按钮的事件
         bt_alarm_lamp_off.setOnClickListener(new View.OnClickListener() {
@@ -602,7 +603,6 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
             }
         });
     }
-
 
 
     /**
@@ -650,33 +650,73 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
                     break;
                 case R.id.bt_setting_electricity_vpt: // 电参阈值设置
 
-                    showToast("设置电参阈值");
-                   /* final View illu_vpt_dialog = LayoutInflater.from(mContext).inflate(R.layout.order_seting_illu_vpt_dialog, null);
-                    AlertDialog illuVptAlerdialog = new AlertDialog.Builder(mContext)
+                    final View electricity_vpt_dialog = LayoutInflater.from(mContext).inflate(R.layout.order_seting_electricity_vpt_dialog, null);
+                    AlertDialog electricityVptAlerdialog = new AlertDialog.Builder(mContext)
                             .setTitle("照度阈值设置")
-                            .setView(illu_vpt_dialog)
+                            .setView(electricity_vpt_dialog)
                             .setPositiveButton("设置", new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface arg0, int arg1) {
-                                    EditText ed_lux_limit = illu_vpt_dialog.findViewById(R.id.ed_order_seting_lux_limit);
-                                    EditText ed_lux_lowerlimit = illu_vpt_dialog.findViewById(R.id.ed_order_seting_lux_lowerlimit);
+                                public void onClick(DialogInterface dialog, int arg1) {
 
-                                    if (ed_lux_limit.getText().toString().equals("") || ed_lux_lowerlimit.getText().toString().equals("")) {
-                                        showToast("照度阈值设置失败，阈值不能为空！");
+
+                                    EditText ed_order_seting_voltage_vpt_h = electricity_vpt_dialog.findViewById(R.id.ed_order_seting_voltage_vpt_h);  // 电压上限
+                                    EditText ed_order_seting_voltage_vpt_d = electricity_vpt_dialog.findViewById(R.id.ed_order_seting_voltage_vpt_d);  // 电压下限
+                                    EditText ed_order_seting_electricity_vpt_h = electricity_vpt_dialog.findViewById(R.id.ed_order_seting_electricity_vpt_h);  // 电流上限
+                                    EditText ed_order_seting_electricity_vpt_d = electricity_vpt_dialog.findViewById(R.id.ed_order_seting_electricity_vpt_d);  // 电流下限
+                                    EditText ed_order_seting_dcl_vpt = electricity_vpt_dialog.findViewById(R.id.ed_order_seting_dcl_vpt);  // 漏电流阈值
+
+                                    if (ed_order_seting_voltage_vpt_h.getText().toString().equals("") || ed_order_seting_voltage_vpt_d.getText().toString().equals("")
+                                            || ed_order_seting_electricity_vpt_h.getText().toString().equals("")
+                                            || ed_order_seting_electricity_vpt_d.getText().toString().equals("")
+                                            || ed_order_seting_dcl_vpt.getText().toString().equals("")) {
+                                        showToast("设置失败，内容不能为空！");
+
+                                        // 条件不成立不能关闭 AlertDialog 窗口
+                                        try {
+                                            Field field = dialog.getClass().getSuperclass().getDeclaredField("mShowing");
+                                            field.setAccessible(true);
+                                            field.set(dialog, false); // false - 使之不能关闭(此为机关所在，其它语句相同)
+                                        } catch (Exception e) {
+                                            e.printStackTrace();
+                                        }
                                         return;
                                     }
 
-                                    byte[] lux_limit = BytesUtil.intBytesHL(Integer.parseInt(ed_lux_limit.getText().toString()), 2);
-                                    byte[] lux_lowerlimit = BytesUtil.intBytesHL(Integer.parseInt(ed_lux_lowerlimit.getText().toString()), 2);
-                                    byte[] data = BytesUtil.byteMergerAll(lux_limit, lux_lowerlimit);
-
                                     showProgress("正在写入...");
-                                    byte[] funCode = new byte[]{0, 84};
+
+                                    byte[] voltage_h = BytesUtil.intBytesHL(Integer.parseInt(ed_order_seting_voltage_vpt_h.getText().toString()), 2);
+                                    byte[] voltage_d = BytesUtil.intBytesHL(Integer.parseInt(ed_order_seting_voltage_vpt_d.getText().toString()), 2);
+                                    byte[] electricity_h = BytesUtil.intBytesHL(Integer.parseInt(ed_order_seting_electricity_vpt_h.getText().toString()), 2);
+                                    byte[] electricity_d = BytesUtil.intBytesHL(Integer.parseInt(ed_order_seting_electricity_vpt_d.getText().toString()), 2);
+                                    byte[] dcl_vpt = BytesUtil.intBytesHL(Integer.parseInt(ed_order_seting_dcl_vpt.getText().toString()), 2);
+                                    byte[] data = BytesUtil.byteMergerAll(voltage_h, voltage_d, electricity_h, electricity_d, dcl_vpt);
+
+                                    byte[] funCode = new byte[]{0, 9};
                                     sendOrder(funCode, data, RWStart.WRITE, true);
+
+                                    try {
+                                        Field field = dialog.getClass().getSuperclass().getDeclaredField("mShowing");
+                                        field.setAccessible(true);
+                                        field.set(dialog, true); // false - 使之不能关闭(此为机关所在，其它语句相同)
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
 
                                 }
                             })
-                            .setNegativeButton("取消", null)
-                            .show();*/
+                            .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    try {
+                                        Field field = dialog.getClass().getSuperclass().getDeclaredField("mShowing");
+                                        field.setAccessible(true);
+                                        field.set(dialog, true); // false - 使之不能关闭(此为机关所在，其它语句相同)
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            })
+                            .setCancelable(true)
+                            .show();
                     break;
                 case R.id.bt_setting_alarming_protector: // 使能电参异常报警
 
@@ -950,7 +990,7 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
         } else if (data[2] == 46) {
             Log.e("xx", "读取信号强度确定");
             // -18, 0, 46, 0, 3, 0, 45, 18, -104, 84, -17, 0, 0, 0, 0, 0, 56, 51, 49, 48
-            String txt = "当前设备信号强度为：" + data[5] +  "\n";
+            String txt = "当前设备信号强度为：" + data[5] + "\n";
             addText(txt_data, txt);
         } else if (data[2] == 48) {
 
