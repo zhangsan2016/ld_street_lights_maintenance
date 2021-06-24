@@ -218,7 +218,6 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
         bt_rw_write.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addText(txt_data, "当前内容为：skdlfjlsdjlfjldskj46464646464646546546484787488979879879879879797984784654");
             }
         });
         Button bt_read_alarm_threshold = mPopView.findViewById(R.id.bt_read_alarm_threshold);
@@ -919,7 +918,7 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
         } else if (data[2] == 46) {
             Log.e("xx", "读取信号强度确定");
             // -18, 0, 46, 0, 3, 0, 45, 18, -104, 84, -17, 0, 0, 0, 0, 0, 56, 51, 49, 48
-            String txt = "当前设备信号强度为：" + data[5] + "" + data[6] + "" + data[7] + "\n";
+            String txt = "当前设备信号强度为：" + data[5] +  "\n";
             addText(txt_data, txt);
         } else if (data[2] == 48) {
 
@@ -938,29 +937,29 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
             txt.append("电压上限:" + BytesUtil.bytesIntHL(new byte[]{data[41], data[42]}) + "\n");
             txt.append("电压下限:" + BytesUtil.bytesIntHL(new byte[]{data[43], data[44]}) + "\n");
             txt.append("电流上限:" + BytesUtil.bytesIntHL(new byte[]{data[45], data[46]}) + "\n");
-            txt.append("电流下限:" + BytesUtil.bytesIntHL(new byte[]{data[45], data[46]}) + "\n");
-            txt.append("漏电流上限:" + BytesUtil.bytesIntHL(new byte[]{data[47], data[48]}) + "\n");
+            txt.append("电流下限:" + BytesUtil.bytesIntHL(new byte[]{data[47], data[48]}) + "\n");
+            txt.append("漏电流上限:" + BytesUtil.bytesIntHL(new byte[]{data[49], data[50]}) + "\n");
 
-            txt.append("电参报警使能:" + BytesUtil.byteToBit(data[49]) + "\n");
-            if (data[50] == 1) {
+            txt.append("电参报警使能:" + BytesUtil.byteToBit(data[51]) + "\n");
+            if (data[52] == 1) {
                 txt.append("照度开关: 开" + "\n");
             } else {
                 txt.append("照度开关: 关" + "\n");
             }
-            txt.append("照度上限:" + BytesUtil.bytesIntHL(new byte[]{data[51], data[52]}) + "\n");
-            txt.append("照度下限:" + BytesUtil.bytesIntHL(new byte[]{data[53], data[54]}) + "\n");
-            if (data[55] == 1) {
+            txt.append("照度上限:" + BytesUtil.bytesIntHL(new byte[]{data[53], data[54]}) + "\n");
+            txt.append("照度下限:" + BytesUtil.bytesIntHL(new byte[]{data[55], data[56]}) + "\n");
+            if (data[57] == 1) {
                 txt.append("经纬度开关: 开" + "\n");
             } else {
                 txt.append("经纬度开关: 关" + "\n");
             }
-            txt.append("角度精度:" + data[56] + "\n");
-            if (data[57] == 1) {
+            txt.append("角度精度:" + data[58] + "\n");
+            if (data[59] == 1) {
                 txt.append("倾斜报警开关: 开" + "\n");
             } else {
                 txt.append("倾斜报警开关: 关" + "\n");
             }
-            if (data[58] == 1) {
+            if (data[60] == 1) {
                 txt.append("测试模式开关: 开" + "\n");
             } else {
                 txt.append("测试模式开关: 关" + "\n");
