@@ -191,6 +191,9 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
         bt_setting_alarming_protector.setOnClickListener(settingOnclick);
         Button bt_setting_illu_vpt = mPopView.findViewById(R.id.bt_setting_illu_vpt);
         bt_setting_illu_vpt.setOnClickListener(settingOnclick);
+        Button alarm_lamp_control = mPopView.findViewById(R.id.alarm_lamp_control);
+        alarm_lamp_control.setOnClickListener(settingOnclick);
+
 
 
         // 设置下拉 "读写指令" 布局
@@ -710,6 +713,11 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
 
                     sendOrder(funCode, data, RWStart.WRITE, false);
                     break;
+                case R.id.alarm_lamp_control:  // 雾灯报警灯开关
+                    showToast("雾灯报警灯开关");
+
+                    break;
+
 
             }
         }
