@@ -652,7 +652,7 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
 
                     final View electricity_vpt_dialog = LayoutInflater.from(mContext).inflate(R.layout.order_seting_electricity_vpt_dialog, null);
                     AlertDialog electricityVptAlerdialog = new AlertDialog.Builder(mContext)
-                            .setTitle("照度阈值设置")
+                            .setTitle("电参阈值设置")
                             .setView(electricity_vpt_dialog)
                             .setPositiveButton("设置", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int arg1) {
@@ -773,9 +773,28 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
                     sendOrder(funCode, data, RWStart.WRITE, true);
                     break;
                 case R.id.bt_setting_angle_adjust: // 角度校准
-                    showProgress("正在写入...");
-                    funCode = new byte[]{0, 88};
-                    sendOrder(funCode, null, RWStart.WRITE, true);
+
+                    final View angle_adjust_dialog = LayoutInflater.from(mContext).inflate(R.layout.order_seting_angle_adjust_dialog, null);
+                    AlertDialog angleAdjustAlerdialog = new AlertDialog.Builder(mContext)
+                            .setTitle("角度校准设置")
+                            .setView(angle_adjust_dialog)
+                            .setPositiveButton("设置", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface arg0, int arg1) {
+
+                                    EditText ed_angle_adjust = angle_adjust_dialog.findViewById(R.id.ed_order_seting_angle_adjust);
+                                    byte[] data =  new byte[]{10};
+                                    if (!ed_angle_adjust.getText().toString().equals("")) {
+                                        data = new byte[]{Byte.parseByte(ed_angle_adjust.getText().toString())};
+                                    }
+
+                                    showProgress("正在写入...");
+                                    byte[] funCode = new byte[]{0, 88};
+                                    sendOrder(funCode, data, RWStart.WRITE, true);
+                                }
+                            })
+                            .setNegativeButton("取消", null)
+                            .show();
+
                     break;
                 case R.id.bt_setting_locationon: // 经纬度开灯设置开
                     showProgress("正在写入...");
