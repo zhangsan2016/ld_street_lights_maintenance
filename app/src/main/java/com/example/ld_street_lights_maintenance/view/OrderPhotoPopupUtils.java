@@ -683,10 +683,10 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
 
                                     showProgress("正在写入...");
 
-                                    byte[] voltage_h = BytesUtil.intBytesHL(Integer.parseInt(ed_order_seting_voltage_vpt_h.getText().toString()), 2);
-                                    byte[] voltage_d = BytesUtil.intBytesHL(Integer.parseInt(ed_order_seting_voltage_vpt_d.getText().toString()), 2);
-                                    byte[] electricity_h = BytesUtil.intBytesHL(Integer.parseInt(ed_order_seting_electricity_vpt_h.getText().toString()), 2);
-                                    byte[] electricity_d = BytesUtil.intBytesHL(Integer.parseInt(ed_order_seting_electricity_vpt_d.getText().toString()), 2);
+                                    byte[] voltage_h = BytesUtil.intBytesHL(Integer.parseInt(ed_order_seting_voltage_vpt_h.getText().toString()) * 100, 2);
+                                    byte[] voltage_d = BytesUtil.intBytesHL(Integer.parseInt(ed_order_seting_voltage_vpt_d.getText().toString()) * 100, 2);
+                                    byte[] electricity_h = BytesUtil.intBytesHL(Integer.parseInt(ed_order_seting_electricity_vpt_h.getText().toString()) * 100, 2);
+                                    byte[] electricity_d = BytesUtil.intBytesHL(Integer.parseInt(ed_order_seting_electricity_vpt_d.getText().toString()) * 100, 2);
                                     byte[] dcl_vpt = BytesUtil.intBytesHL(Integer.parseInt(ed_order_seting_dcl_vpt.getText().toString()), 2);
                                     byte[] data = BytesUtil.byteMergerAll(voltage_h, voltage_d, electricity_h, electricity_d, dcl_vpt);
 
