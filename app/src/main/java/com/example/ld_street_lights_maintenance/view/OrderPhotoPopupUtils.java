@@ -782,10 +782,12 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
                                 public void onClick(DialogInterface arg0, int arg1) {
 
                                     EditText ed_angle_adjust = angle_adjust_dialog.findViewById(R.id.ed_order_seting_angle_adjust);
-                                    byte[] data =  new byte[]{10};
-                                    if (!ed_angle_adjust.getText().toString().equals("")) {
-                                        data = new byte[]{Byte.parseByte(ed_angle_adjust.getText().toString())};
+                                    if (ed_angle_adjust.getText().toString().equals("")) {
+                                        showToast("参数不能为空~");
+                                        return;
                                     }
+
+                                    byte[] data = new byte[]{Byte.parseByte(ed_angle_adjust.getText().toString())};
 
                                     showProgress("正在写入...");
                                     byte[] funCode = new byte[]{0, 88};
@@ -993,7 +995,9 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
             //  String txt = "设备ID为："  + data[5] + data[6] + data[7] + data[8] + data[9] + data[10] + data[11] + data[12] + data[13]  + data[14]  + data[15] + data[16] + "\n";
             String txt = null;
             try {
-                txt = new String(new byte[]{data[5], data[6], data[7], data[8], data[9], data[10], data[11], data[12], data[13], data[14], data[15], data[16]}, "ascii") + "\n";
+                byte[] deviceId = new byte[23];
+                System.arraycopy(data,5,deviceId,0,23);
+                txt = "设备ID为："  + new String(deviceId, "ascii") + "\n";
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
