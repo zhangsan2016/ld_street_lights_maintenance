@@ -198,7 +198,7 @@ public class NfcNdefActivity extends BaseNfcActivity {
             "  <经度小数>0</经度小数>\n" +
             "  <纬度整数>0</纬度整数>\n" +
             "  <纬度小数>0</纬度小数>\n" +
-            "  <远程服务器域名或IP>ludeng.stgxy.com</远程服务器域名或IP>\n" +
+            "  <远程服务器域名或IP>ludeng.stgxc.com</远程服务器域名或IP>\n" +
             "  <远程端口>50001</远程端口>\n" +
             "  <用户名>device</用户名>\n" +
             "  <密码>!@Ddfox136030</密码>\n" +
@@ -810,7 +810,7 @@ public class NfcNdefActivity extends BaseNfcActivity {
             String latitude = ((EditText)writeAlertDialog.findViewById(R.id.et_latitude)).getText().toString();
 
 
-            String url = "https://ludeng.stgxy.com:9443/api/device_lamp/edit";
+            String url = "https://ludeng.stgxc.com:9443/api/device_lamp/edit";
             // String postBody = "{\"data\":{ \"LNG\":"+"106.541652"+",\"\"LAT:" +"29.803828" +"},\"where\":{ \"UUID\":"+"000000000000000000000022" +"} }";
             JSONStringer jsonstr = new JSONStringer()
                     .object().key("data")
@@ -867,7 +867,7 @@ public class NfcNdefActivity extends BaseNfcActivity {
             @Override
             public void run() {
 
-                String url = "https://ludeng.stgxy.com:9443/api/user/login";
+                String url = "https://ludeng.stgxc.com:9443/api/user/login";
               /*  RequestBody requestBody = new FormBody.Builder()
                         .add("strTemplate", "{\"ischeck\":$data.rows}")
                         .add("username", "cy")

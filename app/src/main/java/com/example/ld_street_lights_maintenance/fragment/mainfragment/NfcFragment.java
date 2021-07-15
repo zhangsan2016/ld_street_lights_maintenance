@@ -812,7 +812,7 @@ public class NfcFragment extends BaseBleFragment {
             String latitude = ((EditText)writeAlertDialog.findViewById(R.id.et_latitude)).getText().toString();
 
 
-            String url = "https://ludeng.stgxy.com:9443/api/device_lamp/edit";
+            String url = "https://ludeng.stgxc.com:9443/api/device_lamp/edit";
             // String postBody = "{\"data\":{ \"LNG\":"+"106.541652"+",\"\"LAT:" +"29.803828" +"},\"where\":{ \"UUID\":"+"000000000000000000000022" +"} }";
             JSONStringer jsonstr = new JSONStringer()
                     .object().key("data")
@@ -868,7 +868,10 @@ public class NfcFragment extends BaseBleFragment {
             @Override
             public void run() {
 
-                String url = "https://ludeng.stgxy.com:9443/api/user/login";
+                // String url = "https://ludeng.stgxy.com:9443/api/user/login";
+
+                String url = "https://ludeng.stgxc.com:9443/api/user/login";
+
               /*  RequestBody requestBody = new FormBody.Builder()
                         .add("strTemplate", "{\"ischeck\":$data.rows}")
                         .add("username", "cy")

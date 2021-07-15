@@ -131,6 +131,7 @@ public class LoginAct extends Activity {
                         .add("strVerify", "[admin]")
                         .build();
 
+                LogUtil.e("requestBody = " + requestBody.toString());
                 //   String url = "http://47.99.168.98:9001/api/CommonFn.asmx?op=Login";
 
 
