@@ -15,6 +15,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -610,7 +611,7 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
      */
     private View.OnClickListener settingOnclick = new View.OnClickListener() {
         @Override
-        public void onClick(View v) {
+        public void onClick(final View v) {
 
             byte[] funCode;
             byte[] data;
@@ -870,7 +871,14 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
                     sendOrder(funCode, data, RWStart.WRITE, false);
                     break;
                 case R.id.alarm_lamp_control:  // 雾灯报警灯开关
-                    initPopWindow(v);
+                    final View cv = v;
+                    v.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            initPopWindow(cv);
+                        }
+                    });
+
                     break;
 
 
