@@ -194,6 +194,7 @@ public class BlePusher {
     /**
      * 拼接指令
      * 协议组成：帧头 - 功能码 - 数据长度 - 数据 - crc - 帧尾部
+     *
      * @param funCode        功能码
      * @param data           数据
      * @param isListenInform 是否监听通知
@@ -248,31 +249,31 @@ public class BlePusher {
                                 Log.e("xxx", " notify onCharacteristicChanged " + Arrays.toString(data));
                                 mergeData = BytesUtil.byteMergerAll(mergeData, data);
                                 Log.e("xxx", " notify onCharacteristicChanged mergeData =" + Arrays.toString(mergeData));
-                                for (int i = 0; i < data.length; i++) {
-                                    if (data[i] == -17) {
+                                int leng = BytesUtil.bytesIntHL(new byte[]{mergeData[3], mergeData[4]}) + 8;
+                                Log.e("xxx", " notify onCharacteristicChanged mergeData leng =" + leng);
+                                Log.e("xxx", " notify onCharacteristicChanged mergeData leng =" + mergeData.length);
+                                if ((mergeData.length >= leng)) {
 
-                                        // 发送蓝牙状态广播通知传递接收读取消息
-                                        // 发送蓝牙状态广播
+                                    // 发送蓝牙状态广播通知传递接收读取消息
+                                    // 发送蓝牙状态广播
                                     /*Intent intent = new Intent();
                                     intent.setAction(DATA_NOTIFY_FILTER);
                                     sendBroadcast(intent);*/
 
-                                        // 关闭超时通知
-                                        mHandler.removeMessages(MSG_TIMEOUT);
-                                        BleManager.getInstance().stopNotify(
-                                                bleDevices.get(0),
-                                                notify.getService().getUuid().toString(),
-                                                notify.getUuid().toString());
+                                    // 关闭超时通知
+                                    mHandler.removeMessages(MSG_TIMEOUT);
+                                    BleManager.getInstance().stopNotify(
+                                            bleDevices.get(0),
+                                            notify.getService().getUuid().toString(),
+                                            notify.getUuid().toString());
 
-                                        // 返回消息
-                                        callback.onWriteSuccess(0, 0, mergeData);
+                                    // 返回消息
+                                    callback.onWriteSuccess(0, 0, mergeData);
 
-                                        // 清空 mergeData
-                                        mergeData = new byte[0];
-
-                                        break;
-                                    }
+                                    // 清空 mergeData
+                                    mergeData = new byte[0];
                                 }
+
                             }
                         });
             } else {
@@ -358,7 +359,7 @@ public class BlePusher {
                         try {
                             //阻塞当前线程直到latch中数值为零才执行
                             latch.await();
-                           // Thread.sleep(1000);
+                            // Thread.sleep(1000);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
@@ -686,11 +687,11 @@ public class BlePusher {
                             if (data[2] == 38) {
                                 int index = BytesUtil.bytesIntHL(new byte[]{data[5], data[6]});
                                 Log.e("xxx", "writeUpdate notify onCharacteristicChanged index = " + index + " firData.length = " + firData.length);
-                                if(index != firData.length-1){
+                                if (index != firData.length - 1) {
                                     // -18, 0, 38, 0, 2, 0, 0, 9, -67, -17
                                     final byte[] funCode = new byte[]{0, 37};
                                     byte[] packageNumber = BytesUtil.intBytesHL(index + 1, 2); // 包序号
-                                    byte[] spliceData = BytesUtil.byteMergerAll(packageNumber, (byte[]) firData[index+1]);
+                                    byte[] spliceData = BytesUtil.byteMergerAll(packageNumber, (byte[]) firData[index + 1]);
                                     // 协议拼接
                                     spliceData = spliceOder(funCode, spliceData);
 
@@ -698,14 +699,14 @@ public class BlePusher {
 
                                     write(spliceData, bleDevices, gattCharacteristicA2, gattCharacteristicA1, callback, notify);
 
-                                }else{
+                                } else {
                                     // 最后一条数据
                                     // 验证 CRC ,看固件包传输是否完整
                                     int crc = CRC16.calcCrc16(datas);
                                     Log.e("xxx", " writeUpdate onCharacteristicChanged  crc =  " + crc);
                                     // 功能码
                                     byte[] funCode = new byte[]{0, 39};
-                                    byte[] spliceData = BytesUtil.intBytesHL(crc,2);
+                                    byte[] spliceData = BytesUtil.intBytesHL(crc, 2);
                                     // 协议拼接
                                     spliceData = spliceOder(funCode, spliceData);
                                     write(spliceData, bleDevices, gattCharacteristicA2, gattCharacteristicA1, callback, notify);
@@ -714,7 +715,7 @@ public class BlePusher {
                                     mergeData = new byte[0];
                                 }
 
-                            }else if (data[2] == 40){
+                            } else if (data[2] == 40) {
                                 // -18, 0, 40, 0, 3, 0, -18, 106, 44, 4 注释 0：crc验证公失败，1：”crc验证成功
                                 Log.e("xxx", " writeUpdate onCharacteristicChanged  最后一条crc =  " + Arrays.toString(data));
                                 // 关闭超时通知
