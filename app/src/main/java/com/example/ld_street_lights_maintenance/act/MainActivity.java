@@ -51,7 +51,7 @@ public class MainActivity extends BaseMainActivity {
 
     // 当前蓝牙设备
     private BleDevice bleDevice = null;
-
+    private TextView toolbar_title;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,7 +111,7 @@ public class MainActivity extends BaseMainActivity {
         //  mTabRadioGroup.setOnCheckedChangeListener(mOnCheckedChangeListener);
 
 
-        orderPop = new OrderPhotoPopupUtils(MainActivity.this);
+        orderPop = new OrderPhotoPopupUtils(MainActivity.this,toolbar_title);
         orderPop.setOnItemClickListener(new OrderPhotoPopupUtils.OnItemClickListener() {
             @Override
             public void setOnItemClick(View v, int code, String path) {
@@ -213,6 +213,7 @@ public class MainActivity extends BaseMainActivity {
     private void setToobar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        toolbar_title = this.findViewById(R.id.toolbar_title);
     }
 
     private void initViewTab() {

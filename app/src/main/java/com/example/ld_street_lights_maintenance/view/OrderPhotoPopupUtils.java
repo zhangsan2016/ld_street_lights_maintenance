@@ -1,6 +1,7 @@
 package com.example.ld_street_lights_maintenance.view;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
@@ -10,6 +11,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.PixelFormat;
 import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
@@ -53,6 +55,8 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.TimeZone;
 
+import static android.content.Context.LAYOUT_INFLATER_SERVICE;
+
 
 public class OrderPhotoPopupUtils extends PopupWindow implements
         View.OnClickListener {
@@ -67,7 +71,7 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
     private CheckBox cd_main_dimming, cd_auxiliary_dimming;
 
     private ProgressDialog mProgress;
-    private TextView txt_data;
+    private TextView txt_data,textView;
 
     // 读写状态
     public enum RWStart {
@@ -76,7 +80,7 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
     }
 
     public OrderPhotoPopupUtils(Context context) {
-        super(context);
+       // super(context);
 
         this.mContext = context;
 
@@ -89,6 +93,15 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
         //   btnTakePhoto.setOnClickListener(this);
 
     }
+
+    public OrderPhotoPopupUtils(Context context,TextView textView) {
+        // super(context);
+        this(context);
+        this.textView = textView;
+
+    }
+
+
 
     /**
      * 动态注册广播
@@ -198,7 +211,12 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
         Button bt_setting_electricity_vpt = mPopView.findViewById(R.id.bt_setting_electricity_vpt);
         bt_setting_electricity_vpt.setOnClickListener(settingOnclick);
         Button alarm_lamp_control = mPopView.findViewById(R.id.alarm_lamp_control);
-        alarm_lamp_control.setOnClickListener(settingOnclick);
+        alarm_lamp_control.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                initPopWindow(v);
+            }
+        });
 
 
         // 设置下拉 "读写指令" 布局
@@ -543,8 +561,13 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
         }
     }
 
+
+    // https://blog.csdn.net/weixin_33924312/article/details/92120940
+    // https://blog.csdn.net/vzdong1/article/details/79513037?utm_medium=distribute.pc_relevant.none-task-blog-BlogCommendFromBaidu-3.not_use_machine_learn_pai&depth_1-utm_source=distribute.pc_relevant.none-task-blog-BlogCommendFromBaidu-3.not_use_machine_learn_pai
+   // https://blog.csdn.net/wjw_java_android/article/details/108616543?utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7Edefault-12.base&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7Edefault-12.base
     private void initPopWindow(View v) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.alarm_lamp_popup_item, null, false);
+        LayoutInflater mLayoutInflater = (LayoutInflater) mContext.getSystemService(LAYOUT_INFLATER_SERVICE);
+        final View view = mLayoutInflater.inflate(R.layout.alarm_lamp_popup_item, null);
         Button bt_alarm_lamp_off = (Button) view.findViewById(R.id.bt_alarm_lamp_off);
         Button bt_alarm_lamp_on = (Button) view.findViewById(R.id.bt_alarm_lamp_on);
         Button bt_alarm_lamp_flicker = (Button) view.findViewById(R.id.bt_alarm_lamp_flicker);
@@ -571,9 +594,38 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
 
         // 获取popupWindow布局测量后的宽高
         int[] size = DensityUtil.unDisplayViewSize(view);
-        //设置popupWindow显示的位置，参数依次是参照View，x轴的偏移量，y轴的偏移量
-        popWindow.showAsDropDown(v, (v.getWidth() - size[0]) / 2, 0);
+
+        Activity dialogActuvitys = (Activity)mContext;
+        LogUtil.e("xx" + dialogActuvitys.isFinishing());
         LogUtil.e("xx v.getWidth() = " + v.getWidth() + "  v.getMeasuredWidth() = " + v.getMeasuredWidth() + " view.getWidth() =" + size[0] + "  " + view.getMeasuredWidth());
+        LogUtil.e("xx v.getHeight() = " + v.getHeight() + "  v.getMeasuredHeight() = " + v.getMeasuredHeight() + " view.getWidth() =" + size[0] + "  " + view.getMeasuredWidth());
+
+        final int anchorLoc[] = new int[2];
+        v.getLocationOnScreen(anchorLoc);
+        LogUtil.e("xx v.getHeight() = " +  Arrays.toString(anchorLoc));
+
+        //设置popupWindow显示的位置，参数依次是参照View，x轴的偏移量，y轴的偏移量
+        // popWindow.showAsDropDown(v, (v.getWidth() - size[0]) / 2, 0);
+
+        /*final WindowManager   windowManager = (WindowManager)mContext.getSystemService(mContext.WINDOW_SERVICE);
+        WindowManager.LayoutParams params = new WindowManager.LayoutParams(
+                WindowManager.LayoutParams.WRAP_CONTENT,
+                WindowManager.LayoutParams.WRAP_CONTENT,
+                WindowManager.LayoutParams.TYPE_PHONE,
+                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
+                PixelFormat.TRANSLUCENT);
+       *//* params.x=v.getWidth();
+        params.y=v.getHeight();*//*
+        params.x=0;
+        params.y=0;
+        params.gravity = Gravity.TOP | Gravity.START;
+        params.softInputMode = WindowManager.LayoutParams.SOFT_INPUT_STATE_UNCHANGED;*/
+       // windowManager.addView(view, params);
+        //设置popupWindow显示的位置，参数依次是参照View，x轴的偏移量，y轴的偏移量
+    //    popWindow.showAsDropDown(v, (v.getWidth() - size[0]) / 2, 0);
+      //  popWindow.showAsDropDown(textView);
+//        popWindow.showAsDropDown(view);
+        popWindow.showAtLocation(textView, Gravity.NO_GRAVITY, anchorLoc[0] + ((v.getWidth() - size[0]) / 2), anchorLoc[1] + v.getHeight());
 
         //设置popupWindow里的按钮的事件
         bt_alarm_lamp_off.setOnClickListener(new View.OnClickListener() {
@@ -583,6 +635,7 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
                 byte[] funCode = new byte[]{0, 43};
                 byte[] data = new byte[]{1};
                 sendOrder(funCode, data, RWStart.WRITE, true);
+
             }
         });
         bt_alarm_lamp_on.setOnClickListener(new View.OnClickListener() {
@@ -611,7 +664,7 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
      */
     private View.OnClickListener settingOnclick = new View.OnClickListener() {
         @Override
-        public void onClick(final View v) {
+        public void onClick( View v) {
 
             byte[] funCode;
             byte[] data;
@@ -871,13 +924,21 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
                     sendOrder(funCode, data, RWStart.WRITE, false);
                     break;
                 case R.id.alarm_lamp_control:  // 雾灯报警灯开关
-                    final View cv = v;
+
+                    initPopWindow(v);
+
+                   /* final View cv = v;
                     v.post(new Runnable() {
                         @Override
                         public void run() {
+                            try {
+                                Thread.sleep(2000);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
                             initPopWindow(cv);
                         }
-                    });
+                    });*/
 
                     break;
 
