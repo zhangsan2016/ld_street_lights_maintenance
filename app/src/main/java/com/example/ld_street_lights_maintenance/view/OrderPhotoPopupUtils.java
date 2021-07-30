@@ -625,6 +625,7 @@ public class OrderPhotoPopupUtils extends PopupWindow implements
     //    popWindow.showAsDropDown(v, (v.getWidth() - size[0]) / 2, 0);
       //  popWindow.showAsDropDown(textView);
 //        popWindow.showAsDropDown(view);
+        popWindow.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         popWindow.showAtLocation(textView, Gravity.NO_GRAVITY, anchorLoc[0] + ((v.getWidth() - size[0]) / 2), anchorLoc[1] + v.getHeight());
 
         //设置popupWindow里的按钮的事件
