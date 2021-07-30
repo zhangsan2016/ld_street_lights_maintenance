@@ -30,6 +30,7 @@ import com.example.ld_street_lights_maintenance.R;
 import com.example.ld_street_lights_maintenance.adapter.MainTabAdapter;
 import com.example.ld_street_lights_maintenance.base.BaseMainActivity;
 import com.example.ld_street_lights_maintenance.fragment.mainfragment.NfcFragment;
+import com.example.ld_street_lights_maintenance.util.LogUtil;
 import com.example.ld_street_lights_maintenance.view.LightingPlanningPopupUtils;
 import com.example.ld_street_lights_maintenance.view.OrderPhotoPopupUtils;
 import com.example.ld_street_lights_maintenance.view.SettingsPopupUtils;
@@ -74,17 +75,16 @@ public class MainActivity extends BaseMainActivity {
     }
 
 
-
-
     /// static private NFCTag mTag;
     static private Tag mTag;
+
     @Override
     public void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         setIntent(intent);
         mTag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
         //获取Tag对象,传递到
-        ((NfcFragment) ((MainTabAdapter)viewPager.getAdapter()).getItem(1)).onNewIntent();
+        ((NfcFragment) ((MainTabAdapter) viewPager.getAdapter()).getItem(1)).onNewIntent();
 
     }
 
@@ -111,7 +111,7 @@ public class MainActivity extends BaseMainActivity {
         //  mTabRadioGroup.setOnCheckedChangeListener(mOnCheckedChangeListener);
 
 
-        orderPop = new OrderPhotoPopupUtils(MainActivity.this,toolbar_title);
+        orderPop = new OrderPhotoPopupUtils(MainActivity.this, toolbar_title);
         orderPop.setOnItemClickListener(new OrderPhotoPopupUtils.OnItemClickListener() {
             @Override
             public void setOnItemClick(View v, int code, String path) {
@@ -130,13 +130,13 @@ public class MainActivity extends BaseMainActivity {
                 Log.e("x", "isChecked = " + rb_order_tab.isChecked());
                 Log.e("x", "isSelected = " + rb_order_tab.isSelected());
 
-                showPopWindow(rb_order_tab,0);
+                showPopWindow(rb_order_tab, 0);
 
             }
         });
 
 
-        LightingPlanningPopupUtils  lighting_planning_Pop = new LightingPlanningPopupUtils(MainActivity.this);
+        LightingPlanningPopupUtils lighting_planning_Pop = new LightingPlanningPopupUtils(MainActivity.this);
         lighting_planning_Pop.setOnItemClickListener(new LightingPlanningPopupUtils.OnItemClickListener() {
             @Override
             public void setOnItemClick(View v, int code, String path) {
@@ -153,7 +153,7 @@ public class MainActivity extends BaseMainActivity {
             public void onClick(View v) {
                 Log.e("x", "isChecked = " + rb_lighting_planning_tab.isChecked());
                 Log.e("x", "isSelected = " + rb_lighting_planning_tab.isSelected());
-                showPopWindow(rb_lighting_planning_tab,1);
+                showPopWindow(rb_lighting_planning_tab, 1);
             }
         });
 
@@ -175,26 +175,32 @@ public class MainActivity extends BaseMainActivity {
             public void onClick(View v) {
                 Log.e("x", "isChecked = " + rb_settings_tab.isChecked());
                 Log.e("x", "isSelected = " + rb_settings_tab.isSelected());
-                showPopWindow(rb_settings_tab,2);
+                showPopWindow(rb_settings_tab, 2);
             }
         });
 
     }
 
-    private void showPopWindow(RadioButton rb , int index) {
+    private void showPopWindow(RadioButton rb, int index) {
 
         for (int i = 0; i < popWindows.size(); i++) {
             PopupWindow pop = popWindows.get(i);
-            if(index == i){
+            if (index == i) {
                 if (pop.isShowing()) {
                     pop.dismiss();
                 } else {
                     // 设置PopupWindow中的位置
-                   // pop.showAtLocation(rb, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, rb.getMeasuredHeight());
-                 //   pop.showAtLocation(rb, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, DensityUtil.getNavigationBarHeight(this) + rb.getMeasuredHeight());
-                    pop.showAtLocation(rb, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, rb.getMeasuredHeight());
-                }
-            }else{
+                    // pop.showAtLocation(rb, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, rb.getMeasuredHeight());
+                    //   pop.showAtLocation(rb, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, DensityUtil.getNavigationBarHeight(this) + rb.getMeasuredHeight());
+                    //   pop.showAtLocation(rb, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, rb.getMeasuredHeight());
+                    final int anchorLoc[] = new int[2];
+                    rb.getLocationOnScreen(anchorLoc);
+                    LogUtil.e("xx getHeight" + rb.getHeight());
+                    LogUtil.e("xx" + rb.getMeasuredHeight() + "  " + anchorLoc[0] + ":" + anchorLoc[1]);
+                    // pop.showAtLocation(rb, Gravity.NO_GRAVITY, 0, anchorLoc[1]);
+                   // pop.showAtLocation(rb, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, anchorLoc[0]);
+                    pop.showAtLocation(rb, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, rb.getMeasuredHeight());}
+            } else {
                 if (pop.isShowing()) {
                     pop.dismiss();
                 }
@@ -335,7 +341,6 @@ public class MainActivity extends BaseMainActivity {
     public void setBleDevice(BleDevice bleDevice) {
         this.bleDevice = bleDevice;
     }
-
 
 
 }
