@@ -19,9 +19,11 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowInsets;
 import android.view.WindowManager;
+import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 import android.widget.TabHost;
 import android.widget.TextView;
 
@@ -35,6 +37,7 @@ import com.example.ld_street_lights_maintenance.view.LightingPlanningPopupUtils;
 import com.example.ld_street_lights_maintenance.view.OrderPhotoPopupUtils;
 import com.example.ld_street_lights_maintenance.view.SettingsPopupUtils;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -109,7 +112,6 @@ public class MainActivity extends BaseMainActivity {
     private void bottomTab() {
         mTabRadioGroup = findViewById(R.id.tabs_rg);
         //  mTabRadioGroup.setOnCheckedChangeListener(mOnCheckedChangeListener);
-
 
         orderPop = new OrderPhotoPopupUtils(MainActivity.this, toolbar_title);
         orderPop.setOnItemClickListener(new OrderPhotoPopupUtils.OnItemClickListener() {
@@ -198,8 +200,9 @@ public class MainActivity extends BaseMainActivity {
                     LogUtil.e("xx getHeight" + rb.getHeight());
                     LogUtil.e("xx" + rb.getMeasuredHeight() + "  " + anchorLoc[0] + ":" + anchorLoc[1]);
                     // pop.showAtLocation(rb, Gravity.NO_GRAVITY, 0, anchorLoc[1]);
-                   // pop.showAtLocation(rb, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, anchorLoc[0]);
-                    pop.showAtLocation(rb, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, rb.getMeasuredHeight());}
+                    // pop.showAtLocation(rb, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, anchorLoc[0]);
+                    pop.showAtLocation(rb, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, rb.getMeasuredHeight() );
+                }
             } else {
                 if (pop.isShowing()) {
                     pop.dismiss();
