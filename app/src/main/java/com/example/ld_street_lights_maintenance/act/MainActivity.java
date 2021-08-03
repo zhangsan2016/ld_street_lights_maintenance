@@ -7,6 +7,7 @@ import androidx.viewpager.widget.ViewPager;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.os.Build;
@@ -78,6 +79,8 @@ public class MainActivity extends BaseMainActivity {
     }
 
 
+
+
     /// static private NFCTag mTag;
     static private Tag mTag;
 
@@ -139,7 +142,7 @@ public class MainActivity extends BaseMainActivity {
                 Log.e("x", "isChecked = " + rb_order_tab.isChecked());
                 Log.e("x", "isSelected = " + rb_order_tab.isSelected());
 
-                showPopWindow(rb_order_tab, 0);
+                showPopWindow(mTabRadioGroup, 0);
 
             }
         });
@@ -162,7 +165,7 @@ public class MainActivity extends BaseMainActivity {
             public void onClick(View v) {
                 Log.e("x", "isChecked = " + rb_lighting_planning_tab.isChecked());
                 Log.e("x", "isSelected = " + rb_lighting_planning_tab.isSelected());
-                showPopWindow(rb_lighting_planning_tab, 1);
+                showPopWindow(mTabRadioGroup, 1);
             }
         });
 
@@ -184,13 +187,13 @@ public class MainActivity extends BaseMainActivity {
             public void onClick(View v) {
                 Log.e("x", "isChecked = " + rb_settings_tab.isChecked());
                 Log.e("x", "isSelected = " + rb_settings_tab.isSelected());
-                showPopWindow(rb_settings_tab, 2);
+                showPopWindow(mTabRadioGroup, 2);
             }
         });
 
     }
 
-    private void showPopWindow(RadioButton rb, int index) {
+    private void showPopWindow(View rb, int index) {
 
         for (int i = 0; i < popWindows.size(); i++) {
             PopupWindow pop = popWindows.get(i);
@@ -208,7 +211,7 @@ public class MainActivity extends BaseMainActivity {
                     LogUtil.e("xx" + rb.getMeasuredHeight() + "  " + anchorLoc[0] + ":" + anchorLoc[1]);
                     // pop.showAtLocation(rb, Gravity.NO_GRAVITY, 0, anchorLoc[1]);
                     // pop.showAtLocation(rb, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, anchorLoc[0]);
-                    pop.showAtLocation(rb, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, rb.getMeasuredHeight() );
+                    pop.showAtLocation(rb, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, rb.getMeasuredHeight());
                 }
             } else {
                 if (pop.isShowing()) {
