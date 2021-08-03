@@ -109,6 +109,13 @@ public class MainActivity extends BaseMainActivity {
 
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] paramArrayOfInt) {
+        super.onRequestPermissionsResult(requestCode, permissions, paramArrayOfInt);
+
+
+    }
+
     private void bottomTab() {
         mTabRadioGroup = findViewById(R.id.tabs_rg);
         //  mTabRadioGroup.setOnCheckedChangeListener(mOnCheckedChangeListener);
