@@ -1,48 +1,47 @@
 package com.example.ld_street_lights_maintenance.act;
 
-import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.FragmentStatePagerAdapter;
-import androidx.viewpager.widget.ViewPager;
-
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
+import android.graphics.Rect;
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.DisplayCutout;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowInsets;
 import android.view.WindowManager;
-import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.RelativeLayout;
 import android.widget.TabHost;
 import android.widget.TextView;
+
+import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.FragmentStatePagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
 import com.clj.fastble.data.BleDevice;
 import com.example.ld_street_lights_maintenance.R;
 import com.example.ld_street_lights_maintenance.adapter.MainTabAdapter;
 import com.example.ld_street_lights_maintenance.base.BaseMainActivity;
 import com.example.ld_street_lights_maintenance.fragment.mainfragment.NfcFragment;
+import com.example.ld_street_lights_maintenance.util.DensityUtil;
 import com.example.ld_street_lights_maintenance.util.LogUtil;
 import com.example.ld_street_lights_maintenance.view.LightingPlanningPopupUtils;
 import com.example.ld_street_lights_maintenance.view.OrderPhotoPopupUtils;
 import com.example.ld_street_lights_maintenance.view.SettingsPopupUtils;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
-
-import kotlin.Suppress;
 
 public class MainActivity extends BaseMainActivity {
 
@@ -61,24 +60,26 @@ public class MainActivity extends BaseMainActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+
+     /*   if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             Window win = getWindow();
             WindowManager.LayoutParams winParams = win.getAttributes();
             final int bits = WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS;
             winParams.flags |= bits;
         }
-
         // 隐藏状态栏
-        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);*/
+
         setContentView(R.layout.activity_main);
+
+        // 适配底部导航栏
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
 
 
         initView();
 
 
     }
-
-
 
 
     /// static private NFCTag mTag;
@@ -207,11 +208,21 @@ public class MainActivity extends BaseMainActivity {
                     //   pop.showAtLocation(rb, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, rb.getMeasuredHeight());
                     final int anchorLoc[] = new int[2];
                     rb.getLocationOnScreen(anchorLoc);
+                    LogUtil.e("xx anchorLoc[] = " + anchorLoc[0] + " " + anchorLoc[1]);
                     LogUtil.e("xx getHeight" + rb.getHeight());
-                    LogUtil.e("xx" + rb.getMeasuredHeight() + "  " + anchorLoc[0] + ":" + anchorLoc[1]);
+                    LogUtil.e("xx" + rb.getMeasuredHeight() + "  " + anchorLoc[0] + ":" + anchorLoc[1] + " pop.getHeight() =" + pop.getHeight() + " rb.getBottom() = " + rb.getBottom()
+                            + "  rb.getTop() = " + rb.getTop());
                     // pop.showAtLocation(rb, Gravity.NO_GRAVITY, 0, anchorLoc[1]);
                     // pop.showAtLocation(rb, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, anchorLoc[0]);
-                    pop.showAtLocation(rb, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, rb.getMeasuredHeight());
+                    // pop.showAtLocation(rb, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, + rb.getMeasuredHeight());
+                    //  pop.showAtLocation(rb, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, rb.getMeasuredHeight());
+                    //  pop.showAtLocation(rb,  Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0,rb.getTop()-500);
+
+                    //   pop.showAtLocation(rb, Gravity.BOTTOM, anchorLoc[0], anchorLoc[1] - pop.getHeight());
+
+                    //pop.showAtLocation(rb, Gravity.NO_GRAVITY, 0,  anchorLoc[1] - rb.getHeight());
+                    //   pop.showAtLocation(rb, Gravity.NO_GRAVITY, 0, anchorLoc[1] - pop.getHeight() -  DensityUtil.getNavigationBarHeight(this) );
+                    pop.showAtLocation(rb, Gravity.NO_GRAVITY, 0, anchorLoc[1] - pop.getHeight());
                 }
             } else {
                 if (pop.isShowing()) {
