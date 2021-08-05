@@ -40,6 +40,7 @@ import com.example.ld_street_lights_maintenance.view.LightingPlanningPopupUtils;
 import com.example.ld_street_lights_maintenance.view.OrderPhotoPopupUtils;
 import com.example.ld_street_lights_maintenance.view.SettingsPopupUtils;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -69,6 +70,7 @@ public class MainActivity extends BaseMainActivity {
         }
         // 隐藏状态栏
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);*/
+
 
         setContentView(R.layout.activity_main);
 
@@ -222,7 +224,24 @@ public class MainActivity extends BaseMainActivity {
 
                     //pop.showAtLocation(rb, Gravity.NO_GRAVITY, 0,  anchorLoc[1] - rb.getHeight());
                     //   pop.showAtLocation(rb, Gravity.NO_GRAVITY, 0, anchorLoc[1] - pop.getHeight() -  DensityUtil.getNavigationBarHeight(this) );
+                 //   pop.showAtLocation(rb, Gravity.NO_GRAVITY, 0, anchorLoc[1] - pop.getHeight());
+
+                    // 沉浸式状态栏显示PopupWindow全屏效果
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        try {
+                            Field mLayoutInScreen = PopupWindow.class.getDeclaredField("mLayoutInScreen");
+                            mLayoutInScreen.setAccessible(true);
+                            mLayoutInScreen.set(pop, true);
+                        } catch (NoSuchFieldException e) {
+                            e.printStackTrace();
+                        } catch (IllegalAccessException e) {
+                            e.printStackTrace();
+                        }
+                    }
                     pop.showAtLocation(rb, Gravity.NO_GRAVITY, 0, anchorLoc[1] - pop.getHeight());
+
+
+
                 }
             } else {
                 if (pop.isShowing()) {
