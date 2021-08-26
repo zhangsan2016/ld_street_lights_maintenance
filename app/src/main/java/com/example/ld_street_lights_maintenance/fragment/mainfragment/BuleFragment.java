@@ -78,6 +78,7 @@ public class BuleFragment extends BaseFragment implements View.OnClickListener {
 
 
         return rootView;
+
     }
 
 
