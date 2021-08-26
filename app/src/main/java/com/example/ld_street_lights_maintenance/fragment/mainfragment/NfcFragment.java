@@ -3,6 +3,7 @@ package com.example.ld_street_lights_maintenance.fragment.mainfragment;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.app.PendingIntent;
+import android.bluetooth.BluetoothGatt;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -12,6 +13,7 @@ import android.nfc.NdefMessage;
 import android.nfc.NdefRecord;
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -34,6 +36,7 @@ import android.widget.ToggleButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
@@ -42,13 +45,22 @@ import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
 import com.clj.fastble.BleManager;
+import com.clj.fastble.callback.BleGattCallback;
 import com.clj.fastble.callback.BleScanCallback;
+import com.clj.fastble.callback.BleWriteCallback;
 import com.clj.fastble.data.BleDevice;
+import com.clj.fastble.exception.BleException;
+import com.clj.fastble.exception.TimeoutException;
 import com.example.ld_street_lights_maintenance.R;
+import com.example.ld_street_lights_maintenance.act.MainActivity;
 import com.example.ld_street_lights_maintenance.act.NfcNdefActivity;
 import com.example.ld_street_lights_maintenance.base.BaseBleFragment;
+import com.example.ld_street_lights_maintenance.comm.ObserverManager;
+import com.example.ld_street_lights_maintenance.entity.LampData;
 import com.example.ld_street_lights_maintenance.entity.LoginInfo;
+import com.example.ld_street_lights_maintenance.util.BlePusher;
 import com.example.ld_street_lights_maintenance.util.BytesUtil;
+import com.example.ld_street_lights_maintenance.util.HttpConfiguration;
 import com.example.ld_street_lights_maintenance.util.HttpUtil;
 import com.example.ld_street_lights_maintenance.util.LogUtil;
 import com.google.gson.Gson;
@@ -69,11 +81,15 @@ import org.json.JSONStringer;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.CountDownLatch;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -98,6 +114,8 @@ public class NfcFragment extends BaseBleFragment {
     private static final int HANDLE_UP_READ = 22;
     private static final int START_WRITE_NFC = 23;
     private static final int STOP_WRITE_NFC = 24;
+    private static final int UP_BULE_STATE = 25;
+    private static final int UP_LAMP_DATA = 26;
     private static final String TAG = "NfcFragment";
 
 
@@ -114,9 +132,9 @@ public class NfcFragment extends BaseBleFragment {
     private boolean temp = false;
     private Button bt_clear;
     private ProgressBar progressbar;
-    private AlertDialog writeAlertDialog;
+    private AlertDialog writeAlertDialog, checkAlertDialog;
     private Button bt_uploading;
-    private  TextView   tv_location;
+    private TextView tv_location;
 
     private AMapLocationClient locationClient = null;
     private AMapLocationClientOption locationOption = null;
@@ -126,6 +144,7 @@ public class NfcFragment extends BaseBleFragment {
     private String token = null;
     private Context mContext;
     /// static private NFCTag mTag;
+    private TextView blueState, tv1, tv2, tv3, tv4, tv5, tv6, tv7, tv8, tv9, tv10, tv11, tv12, tv13, tv14, tv15, tv16, tv17;
 
     private String cxml = "\n" +
             "<当前读取信息>\n" +
@@ -249,6 +268,33 @@ public class NfcFragment extends BaseBleFragment {
                     // 关闭加载框
                     stopProgress();
                     break;
+                case UP_BULE_STATE:
+                    //  ((TextView)checkAlertDialog.getListView().findViewById(R.id.tv_blue_start)).setText("连接蓝牙设备：正常");
+                    if (checkAlertDialog.isShowing()) {
+                        blueState.setText("蓝牙连接：正常");
+                    }
+                    break;
+                case UP_LAMP_DATA:
+                    LampData lampData = (LampData) msg.obj;
+                    tv1.setText("" +lampData.getData().getFirDimming());
+                    tv2.setText("" +lampData.getData().getGprs_csq());
+                    tv3.setText("" +lampData.getData().getEnergy());
+                    tv4.setText("" +lampData.getData().getIllu());
+                    tv5.setText("" +lampData.getData().getLeak_curt());
+                    tv6.setText("" +lampData.getData().getPower());
+                    tv7.setText("" +lampData.getData().getPower_Factor());
+                    tv8.setText("" +lampData.getData().getTemp());
+                    tv9.setText("" +lampData.getData().getVoltage());
+                    tv10.setText("" +lampData.getData().getELE_Warning_type());
+                    tv11.setText("" +lampData.getData().getWarning_state());
+                    tv12.setText("" +lampData.getData().getRESET_COUNT());
+                    tv13.setText("" +lampData.getData().getVersion());
+                    tv14.setText("" +lampData.getData().getGPS_CLOSETIME());
+                    tv15.setText("" +lampData.getData().getGPS_OPENTIME());
+                    tv16.setText("" +lampData.getData().getSIM_CCID());
+                    tv17.setText("" +lampData.getData().getTime());
+
+                    break;
             }
 
 
@@ -263,9 +309,9 @@ public class NfcFragment extends BaseBleFragment {
         View rootView = inflater.inflate(R.layout.layout_nfc,
                 container, false);
 
-        mContext =  getActivity();
+        mContext = getActivity();
 
-       // getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+        // getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
 
         initNFC();
 
@@ -282,7 +328,6 @@ public class NfcFragment extends BaseBleFragment {
 
         return rootView;
     }
-
 
 
     @Override
@@ -315,7 +360,7 @@ public class NfcFragment extends BaseBleFragment {
                 if (aMapLocation.getErrorCode() == 0) {
                     cAMapLocation = aMapLocation;
 
-                    tv_location.setText( aMapLocation.getLongitude() + " / " + aMapLocation.getLatitude());
+                    tv_location.setText(aMapLocation.getLongitude() + " / " + aMapLocation.getLatitude());
                     sb.append("经    度    : " + aMapLocation.getLongitude() + "\n");
                     sb.append("纬    度    : " + aMapLocation.getLatitude() + "\n");
                     Log.e("xx", ">>>>>>>>>>>>>>>>>>>>>>>>>  经纬度信息 = " + sb.toString());
@@ -512,6 +557,7 @@ public class NfcFragment extends BaseBleFragment {
 
     /// static private NFCTag mTag;
     static private Tag mTag;
+
     public void onNewIntent() {
         LogUtil.e("XXXXXXXXXXXXXXXXXXXXXXX onNewIntent");
         //获取Tag对象
@@ -675,7 +721,7 @@ public class NfcFragment extends BaseBleFragment {
         bt_clear = (Button) rootView.findViewById(R.id.bt_clear);
         progressbar = (ProgressBar) rootView.findViewById(R.id.progressbar);
         bt_uploading = (Button) rootView.findViewById(R.id.bt_uploading);
-        tv_location  = (TextView) rootView.findViewById(R.id.tv_location);
+        tv_location = (TextView) rootView.findViewById(R.id.tv_location);
 
         // 清除当前界面信息
         clearInterface();
@@ -814,8 +860,8 @@ public class NfcFragment extends BaseBleFragment {
         if (uuid != null) {
 
             // 获取 Dialog 中的经纬度
-            String longitude = ((EditText)writeAlertDialog.findViewById(R.id.et_longitude)).getText().toString();
-            String latitude = ((EditText)writeAlertDialog.findViewById(R.id.et_latitude)).getText().toString();
+            String longitude = ((EditText) writeAlertDialog.findViewById(R.id.et_longitude)).getText().toString();
+            String latitude = ((EditText) writeAlertDialog.findViewById(R.id.et_latitude)).getText().toString();
 
 
             String url = "https://ludeng.stgxc.com:9443/api/device_lamp/edit";
@@ -828,7 +874,7 @@ public class NfcFragment extends BaseBleFragment {
                     .key("where").object().key("UUID").value(uuid)
                     .endObject().endObject();
             //  String postBody = "{\"data\":{ \"LNG\":\"106.541654\",\"LAT\":\"29.803828\"},\"where\":{ \"UUID\":\"000000000000000000000022\"} }";
-            RequestBody requestBody = FormBody.create( MediaType.parse("application/json"),jsonstr.toString());
+            RequestBody requestBody = FormBody.create(MediaType.parse("application/json"), jsonstr.toString());
 
             HttpUtil.sendHttpRequest(url, new Callback() {
 
@@ -900,7 +946,6 @@ public class NfcFragment extends BaseBleFragment {
                         .build();
 
 
-
                 HttpUtil.sendHttpRequest(url, new Callback() {
 
 
@@ -918,6 +963,7 @@ public class NfcFragment extends BaseBleFragment {
                         LoginInfo loginInfo = gson.fromJson(json, LoginInfo.class);
                         if (loginInfo.getErrno() == 0) {
                             token = loginInfo.getData().getToken().getToken();
+                            LogUtil.e("xxx token = " + token);
                         }
 
                     }
@@ -944,14 +990,14 @@ public class NfcFragment extends BaseBleFragment {
             FileInputStream inputStream;
             List<DataDictionaries> dataDictionaries;
             final ToggleButton tbDefault = writeAlertDialog.findViewById(R.id.tb_default);
-            if(tbDefault.isChecked()){
+            if (tbDefault.isChecked()) {
                 File file = new File(mContext.getCacheDir(), "moren.xml");
-                if(!file.exists()){
-                    saveXmlCacheDir(cxml,file);
+                if (!file.exists()) {
+                    saveXmlCacheDir(cxml, file);
                 }
                 inputStream = new FileInputStream(new File(mContext.getCacheDir(), "moren.xml"));
-                dataDictionaries  = NfcDataUtil.parseXml2(inputStream);
-            }else {
+                dataDictionaries = NfcDataUtil.parseXml2(inputStream);
+            } else {
                 inputStream = new FileInputStream(new File(mContext.getCacheDir(), NFC_EIDT_DATA_CACHE));
                 dataDictionaries = NfcDataUtil.parseXml2(inputStream);
             }
@@ -1191,7 +1237,7 @@ public class NfcFragment extends BaseBleFragment {
                     }
                 }
                 uuid = regionN + proN + imei;
-                LogUtil.e("xxxx = " + uuid );
+                LogUtil.e("xxxx = " + uuid);
                 // 测试代码
                 showCheckAlertDialog();
 
@@ -1205,16 +1251,38 @@ public class NfcFragment extends BaseBleFragment {
     }
 
 
-
     private List<BleDevice> bleDeviceList = new ArrayList<>();
+    private boolean isSearch = true;  // 是否继续向下检索蓝牙设备
+
     private void showCheckAlertDialog() {
 
         /*Looper.prepare();
         Looper.loop();*/
 
+        isSearch = true;
+
         // 写入提示框
         View view = View.inflate(mContext, R.layout.alert_check_dialog_item, null);
-        AlertDialog checkAlertDialog = new AlertDialog.Builder(mContext).setTitle("提示")
+        blueState = (TextView) view.findViewById(R.id.tv_blue_start);
+        tv1 = (TextView) view.findViewById(R.id.tv_1);
+        tv2 = (TextView) view.findViewById(R.id.tv_2);
+        tv3 = (TextView) view.findViewById(R.id.tv_3);
+        tv4 = (TextView) view.findViewById(R.id.tv_4);
+        tv5 = (TextView) view.findViewById(R.id.tv_5);
+        tv6 = (TextView) view.findViewById(R.id.tv_6);
+        tv7 = (TextView) view.findViewById(R.id.tv_7);
+        tv8 = (TextView) view.findViewById(R.id.tv_8);
+        tv9 = (TextView) view.findViewById(R.id.tv_9);
+        tv10 = (TextView) view.findViewById(R.id.tv_10);
+        tv11 = (TextView) view.findViewById(R.id.tv_11);
+        tv12 = (TextView) view.findViewById(R.id.tv_12);
+        tv13 = (TextView) view.findViewById(R.id.tv_13);
+        tv14 = (TextView) view.findViewById(R.id.tv_14);
+        tv15 = (TextView) view.findViewById(R.id.tv_15);
+        tv16 = (TextView) view.findViewById(R.id.tv_16);
+        tv17 = (TextView) view.findViewById(R.id.tv_17);
+
+        checkAlertDialog = new AlertDialog.Builder(mContext).setTitle("提示")
                 .setView(view)
                 .setCancelable(false)
                 .setNegativeButton("取消", new DialogInterface.OnClickListener() {
@@ -1270,18 +1338,179 @@ public class NfcFragment extends BaseBleFragment {
                     LogUtil.e("xxxxxxxxxxxx bleDeviceList.size() =" + bleDeviceList.size());
 
 
+                    Collections.sort(bleDeviceList, new Comparator<BleDevice>() {
+                        @Override
+                        public int compare(BleDevice o1, BleDevice o2) {
+
+                            if (o1.getRssi() > o2.getRssi()) {
+                                return -1;
+                            } else {
+                                return 1;
+                            }
+                        }
+                    });
+
+                    for (int i = 0; i < bleDeviceList.size(); i++) {
+                        LogUtil.e("xxx " + bleDeviceList.get(i).getDevice().toString());
+                    }
+
+                    for (int i = 0; i < bleDeviceList.size(); i++) {
+                        final CountDownLatch latch = new CountDownLatch(1);
+                        connect(bleDeviceList.get(i), latch);
+                        //阻塞当前线程直到latch中数值为零才执行
+                        latch.await();
+                        if (!isSearch) {
+                            myHandler.sendEmptyMessage(UP_BULE_STATE);
+                            break;
+                        }
+                    }
+
 
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
+
+                // 获取灯杆信息
+                String uriViewByUUID = "https://iot.sz-luoding.com:888/api/device/viewByUUID";
+                String param1 = "{\"UUID\": \"" + uuid + "\"}";
+                RequestBody requestBody = FormBody.create(param1, MediaType.parse("application/json"));
+                HttpUtil.sendHttpRequest(uriViewByUUID, new Callback() {
+                    @Override
+                    public void onFailure(Call call, IOException e) {
+                        showToast("连接服务器异常！");
+                    }
+
+                    @Override
+                    public void onResponse(Call call, final Response response) throws IOException {
+
+                        String json = response.body().string();
+                        Gson gson = new Gson();
+                        LampData lampData = gson.fromJson(json, LampData.class);
+                        LogUtil.e("xxx lampData = " + lampData.getData());
+                        // 通过 Handle 更新 AlertDialog
+                        Message tempMsg = myHandler.obtainMessage();
+                        tempMsg.what = UP_LAMP_DATA;
+                        tempMsg.obj = lampData;
+                        myHandler.sendMessage(tempMsg);
+
+
+                    }
+                }, token, requestBody);
+
+                // 控制灯杆
+                // String uri =  "https://iot.sz-luoding.com:2890/api/device/control";
+                String uri = "https://iot.sz-luoding.com:888/api/device/control";
+                String param2 = "{\"UUID\": \"" + uuid + "\",\"Confirm\": 260,\"options\": {\"Dimming\":" + 70 + "}}";
+                String param3 = "{\"UUID\": \"" + uuid + "\",\"Confirm\": 260,\"options\": {\"Dimming\":" + 70 + "}}";
+                sendOrder(param2, uri);
 
             }
         }).start();
 
     }
 
+    private void sendOrder(String param, String url) {
+
+
+        RequestBody requestBody = FormBody.create(param, MediaType.parse("application/json"));
+        HttpUtil.sendHttpRequest(url, new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                showToast("连接服务器异常！");
+            }
+
+            @Override
+            public void onResponse(Call call, final Response response) throws IOException {
+                String data = response.body().string();
+                LogUtil.e("xx data = " + data);
+                if (data.equals("OK")) {
+                    showToast("指令发送成功~");
+                } else {
+                    showToast("指令发送失败，请检查当前网络~");
+                }
+
+            }
+        }, token, requestBody);
+    }
+
+    private void connect(final BleDevice bleDevice, final CountDownLatch latch) {
+
+        //让latch中的数值减一
+        // latch.countDown();
+
+        // 连接蓝牙
+        BleManager.getInstance().connect(bleDevice, new BleGattCallback() {
+            @Override
+            public void onStartConnect() {
+
+            }
+
+            @Override
+            public void onConnectFail(BleDevice bleDevice, BleException exception) {
+                //让latch中的数值减一
+                latch.countDown();
+            }
+
+            // 连接成功
+            @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
+            @Override
+            public void onConnectSuccess(BleDevice bleDevice, BluetoothGatt gatt, int status) {
+                try {
+                    BlePusher.writeSpliceOrder(new byte[]{0, 31}, null, new BleWriteCallback() {
+                        @Override
+                        public void onWriteSuccess(int current, int total, byte[] data) {
+
+                            try {
+
+                                byte[] deviceId = new byte[23];
+                                System.arraycopy(data, 5, deviceId, 0, 23);
+                                String txt = new String(deviceId, "ascii");
+                                if (uuid.equals(txt)) {
+                                    LogUtil.e("xxx 匹配成功");
+                                    isSearch = false; // 停止继续搜索
+                                } else {
+                                    LogUtil.e("xxx 匹配失败" + uuid + " : " + txt);
+                                }
+                                // 销毁时清空所有蓝牙连接
+                                BleManager.getInstance().disconnectAllDevice();
+                                //让latch中的数值减一
+                                latch.countDown();
+
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                LogUtil.e("xxx Exception = " + e.getMessage().toString());
+                            }
+
+
+                        }
+
+                        @Override
+                        public void onWriteFailure(BleException exception) {
+                            if (exception instanceof TimeoutException) {
+                                showToast("写入失败: 当前蓝牙信号较弱，请尝试靠近~");
+                            } else {
+                                showToast("写入失败:" + exception.toString());
+                            }
+                        }
+                    }, true);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    LogUtil.e("xxx Exception = " + e.getMessage().toString());
+                }
+
+            }
+
+            @Override
+            public void onDisConnected(boolean isActiveDisConnected, BleDevice bleDevice, BluetoothGatt gatt, int status) {
+
+
+            }
+        });
+    }
+
 
     private byte[] payload;
+
     private void readNfcTag(Intent intent) {
 
         if (NfcAdapter.ACTION_NDEF_DISCOVERED.equals(intent.getAction())) {
