@@ -116,6 +116,7 @@ public class NfcFragment extends BaseBleFragment {
     private static final int STOP_WRITE_NFC = 24;
     private static final int UP_BULE_STATE = 25;
     private static final int UP_LAMP_DATA = 26;
+    private static final int UP_FIRDIMMING = 27;
     private static final String TAG = "NfcFragment";
 
 
@@ -144,7 +145,7 @@ public class NfcFragment extends BaseBleFragment {
     private String token = null;
     private Context mContext;
     /// static private NFCTag mTag;
-    private TextView blueState, tv1, tv2, tv3, tv4, tv5, tv6, tv7, tv8, tv9, tv10, tv11, tv12, tv13, tv14, tv15, tv16, tv17;
+    private TextView blueState, tv1, tv2, tv3, tv4, tv5, tv6, tv7, tv8, tv9, tv10, tv11, tv12, tv13, tv14, tv15, tv16, tv17,tv18;
 
     private String cxml = "\n" +
             "<当前读取信息>\n" +
@@ -297,6 +298,12 @@ public class NfcFragment extends BaseBleFragment {
                         tv17.setText("" +lampData.getData().getTime());
                     }
 
+                    break;
+                case UP_FIRDIMMING:
+
+                    if (checkAlertDialog.isShowing()) {
+                        tv18.setText("光照度上传:正常");
+                    }
                     break;
             }
 
@@ -1284,16 +1291,20 @@ public class NfcFragment extends BaseBleFragment {
         tv15 = (TextView) view.findViewById(R.id.tv_15);
         tv16 = (TextView) view.findViewById(R.id.tv_16);
         tv17 = (TextView) view.findViewById(R.id.tv_17);
+        tv18 = (TextView) view.findViewById(R.id.tv_18);
 
         checkAlertDialog = new AlertDialog.Builder(mContext).setTitle("提示")
                 .setView(view)
                 .setCancelable(false)
-                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                .setNegativeButton("确定", new DialogInterface.OnClickListener() {
 
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
-
+                        // 销毁时清空所有蓝牙连接
+                        BleManager.getInstance().disconnectAllDevice();
+                        // 清空nfc数据
+                        clearInterface();
                     }
                 }).create();
 
@@ -1403,16 +1414,16 @@ public class NfcFragment extends BaseBleFragment {
                 // 控制灯杆
                 // String uri =  "https://iot.sz-luoding.com:2890/api/device/control";
                 final String uriControl = "https://iot.sz-luoding.com:888/api/device/control";
-                String param2 = "{\"UUID\": \"" + uuid + "\",\"Confirm\": 260,\"options\": {\"Dimming\":" + 72 + "}}";
-                String param3 = "{\"UUID\": \"" + uuid + "\",\"Confirm\": 260,\"options\": {\"Dimming\":" + 0 + "}}";
+                final String param2 = "{\"UUID\": \"" + uuid + "\",\"Confirm\": 260,\"options\": {\"Dimming\":" + 75 + "}}";
+                final String param3 = "{\"UUID\": \"" + uuid + "\",\"Confirm\": 260,\"options\": {\"Dimming\":" + 0 + "}}";
                 sendOrder(param2, uriControl);
 
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
 
+                        isEnd = false;
                         for (int i = 0; i < 3; i++) {
-
                             LogUtil.e("xx  isEnd 执行");
                             final CountDownLatch latch = new CountDownLatch(1);
                             HttpUtil.sendHttpRequest(uriViewByUUID, new Callback() {
@@ -1437,8 +1448,9 @@ public class NfcFragment extends BaseBleFragment {
                                     myHandler.sendMessage(tempMsg);
 
                                     lampData.getData().getFirDimming();
-                                    if( lampData.getData().getFirDimming() == 71){
+                                    if( lampData.getData().getFirDimming() == 75){
                                         LogUtil.e("xx  isEnd 匹配成功");
+                                        myHandler.sendEmptyMessage(UP_FIRDIMMING);
                                         isEnd = true;
                                     }
 
@@ -1456,10 +1468,12 @@ public class NfcFragment extends BaseBleFragment {
                             }
 
                             if (isEnd){
+                                // 发送关灯
+                                sendOrder(param3, uriControl);
                                 break;
                             }else{
                                 try {
-                                    Thread.sleep(1000);
+                                    Thread.sleep(2000);
                                 } catch (InterruptedException e) {
                                     e.printStackTrace();
                                 }
@@ -1489,11 +1503,11 @@ public class NfcFragment extends BaseBleFragment {
             public void onResponse(Call call, final Response response) throws IOException {
                 String data = response.body().string();
                 LogUtil.e("xx data = " + data);
-                if (data.equals("OK")) {
+               /* if (data.equals("OK")) {
                     showToast("指令发送成功~");
                 } else {
                     showToast("指令发送失败，请检查当前网络~");
-                }
+                }*/
 
             }
         }, token, requestBody);
