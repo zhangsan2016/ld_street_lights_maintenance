@@ -14,6 +14,7 @@ import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.os.Parcelable;
 import android.util.Log;
@@ -40,7 +41,11 @@ import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
+import com.clj.fastble.BleManager;
+import com.clj.fastble.callback.BleScanCallback;
+import com.clj.fastble.data.BleDevice;
 import com.example.ld_street_lights_maintenance.R;
+import com.example.ld_street_lights_maintenance.act.NfcNdefActivity;
 import com.example.ld_street_lights_maintenance.base.BaseBleFragment;
 import com.example.ld_street_lights_maintenance.entity.LoginInfo;
 import com.example.ld_street_lights_maintenance.util.BytesUtil;
@@ -65,6 +70,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
@@ -1168,16 +1174,111 @@ public class NfcFragment extends BaseBleFragment {
                     // 初始化进度条
                     initProgressBar();
                     fis.close();
+
                 }
+
+                // 解析xml文件，得到所有参数
+                // 解析xml文件，获取url
+                FileInputStream inputStream = new FileInputStream(cacheFile);
+                List<DataDictionaries> dataDictionaries = NfcDataUtil.parseXml2(inputStream);
+                for (DataDictionaries dataDictionarie : dataDictionaries) {
+                    if (dataDictionarie.getName().equals("项目地区")) {
+                        regionN = dataDictionarie.getXmValue();
+                    } else if (dataDictionarie.getName().equals("项目编号")) {
+                        proN = dataDictionarie.getXmValue();
+                    } else if (dataDictionarie.getName().equals("IMEI")) {
+                        imei = dataDictionarie.getXmValue();
+                    }
+                }
+                uuid = regionN + proN + imei;
+                LogUtil.e("xxxx = " + uuid );
+                // 测试代码
+                showCheckAlertDialog();
 
             } catch (Exception e) {
                 e.printStackTrace();
+                System.out.println("xxxx Exception " + e.getMessage().toString());
             }
         } else {
             Toast.makeText(mContext, "读取失败！", Toast.LENGTH_SHORT).show();
         }
     }
 
+
+
+    private List<BleDevice> bleDeviceList = new ArrayList<>();
+    private void showCheckAlertDialog() {
+
+        /*Looper.prepare();
+        Looper.loop();*/
+
+        // 写入提示框
+        View view = View.inflate(mContext, R.layout.alert_check_dialog_item, null);
+        AlertDialog checkAlertDialog = new AlertDialog.Builder(mContext).setTitle("提示")
+                .setView(view)
+                .setCancelable(false)
+                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+
+                    }
+                }).create();
+
+        // 显示Dialog
+        checkAlertDialog.show();
+
+        // 获取蓝牙设备
+        bleDeviceList.clear();
+        BleManager.getInstance().scan(new BleScanCallback() {
+
+            // 开始寻找蓝牙
+            @Override
+            public void onScanStarted(boolean success) {
+
+            }
+
+            @Override
+            public void onLeScan(BleDevice bleDevice) {
+                super.onLeScan(bleDevice);
+            }
+
+            @Override
+            public void onScanning(BleDevice bleDevice) {
+
+                if (bleDevice.getDevice().toString().contains("84:C2:E4")) {
+                    LogUtil.e(" xxxxxxxxxxxx onScanning = " + Arrays.toString(bleDevice.getScanRecord()));
+                    bleDeviceList.add(bleDevice);
+                }
+            }
+
+            // 扫描结束
+            @Override
+            public void onScanFinished(List<BleDevice> scanResultList) {
+
+            }
+        });
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+                try {
+                    Thread.sleep(1000);
+                    BleManager.getInstance().cancelScan();
+                    LogUtil.e("xxxxxxxxxxxx bleDeviceList.size() =" + bleDeviceList.size());
+
+
+
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }).start();
+
+    }
 
 
     private byte[] payload;
