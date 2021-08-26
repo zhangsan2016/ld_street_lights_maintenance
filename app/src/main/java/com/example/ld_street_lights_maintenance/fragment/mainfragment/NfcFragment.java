@@ -275,24 +275,27 @@ public class NfcFragment extends BaseBleFragment {
                     }
                     break;
                 case UP_LAMP_DATA:
-                    LampData lampData = (LampData) msg.obj;
-                    tv1.setText("" +lampData.getData().getFirDimming());
-                    tv2.setText("" +lampData.getData().getGprs_csq());
-                    tv3.setText("" +lampData.getData().getEnergy());
-                    tv4.setText("" +lampData.getData().getIllu());
-                    tv5.setText("" +lampData.getData().getLeak_curt());
-                    tv6.setText("" +lampData.getData().getPower());
-                    tv7.setText("" +lampData.getData().getPower_Factor());
-                    tv8.setText("" +lampData.getData().getTemp());
-                    tv9.setText("" +lampData.getData().getVoltage());
-                    tv10.setText("" +lampData.getData().getELE_Warning_type());
-                    tv11.setText("" +lampData.getData().getWarning_state());
-                    tv12.setText("" +lampData.getData().getRESET_COUNT());
-                    tv13.setText("" +lampData.getData().getVersion());
-                    tv14.setText("" +lampData.getData().getGPS_CLOSETIME());
-                    tv15.setText("" +lampData.getData().getGPS_OPENTIME());
-                    tv16.setText("" +lampData.getData().getSIM_CCID());
-                    tv17.setText("" +lampData.getData().getTime());
+
+                    if (checkAlertDialog.isShowing()) {
+                        LampData lampData = (LampData) msg.obj;
+                        tv1.setText("" +lampData.getData().getFirDimming());
+                        tv2.setText("" +lampData.getData().getGprs_csq());
+                        tv3.setText("" +lampData.getData().getEnergy());
+                        tv4.setText("" +lampData.getData().getIllu());
+                        tv5.setText("" +lampData.getData().getLeak_curt());
+                        tv6.setText("" +lampData.getData().getPower());
+                        tv7.setText("" +lampData.getData().getPower_Factor());
+                        tv8.setText("" +lampData.getData().getTemp());
+                        tv9.setText("" +lampData.getData().getVoltage());
+                        tv10.setText("" +lampData.getData().getELE_Warning_type());
+                        tv11.setText("" +lampData.getData().getWarning_state());
+                        tv12.setText("" +lampData.getData().getRESET_COUNT());
+                        tv13.setText("" +lampData.getData().getVersion());
+                        tv14.setText("" +lampData.getData().getGPS_CLOSETIME());
+                        tv15.setText("" +lampData.getData().getGPS_OPENTIME());
+                        tv16.setText("" +lampData.getData().getSIM_CCID());
+                        tv17.setText("" +lampData.getData().getTime());
+                    }
 
                     break;
             }
@@ -1253,7 +1256,7 @@ public class NfcFragment extends BaseBleFragment {
 
     private List<BleDevice> bleDeviceList = new ArrayList<>();
     private boolean isSearch = true;  // 是否继续向下检索蓝牙设备
-
+    boolean isEnd = false;  // 光照度上传判断，是否继续获取光照度
     private void showCheckAlertDialog() {
 
         /*Looper.prepare();
@@ -1371,9 +1374,9 @@ public class NfcFragment extends BaseBleFragment {
                 }
 
                 // 获取灯杆信息
-                String uriViewByUUID = "https://iot.sz-luoding.com:888/api/device/viewByUUID";
+                final String uriViewByUUID = "https://iot.sz-luoding.com:888/api/device/viewByUUID";
                 String param1 = "{\"UUID\": \"" + uuid + "\"}";
-                RequestBody requestBody = FormBody.create(param1, MediaType.parse("application/json"));
+                final RequestBody requestBody = FormBody.create(param1, MediaType.parse("application/json"));
                 HttpUtil.sendHttpRequest(uriViewByUUID, new Callback() {
                     @Override
                     public void onFailure(Call call, IOException e) {
@@ -1386,7 +1389,7 @@ public class NfcFragment extends BaseBleFragment {
                         String json = response.body().string();
                         Gson gson = new Gson();
                         LampData lampData = gson.fromJson(json, LampData.class);
-                        LogUtil.e("xxx lampData = " + lampData.getData());
+                        LogUtil.e("xxx lampData1 = " + lampData.getData());
                         // 通过 Handle 更新 AlertDialog
                         Message tempMsg = myHandler.obtainMessage();
                         tempMsg.what = UP_LAMP_DATA;
@@ -1399,10 +1402,73 @@ public class NfcFragment extends BaseBleFragment {
 
                 // 控制灯杆
                 // String uri =  "https://iot.sz-luoding.com:2890/api/device/control";
-                String uri = "https://iot.sz-luoding.com:888/api/device/control";
-                String param2 = "{\"UUID\": \"" + uuid + "\",\"Confirm\": 260,\"options\": {\"Dimming\":" + 70 + "}}";
-                String param3 = "{\"UUID\": \"" + uuid + "\",\"Confirm\": 260,\"options\": {\"Dimming\":" + 70 + "}}";
-                sendOrder(param2, uri);
+                final String uriControl = "https://iot.sz-luoding.com:888/api/device/control";
+                String param2 = "{\"UUID\": \"" + uuid + "\",\"Confirm\": 260,\"options\": {\"Dimming\":" + 72 + "}}";
+                String param3 = "{\"UUID\": \"" + uuid + "\",\"Confirm\": 260,\"options\": {\"Dimming\":" + 0 + "}}";
+                sendOrder(param2, uriControl);
+
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        for (int i = 0; i < 3; i++) {
+
+                            LogUtil.e("xx  isEnd 执行");
+                            final CountDownLatch latch = new CountDownLatch(1);
+                            HttpUtil.sendHttpRequest(uriViewByUUID, new Callback() {
+                                @Override
+                                public void onFailure(Call call, IOException e) {
+                                    showToast("连接服务器异常！");
+                                    //让latch中的数值减一
+                                    latch.countDown();
+                                }
+
+                                @Override
+                                public void onResponse(Call call, final Response response) throws IOException {
+
+                                    String json = response.body().string();
+                                    Gson gson = new Gson();
+                                    LampData lampData = gson.fromJson(json, LampData.class);
+                                    LogUtil.e("xxx lampData2 = " + lampData.getData());
+                                    // 通过 Handle 更新 AlertDialog
+                                    Message tempMsg = myHandler.obtainMessage();
+                                    tempMsg.what = UP_LAMP_DATA;
+                                    tempMsg.obj = lampData;
+                                    myHandler.sendMessage(tempMsg);
+
+                                    lampData.getData().getFirDimming();
+                                    if( lampData.getData().getFirDimming() == 71){
+                                        LogUtil.e("xx  isEnd 匹配成功");
+                                        isEnd = true;
+                                    }
+
+                                    //让latch中的数值减一
+                                    latch.countDown();
+
+                                }
+
+                            }, token, requestBody);
+
+                            try {
+                                latch.await();
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+
+                            if (isEnd){
+                                break;
+                            }else{
+                                try {
+                                    Thread.sleep(1000);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+
+
+                        }
+                    }
+                }).start();
 
             }
         }).start();
