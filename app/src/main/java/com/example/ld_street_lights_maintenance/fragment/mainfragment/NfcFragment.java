@@ -1352,10 +1352,11 @@ public class NfcFragment extends BaseBleFragment {
 
                 try {
                     Thread.sleep(1000);
-                    BleManager.getInstance().cancelScan();
+                    BleManager.getInstance().cancelScan(); // 蓝牙停止扫描
                     LogUtil.e("xxxxxxxxxxxx bleDeviceList.size() =" + bleDeviceList.size());
 
 
+                    // 设备根据信号强弱排序
                     Collections.sort(bleDeviceList, new Comparator<BleDevice>() {
                         @Override
                         public int compare(BleDevice o1, BleDevice o2) {
@@ -1372,6 +1373,7 @@ public class NfcFragment extends BaseBleFragment {
                         LogUtil.e("xxx " + bleDeviceList.get(i).getDevice().toString());
                     }
 
+                    isSearch = true;
                     for (int i = 0; i < bleDeviceList.size(); i++) {
                         final CountDownLatch latch = new CountDownLatch(1);
                         connect(bleDeviceList.get(i), latch);
@@ -1439,6 +1441,9 @@ public class NfcFragment extends BaseBleFragment {
                             loopIlluCheck(uriViewByUUID, requestBody, uriControl, param3, param4,75,latch2);
                             latch2.await();
 
+                            if(!isEnd){
+                                return;
+                            }
                             Thread.sleep(10000);
                             // 亮灯100
                             sendOrder(param4, uriControl);
@@ -1446,6 +1451,9 @@ public class NfcFragment extends BaseBleFragment {
                             loopIlluCheck(uriViewByUUID, requestBody, uriControl, param3, param4,100,latch3);
                             latch3.await();
 
+                            if(!isEnd){
+                                return;
+                            }
                             Thread.sleep(10000);
                             // 发送关灯
                             sendOrder(param3, uriControl);
@@ -1641,6 +1649,8 @@ public class NfcFragment extends BaseBleFragment {
 
                                     isSearch = false; // 停止继续搜索
                                 } else {
+                                    // 销毁时清空所有蓝牙连接
+                                    BleManager.getInstance().disconnectAllDevice();
                                     LogUtil.e("xxx UUID匹配失败" + uuid + " : " + txt);
                                 }
                                 //让latch中的数值减一
