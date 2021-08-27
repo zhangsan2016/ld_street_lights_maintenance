@@ -145,7 +145,7 @@ public class NfcFragment extends BaseBleFragment {
     private String token = null;
     private Context mContext;
     /// static private NFCTag mTag;
-    private TextView blueState, tv1, tv2, tv3, tv4, tv5, tv6, tv7, tv8, tv9, tv10, tv11, tv12, tv13, tv14, tv15, tv16, tv17,tv18;
+    private TextView blueState, tv1, tv2, tv3, tv4, tv5, tv6, tv7, tv8, tv9, tv10, tv11, tv12, tv13, tv14, tv15, tv16, tv17,tv18,tv_19;
 
     private String cxml = "\n" +
             "<当前读取信息>\n" +
