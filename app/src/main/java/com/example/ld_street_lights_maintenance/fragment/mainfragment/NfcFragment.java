@@ -1384,6 +1384,12 @@ public class NfcFragment extends BaseBleFragment {
                     e.printStackTrace();
                 }
 
+                List<BleDevice> bleDevices = BleManager.getInstance().getAllConnectedDevice();
+                if(bleDevices.size() > 0){
+                    showToast("蓝牙连接失败~");
+                    return;
+                }
+
                 // 获取灯杆信息
                 final String uriViewByUUID = "https://iot.sz-luoding.com:888/api/device/viewByUUID";
                 String param1 = "{\"UUID\": \"" + uuid + "\"}";
@@ -1419,54 +1425,89 @@ public class NfcFragment extends BaseBleFragment {
                 final String param4 = "{\"UUID\": \"" + uuid + "\",\"Confirm\": 260,\"options\": {\"Dimming\":" + 100 + "}}";
                 sendOrder(param2, uriControl);
 
+
+
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
+                        try {
+                            CountDownLatch latch2 = new CountDownLatch(1);
+                            loopIlluCheck(uriViewByUUID, requestBody, uriControl, param3, param4,75,latch2);
+                            latch2.await();
 
-                        isEnd = false;
-                        for (int i = 0; i < 4; i++) {
-                            LogUtil.e("xx  isEnd 执行");
-                            final CountDownLatch latch = new CountDownLatch(1);
-                            checkIllu(latch, uriViewByUUID, requestBody,75);
+                            Thread.sleep(10000);
+                            // 亮灯100
+                            sendOrder(param4, uriControl);
+                            CountDownLatch latch3 = new CountDownLatch(1);
+                            loopIlluCheck(uriViewByUUID, requestBody, uriControl, param3, param4,100,latch3);
+                            latch3.await();
 
-                            try {
-                                latch.await();
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
+                            Thread.sleep(10000);
+                            // 发送关灯
+                            sendOrder(param3, uriControl);
+                            myHandler.sendEmptyMessage(UP_FIRDIMMING);
+                            showToast("设备测试正常~");
 
-                            if (isEnd){
-                                try {
-                                    Thread.sleep(10000);
-                                    // 亮灯100
-                                    sendOrder(param4, uriControl);
-
-                                    Thread.sleep(10000);
-                                    // 发送关灯
-                                    sendOrder(param3, uriControl);
-                                    showToast("设备测试正常~");
-                                } catch (InterruptedException e) {
-                                    e.printStackTrace();
-                                }
-
-                                break;
-                            }else{
-                                try {
-                                    Thread.sleep(2500);
-                                } catch (InterruptedException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-
-
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                            showToast("发生异常"+ e.getMessage().toString());
                         }
                     }
                 }).start();
+
 
             }
         }).start();
 
     }
+
+    private void loopIlluCheck(final String uriViewByUUID, final RequestBody requestBody, final String uriControl, final String param3, final String param4, final int illu, final CountDownLatch latch2) {
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+                isEnd = false;
+                for (int i = 0; i < 5; i++) {
+                    LogUtil.e("xx  isEnd 执行");
+                    final CountDownLatch latch = new CountDownLatch(1);
+                    checkIllu(latch, uriViewByUUID, requestBody,illu);
+
+                    try {
+                        latch.await();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+
+                    if (isEnd){
+                        try {
+                            //让latch中的数值减一
+                            latch2.countDown();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
+                        break;
+                    }else{
+                        try {
+                            Thread.sleep(2500);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+
+                }
+
+                if(!isEnd){
+                    showToast("光照度上传超时");
+                }
+
+            }
+        }).start();
+
+    }
+
 
     private void checkIllu(final CountDownLatch latch, String uriViewByUUID, RequestBody requestBody, final int illu) {
         HttpUtil.sendHttpRequest(uriViewByUUID, new Callback() {
@@ -1492,8 +1533,7 @@ public class NfcFragment extends BaseBleFragment {
 
                 lampData.getData().getFirDimming();
                 if( lampData.getData().getFirDimming() == illu){
-                    LogUtil.e("xx  isEnd 匹配成功");
-                    myHandler.sendEmptyMessage(UP_FIRDIMMING);
+                    LogUtil.e("xx  isEnd 匹配成功 " + illu);
                     isEnd = true;
                 }
 
