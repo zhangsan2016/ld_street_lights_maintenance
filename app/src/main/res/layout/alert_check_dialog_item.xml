@@ -25,7 +25,7 @@
         android:layout_gravity="center"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
-        android:text="当前设备状态:" />
+        android:text="当前设备状态 : " />
 
 
     <ScrollView
@@ -48,7 +48,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="UUID:" />
+                    android:text="UUID : " />
 
                 <TextView
                     android:id="@+id/tv_19"
@@ -69,7 +69,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="亮度值:" />
+                    android:text="亮度值 : " />
 
                 <TextView
                     android:id="@+id/tv_1"
@@ -90,7 +90,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="电压:" />
+                    android:text="电压 : " />
 
                 <TextView
                     android:id="@+id/tv_9"
@@ -110,7 +110,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="功率:" />
+                    android:text="功率 : " />
 
                 <TextView
                     android:id="@+id/tv_6"
@@ -130,7 +130,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="功率因数:" />
+                    android:text="功率因数 : " />
 
                 <TextView
                     android:id="@+id/tv_7"
@@ -150,7 +150,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="漏电流:" />
+                    android:text="漏电流 : " />
 
                 <TextView
                     android:id="@+id/tv_5"
@@ -170,7 +170,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="电能:" />
+                    android:text="电能 : " />
 
                 <TextView
                     android:id="@+id/tv_2"
@@ -190,7 +190,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="电参报警:" />
+                    android:text="电参报警 : " />
 
                 <TextView
                     android:id="@+id/tv_10"
@@ -210,7 +210,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="报警:" />
+                    android:text="报警 : " />
 
                 <TextView
                     android:id="@+id/tv_11"
@@ -230,7 +230,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="信号值:" />
+                    android:text="信号值 : " />
 
                 <TextView
                     android:id="@+id/tv_3"
@@ -250,7 +250,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="照度值:" />
+                    android:text="照度值 : " />
 
                 <TextView
                     android:id="@+id/tv_4"
@@ -271,7 +271,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="温度:" />
+                    android:text="温度 : " />
 
                 <TextView
                     android:id="@+id/tv_8"
@@ -292,7 +292,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="重启次数:" />
+                    android:text="重启次数 : " />
 
                 <TextView
                     android:id="@+id/tv_12"
@@ -312,7 +312,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="版本号:" />
+                    android:text="版本号 : " />
 
                 <TextView
                     android:id="@+id/tv_13"
@@ -332,7 +332,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="GPS关灯时间:" />
+                    android:text="GPS关灯时间 : " />
 
                 <TextView
                     android:id="@+id/tv_14"
@@ -352,7 +352,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="GPS开灯时间:" />
+                    android:text="GPS开灯时间 : " />
 
                 <TextView
                     android:id="@+id/tv_15"
@@ -372,7 +372,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="卡号:" />
+                    android:text="卡号 : " />
 
                 <TextView
                     android:id="@+id/tv_16"
@@ -392,7 +392,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="时间:" />
+                    android:text="时间 : " />
 
                 <TextView
                     android:id="@+id/tv_17"
