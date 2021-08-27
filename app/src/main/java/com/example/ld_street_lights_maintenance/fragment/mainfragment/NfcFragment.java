@@ -145,7 +145,7 @@ public class NfcFragment extends BaseBleFragment {
     private String token = null;
     private Context mContext;
     /// static private NFCTag mTag;
-    private TextView blueState, tv1, tv2, tv3, tv4, tv5, tv6, tv7, tv8, tv9, tv10, tv11, tv12, tv13, tv14, tv15, tv16, tv17,tv18,tv_19;
+    private TextView blueState, tv1, tv2, tv3, tv4, tv5, tv6, tv7, tv8, tv9, tv10, tv11, tv12, tv13, tv14, tv15, tv16, tv17,tv18,tv19;
 
     private String cxml = "\n" +
             "<当前读取信息>\n" +
@@ -295,7 +295,7 @@ public class NfcFragment extends BaseBleFragment {
                         tv14.setText("" +lampData.getData().getGPS_CLOSETIME());
                         tv15.setText("" +lampData.getData().getGPS_OPENTIME());
                         tv16.setText("" +lampData.getData().getSIM_CCID());
-                        tv17.setText("" +lampData.getData().getTime());
+                       // tv17.setText("" +lampData.getData().getTime());
                     }
 
                     break;
@@ -1292,6 +1292,7 @@ public class NfcFragment extends BaseBleFragment {
         tv16 = (TextView) view.findViewById(R.id.tv_16);
         tv17 = (TextView) view.findViewById(R.id.tv_17);
         tv18 = (TextView) view.findViewById(R.id.tv_18);
+        tv19 = (TextView) view.findViewById(R.id.tv_19);
 
         checkAlertDialog = new AlertDialog.Builder(mContext).setTitle("提示")
                 .setView(view)
@@ -1310,6 +1311,9 @@ public class NfcFragment extends BaseBleFragment {
 
         // 显示Dialog
         checkAlertDialog.show();
+        // 设置当前 uuid
+        tv19.setText(uuid + "");
+
 
         // 获取蓝牙设备
         bleDeviceList.clear();
@@ -1385,7 +1389,7 @@ public class NfcFragment extends BaseBleFragment {
                 }
 
                 List<BleDevice> bleDevices = BleManager.getInstance().getAllConnectedDevice();
-                if(bleDevices.size() > 0){
+                if(bleDevices.size() <= 0){
                     showToast("蓝牙连接失败~");
                     return;
                 }
@@ -1591,24 +1595,54 @@ public class NfcFragment extends BaseBleFragment {
             @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
             @Override
             public void onConnectSuccess(BleDevice bleDevice, BluetoothGatt gatt, int status) {
+
+
                 try {
                     BlePusher.writeSpliceOrder(new byte[]{0, 31}, null, new BleWriteCallback() {
                         @Override
                         public void onWriteSuccess(int current, int total, byte[] data) {
 
+                            // 蓝牙设备匹配
                             try {
-
                                 byte[] deviceId = new byte[23];
                                 System.arraycopy(data, 5, deviceId, 0, 23);
                                 String txt = new String(deviceId, "ascii");
                                 if (uuid.equals(txt)) {
-                                    LogUtil.e("xxx 匹配成功");
+                                    LogUtil.e("xxx UUID匹配成功");
+
+                                    // 通过蓝牙获取获取设备时间
+                                    new Thread(new Runnable() {
+                                        @Override
+                                        public void run() {
+
+                                            try {
+                                                Thread.sleep(500);
+                                                BleManager.getInstance().getAllConnectedDevice();
+                                                BlePusher.writeSpliceOrder(new byte[]{0, 19}, null, new BleWriteCallback() {
+                                                    @Override
+                                                    public void onWriteSuccess(int current, int total, byte[] data) {
+                                                        LogUtil.e("xxxxxxxxxxxxxxxx 蓝牙时间 " + Arrays.toString(data));
+                                                        String txt = "" + "20" + data[5] + "年" + data[6] + "月" + data[7] + "日" + " " + data[8] + ":" + data[9] + ":" + data[10] ;
+                                                        tv17.setText(txt);
+
+                                                    }
+                                                    @Override
+                                                    public void onWriteFailure(BleException exception) {
+                                                        tv17.setText("获取时间失败");
+
+                                                    }
+                                                }, true);
+                                            } catch (Exception e) {
+                                                e.printStackTrace();
+                                                LogUtil.e("xxx Exception = " + e.getMessage().toString());
+                                            }
+                                        }
+                                    }).start();
+
                                     isSearch = false; // 停止继续搜索
                                 } else {
-                                    LogUtil.e("xxx 匹配失败" + uuid + " : " + txt);
+                                    LogUtil.e("xxx UUID匹配失败" + uuid + " : " + txt);
                                 }
-                                // 销毁时清空所有蓝牙连接
-                                BleManager.getInstance().disconnectAllDevice();
                                 //让latch中的数值减一
                                 latch.countDown();
 
