@@ -4,6 +4,7 @@
 
 
     <!-- 路灯维护客户端 -->
+    <!-- 路灯维护测试1 ：校验蓝牙连接，亮度值上传匹配，开关灯，校验后关闭 -->
 
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.USE_CREDENTIALS" />
