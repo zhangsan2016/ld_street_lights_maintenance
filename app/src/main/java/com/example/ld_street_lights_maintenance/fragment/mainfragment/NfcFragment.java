@@ -1416,6 +1416,7 @@ public class NfcFragment extends BaseBleFragment {
                 final String uriControl = "https://iot.sz-luoding.com:888/api/device/control";
                 final String param2 = "{\"UUID\": \"" + uuid + "\",\"Confirm\": 260,\"options\": {\"Dimming\":" + 75 + "}}";
                 final String param3 = "{\"UUID\": \"" + uuid + "\",\"Confirm\": 260,\"options\": {\"Dimming\":" + 0 + "}}";
+                final String param4 = "{\"UUID\": \"" + uuid + "\",\"Confirm\": 260,\"options\": {\"Dimming\":" + 100 + "}}";
                 sendOrder(param2, uriControl);
 
                 new Thread(new Runnable() {
@@ -1423,7 +1424,7 @@ public class NfcFragment extends BaseBleFragment {
                     public void run() {
 
                         isEnd = false;
-                        for (int i = 0; i < 3; i++) {
+                        for (int i = 0; i < 4; i++) {
                             LogUtil.e("xx  isEnd 执行");
                             final CountDownLatch latch = new CountDownLatch(1);
                             HttpUtil.sendHttpRequest(uriViewByUUID, new Callback() {
@@ -1468,8 +1469,18 @@ public class NfcFragment extends BaseBleFragment {
                             }
 
                             if (isEnd){
-                                // 发送关灯
-                                sendOrder(param3, uriControl);
+                                try {
+                                    Thread.sleep(10000);
+                                    // 亮灯100
+                                    sendOrder(param4, uriControl);
+                                    Thread.sleep(10000);
+                                    // 发送关灯
+                                    sendOrder(param3, uriControl);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+
+                                showToast("设备测试正常~");
                                 break;
                             }else{
                                 try {
