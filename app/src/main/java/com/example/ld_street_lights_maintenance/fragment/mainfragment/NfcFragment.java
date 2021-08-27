@@ -280,8 +280,8 @@ public class NfcFragment extends BaseBleFragment {
                     if (checkAlertDialog.isShowing()) {
                         LampData lampData = (LampData) msg.obj;
                         tv1.setText("" +lampData.getData().getFirDimming());
-                        tv2.setText("" +lampData.getData().getGprs_csq());
-                        tv3.setText("" +lampData.getData().getEnergy());
+                        tv2.setText("" +lampData.getData().getEnergy());
+                        tv3.setText("" +lampData.getData().getGprs_csq());
                         tv4.setText("" +lampData.getData().getIllu());
                         tv5.setText("" +lampData.getData().getLeak_curt());
                         tv6.setText("" +lampData.getData().getPower());
