@@ -1427,40 +1427,7 @@ public class NfcFragment extends BaseBleFragment {
                         for (int i = 0; i < 4; i++) {
                             LogUtil.e("xx  isEnd 执行");
                             final CountDownLatch latch = new CountDownLatch(1);
-                            HttpUtil.sendHttpRequest(uriViewByUUID, new Callback() {
-                                @Override
-                                public void onFailure(Call call, IOException e) {
-                                    showToast("连接服务器异常！");
-                                    //让latch中的数值减一
-                                    latch.countDown();
-                                }
-
-                                @Override
-                                public void onResponse(Call call, final Response response) throws IOException {
-
-                                    String json = response.body().string();
-                                    Gson gson = new Gson();
-                                    LampData lampData = gson.fromJson(json, LampData.class);
-                                    LogUtil.e("xxx lampData2 = " + lampData.getData());
-                                    // 通过 Handle 更新 AlertDialog
-                                    Message tempMsg = myHandler.obtainMessage();
-                                    tempMsg.what = UP_LAMP_DATA;
-                                    tempMsg.obj = lampData;
-                                    myHandler.sendMessage(tempMsg);
-
-                                    lampData.getData().getFirDimming();
-                                    if( lampData.getData().getFirDimming() == 75){
-                                        LogUtil.e("xx  isEnd 匹配成功");
-                                        myHandler.sendEmptyMessage(UP_FIRDIMMING);
-                                        isEnd = true;
-                                    }
-
-                                    //让latch中的数值减一
-                                    latch.countDown();
-
-                                }
-
-                            }, token, requestBody);
+                            checkIllu(latch, uriViewByUUID, requestBody,75);
 
                             try {
                                 latch.await();
@@ -1473,18 +1440,19 @@ public class NfcFragment extends BaseBleFragment {
                                     Thread.sleep(10000);
                                     // 亮灯100
                                     sendOrder(param4, uriControl);
+
                                     Thread.sleep(10000);
                                     // 发送关灯
                                     sendOrder(param3, uriControl);
+                                    showToast("设备测试正常~");
                                 } catch (InterruptedException e) {
                                     e.printStackTrace();
                                 }
 
-                                showToast("设备测试正常~");
                                 break;
                             }else{
                                 try {
-                                    Thread.sleep(3000);
+                                    Thread.sleep(2500);
                                 } catch (InterruptedException e) {
                                     e.printStackTrace();
                                 }
@@ -1498,6 +1466,43 @@ public class NfcFragment extends BaseBleFragment {
             }
         }).start();
 
+    }
+
+    private void checkIllu(final CountDownLatch latch, String uriViewByUUID, RequestBody requestBody, final int illu) {
+        HttpUtil.sendHttpRequest(uriViewByUUID, new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                showToast("连接服务器异常！");
+                //让latch中的数值减一
+                latch.countDown();
+            }
+
+            @Override
+            public void onResponse(Call call, final Response response) throws IOException {
+
+                String json = response.body().string();
+                Gson gson = new Gson();
+                LampData lampData = gson.fromJson(json, LampData.class);
+                LogUtil.e("xxx lampData2 = " + lampData.getData());
+                // 通过 Handle 更新 AlertDialog
+                Message tempMsg = myHandler.obtainMessage();
+                tempMsg.what = UP_LAMP_DATA;
+                tempMsg.obj = lampData;
+                myHandler.sendMessage(tempMsg);
+
+                lampData.getData().getFirDimming();
+                if( lampData.getData().getFirDimming() == illu){
+                    LogUtil.e("xx  isEnd 匹配成功");
+                    myHandler.sendEmptyMessage(UP_FIRDIMMING);
+                    isEnd = true;
+                }
+
+                //让latch中的数值减一
+                latch.countDown();
+
+            }
+
+        }, token, requestBody);
     }
 
     private void sendOrder(String param, String url) {
