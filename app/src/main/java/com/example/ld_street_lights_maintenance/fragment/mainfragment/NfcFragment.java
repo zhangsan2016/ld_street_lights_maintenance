@@ -1247,9 +1247,13 @@ public class NfcFragment extends BaseBleFragment {
                     }
                 }
                 uuid = regionN + proN + imei;
-                LogUtil.e("xxxx = " + uuid);
-                // 测试代码
-                showCheckAlertDialog();
+
+                if(!checkAlertDialog.isShowing()){
+                    LogUtil.e("xxxx = " + uuid);
+                    // 测试代码
+                    showCheckAlertDialog();
+                }
+
 
             } catch (Exception e) {
                 e.printStackTrace();
