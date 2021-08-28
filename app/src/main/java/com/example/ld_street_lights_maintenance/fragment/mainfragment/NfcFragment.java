@@ -87,6 +87,7 @@ import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -300,6 +301,48 @@ public class NfcFragment extends BaseBleFragment {
                         tv15.setText("" + lampData.getData().getGPS_OPENTIME());
                         tv16.setText("" + lampData.getData().getSIM_CCID());
                         // tv17.setText("" +lampData.getData().getTime());
+
+                        // 验证数据
+                        if (lampData.getData().getEnergy() != 0) {
+                            tv2.setBackgroundResource(R.color.red);
+                        }
+                        if (lampData.getData().getGprs_csq() <= 10) {
+                            tv3.setBackgroundResource(R.color.red);
+                        }
+                        if (lampData.getData().getIllu() <= 0) {
+                            tv4.setBackgroundResource(R.color.red);
+                        }
+                        if (lampData.getData().getLeak_curt() != 0) {
+                            tv5.setBackgroundResource(R.color.red);
+                        }
+                        if (lampData.getData().getPower() < 0 || lampData.getData().getPower() > 3) {
+                            tv6.setBackgroundResource(R.color.red);
+                        }
+                        if (lampData.getData().getPower_Factor() != 0) {
+                            tv7.setBackgroundResource(R.color.red);
+                        }
+                        if (lampData.getData().getTemp() < 15 || lampData.getData().getTemp() > 40) {
+                            tv8.setBackgroundResource(R.color.red);
+                        }
+                        if (lampData.getData().getVoltage() < 200 || lampData.getData().getVoltage() > 250) {
+                            tv9.setBackgroundResource(R.color.red);
+                        }
+                        if (lampData.getData().getELE_Warning_type() != 0) {
+                            tv10.setBackgroundResource(R.color.red);
+                        }
+                        if (lampData.getData().getWarning_state() != 0) {
+                            tv11.setBackgroundResource(R.color.red);
+                        }
+                        if (lampData.getData().getRESET_COUNT() > 50) {
+                            tv12.setBackgroundResource(R.color.red);
+                        }
+                        if (lampData.getData().getGPS_CLOSETIME().equals("00:00")) {
+                            tv14.setBackgroundResource(R.color.red);
+                        }
+                        if (lampData.getData().getGPS_OPENTIME().equals("00:00")) {
+                            tv15.setBackgroundResource(R.color.red);
+                        }
+
                     }
 
                     break;
@@ -1255,7 +1298,7 @@ public class NfcFragment extends BaseBleFragment {
 
                 LogUtil.e("xxxx = " + uuid);
                 // 测试代码
-                if(checkAlertDialog== null || !checkAlertDialog.isShowing()){
+                if (checkAlertDialog == null || !checkAlertDialog.isShowing()) {
                     showCheckAlertDialog();
                 }
 
@@ -1285,7 +1328,7 @@ public class NfcFragment extends BaseBleFragment {
         View view = View.inflate(mContext, R.layout.alert_check_dialog_item, null);
         blueState = (TextView) view.findViewById(R.id.tv_blue_start);
         scrollView = (ScrollView) view.findViewById(R.id.scrollView);
-        ll_dialog   = (LinearLayout) view.findViewById(R.id.ll_dialog);
+        ll_dialog = (LinearLayout) view.findViewById(R.id.ll_dialog);
 
         tv1 = (TextView) view.findViewById(R.id.tv_1);
         tv2 = (TextView) view.findViewById(R.id.tv_2);
@@ -1322,7 +1365,10 @@ public class NfcFragment extends BaseBleFragment {
                         clearInterface();
 
                         // 关闭当前
-                        checkAlertDialog.dismiss();
+                        if(checkAlertDialog != null){
+                            checkAlertDialog.dismiss();
+                        }
+
                     }
                 }).create();
 
@@ -1475,7 +1521,7 @@ public class NfcFragment extends BaseBleFragment {
                             sendOrder(param3, uriControl);
                             myHandler.sendEmptyMessage(UP_FIRDIMMING);
 
-                          //  scrollView.setBackgroundColor(ContextCompat.getColor(mContext, R.color.colorAccent));
+                            //  scrollView.setBackgroundColor(ContextCompat.getColor(mContext, R.color.colorAccent));
                             ll_dialog.setBackgroundColor(ContextCompat.getColor(mContext, R.color.colorAccent));
                             showToast("设备测试正常~");
 
@@ -1650,6 +1696,20 @@ public class NfcFragment extends BaseBleFragment {
                                                     public void onWriteSuccess(int current, int total, byte[] data) {
                                                         LogUtil.e("xxxxxxxxxxxxxxxx 蓝牙时间 " + Arrays.toString(data));
                                                         String txt = "" + "20" + data[5] + "年" + data[6] + "月" + data[7] + "日" + " " + data[8] + ":" + data[9] + ":" + data[10];
+
+                                                        //获取系统的 日期
+                                                        Calendar calendar = Calendar.getInstance();
+                                                        int year = calendar.get(Calendar.YEAR);//年
+                                                        int month = calendar.get(Calendar.MONTH) + 1;//月
+                                                        int day = calendar.get(Calendar.DAY_OF_MONTH);//日
+                                                        int hour = calendar.get(Calendar.HOUR_OF_DAY);//小时
+                                                        int minute = calendar.get(Calendar.MINUTE);//分钟
+                                                        int second = calendar.get(Calendar.SECOND);//秒
+
+                                                        if(data[6] != month || data[7] != day || data[8] != hour || data[9] != minute){
+                                                            tv17.setBackgroundResource(R.color.red);
+                                                        }
+
                                                         tv17.setText(txt);
 
                                                     }
