@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.nfc.NdefMessage;
 import android.nfc.NdefRecord;
@@ -29,6 +30,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
@@ -145,7 +147,9 @@ public class NfcFragment extends BaseBleFragment {
     private String token = null;
     private Context mContext;
     /// static private NFCTag mTag;
-    private TextView blueState, tv1, tv2, tv3, tv4, tv5, tv6, tv7, tv8, tv9, tv10, tv11, tv12, tv13, tv14, tv15, tv16, tv17,tv18,tv19;
+    private ScrollView scrollView;
+    private LinearLayout ll_dialog;
+    private TextView blueState, tv1, tv2, tv3, tv4, tv5, tv6, tv7, tv8, tv9, tv10, tv11, tv12, tv13, tv14, tv15, tv16, tv17, tv18, tv19;
 
     private String cxml = "\n" +
             "<当前读取信息>\n" +
@@ -279,23 +283,23 @@ public class NfcFragment extends BaseBleFragment {
 
                     if (checkAlertDialog.isShowing()) {
                         LampData lampData = (LampData) msg.obj;
-                        tv1.setText("" +lampData.getData().getFirDimming());
-                        tv2.setText("" +lampData.getData().getEnergy());
-                        tv3.setText("" +lampData.getData().getGprs_csq());
-                        tv4.setText("" +lampData.getData().getIllu());
-                        tv5.setText("" +lampData.getData().getLeak_curt());
-                        tv6.setText("" +lampData.getData().getPower());
-                        tv7.setText("" +lampData.getData().getPower_Factor());
-                        tv8.setText("" +lampData.getData().getTemp());
-                        tv9.setText("" +lampData.getData().getVoltage());
-                        tv10.setText("" +lampData.getData().getELE_Warning_type());
-                        tv11.setText("" +lampData.getData().getWarning_state());
-                        tv12.setText("" +lampData.getData().getRESET_COUNT());
-                        tv13.setText("" +lampData.getData().getVersion());
-                        tv14.setText("" +lampData.getData().getGPS_CLOSETIME());
-                        tv15.setText("" +lampData.getData().getGPS_OPENTIME());
-                        tv16.setText("" +lampData.getData().getSIM_CCID());
-                       // tv17.setText("" +lampData.getData().getTime());
+                        tv1.setText("" + lampData.getData().getFirDimming());
+                        tv2.setText("" + lampData.getData().getEnergy());
+                        tv3.setText("" + lampData.getData().getGprs_csq());
+                        tv4.setText("" + lampData.getData().getIllu());
+                        tv5.setText("" + lampData.getData().getLeak_curt());
+                        tv6.setText("" + lampData.getData().getPower());
+                        tv7.setText("" + lampData.getData().getPower_Factor());
+                        tv8.setText("" + lampData.getData().getTemp());
+                        tv9.setText("" + lampData.getData().getVoltage());
+                        tv10.setText("" + lampData.getData().getELE_Warning_type());
+                        tv11.setText("" + lampData.getData().getWarning_state());
+                        tv12.setText("" + lampData.getData().getRESET_COUNT());
+                        tv13.setText("" + lampData.getData().getVersion());
+                        tv14.setText("" + lampData.getData().getGPS_CLOSETIME());
+                        tv15.setText("" + lampData.getData().getGPS_OPENTIME());
+                        tv16.setText("" + lampData.getData().getSIM_CCID());
+                        // tv17.setText("" +lampData.getData().getTime());
                     }
 
                     break;
@@ -1248,9 +1252,10 @@ public class NfcFragment extends BaseBleFragment {
                 }
                 uuid = regionN + proN + imei;
 
-                if(!checkAlertDialog.isShowing()){
-                    LogUtil.e("xxxx = " + uuid);
-                    // 测试代码
+
+                LogUtil.e("xxxx = " + uuid);
+                // 测试代码
+                if(checkAlertDialog== null || !checkAlertDialog.isShowing()){
                     showCheckAlertDialog();
                 }
 
@@ -1268,6 +1273,7 @@ public class NfcFragment extends BaseBleFragment {
     private List<BleDevice> bleDeviceList = new ArrayList<>();
     private boolean isSearch = true;  // 是否继续向下检索蓝牙设备
     boolean isEnd = false;  // 光照度上传判断，是否继续获取光照度
+
     private void showCheckAlertDialog() {
 
         /*Looper.prepare();
@@ -1278,6 +1284,9 @@ public class NfcFragment extends BaseBleFragment {
         // 写入提示框
         View view = View.inflate(mContext, R.layout.alert_check_dialog_item, null);
         blueState = (TextView) view.findViewById(R.id.tv_blue_start);
+        scrollView = (ScrollView) view.findViewById(R.id.scrollView);
+        ll_dialog   = (LinearLayout) view.findViewById(R.id.ll_dialog);
+
         tv1 = (TextView) view.findViewById(R.id.tv_1);
         tv2 = (TextView) view.findViewById(R.id.tv_2);
         tv3 = (TextView) view.findViewById(R.id.tv_3);
@@ -1298,6 +1307,7 @@ public class NfcFragment extends BaseBleFragment {
         tv18 = (TextView) view.findViewById(R.id.tv_18);
         tv19 = (TextView) view.findViewById(R.id.tv_19);
 
+
         checkAlertDialog = new AlertDialog.Builder(mContext).setTitle("提示")
                 .setView(view)
                 .setCancelable(false)
@@ -1310,6 +1320,9 @@ public class NfcFragment extends BaseBleFragment {
                         BleManager.getInstance().disconnectAllDevice();
                         // 清空nfc数据
                         clearInterface();
+
+                        // 关闭当前
+                        checkAlertDialog.dismiss();
                     }
                 }).create();
 
@@ -1395,7 +1408,7 @@ public class NfcFragment extends BaseBleFragment {
                 }
 
                 List<BleDevice> bleDevices = BleManager.getInstance().getAllConnectedDevice();
-                if(bleDevices.size() <= 0){
+                if (bleDevices.size() <= 0) {
                     showToast("蓝牙连接失败~");
                     return;
                 }
@@ -1436,37 +1449,39 @@ public class NfcFragment extends BaseBleFragment {
                 sendOrder(param2, uriControl);
 
 
-
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
                         try {
                             CountDownLatch latch2 = new CountDownLatch(1);
-                            loopIlluCheck(uriViewByUUID, requestBody, uriControl, param3, param4,75,latch2);
+                            loopIlluCheck(uriViewByUUID, requestBody, uriControl, param3, param4, 75, latch2);
                             latch2.await();
 
-                            if(!isEnd){
+                            if (!isEnd) {
                                 return;
                             }
                             Thread.sleep(10000);
                             // 亮灯100
                             sendOrder(param4, uriControl);
                             CountDownLatch latch3 = new CountDownLatch(1);
-                            loopIlluCheck(uriViewByUUID, requestBody, uriControl, param3, param4,100,latch3);
+                            loopIlluCheck(uriViewByUUID, requestBody, uriControl, param3, param4, 100, latch3);
                             latch3.await();
 
-                            if(!isEnd){
+                            if (!isEnd) {
                                 return;
                             }
                             Thread.sleep(10000);
                             // 发送关灯
                             sendOrder(param3, uriControl);
                             myHandler.sendEmptyMessage(UP_FIRDIMMING);
+
+                          //  scrollView.setBackgroundColor(ContextCompat.getColor(mContext, R.color.colorAccent));
+                            ll_dialog.setBackgroundColor(ContextCompat.getColor(mContext, R.color.colorAccent));
                             showToast("设备测试正常~");
 
                         } catch (InterruptedException e) {
                             e.printStackTrace();
-                            showToast("发生异常"+ e.getMessage().toString());
+                            showToast("发生异常" + e.getMessage().toString());
                         }
                     }
                 }).start();
@@ -1487,7 +1502,7 @@ public class NfcFragment extends BaseBleFragment {
                 for (int i = 0; i < 5; i++) {
                     LogUtil.e("xx  isEnd 执行");
                     final CountDownLatch latch = new CountDownLatch(1);
-                    checkIllu(latch, uriViewByUUID, requestBody,illu);
+                    checkIllu(latch, uriViewByUUID, requestBody, illu);
 
                     try {
                         latch.await();
@@ -1495,7 +1510,7 @@ public class NfcFragment extends BaseBleFragment {
                         e.printStackTrace();
                     }
 
-                    if (isEnd){
+                    if (isEnd) {
                         try {
                             //让latch中的数值减一
                             latch2.countDown();
@@ -1504,7 +1519,7 @@ public class NfcFragment extends BaseBleFragment {
                         }
 
                         break;
-                    }else{
+                    } else {
                         try {
                             Thread.sleep(2500);
                         } catch (InterruptedException e) {
@@ -1515,7 +1530,7 @@ public class NfcFragment extends BaseBleFragment {
 
                 }
 
-                if(!isEnd){
+                if (!isEnd) {
                     showToast("光照度上传超时");
                 }
 
@@ -1548,7 +1563,7 @@ public class NfcFragment extends BaseBleFragment {
                 myHandler.sendMessage(tempMsg);
 
                 lampData.getData().getFirDimming();
-                if( lampData.getData().getFirDimming() == illu){
+                if (lampData.getData().getFirDimming() == illu) {
                     LogUtil.e("xx  isEnd 匹配成功 " + illu);
                     isEnd = true;
                 }
@@ -1634,10 +1649,11 @@ public class NfcFragment extends BaseBleFragment {
                                                     @Override
                                                     public void onWriteSuccess(int current, int total, byte[] data) {
                                                         LogUtil.e("xxxxxxxxxxxxxxxx 蓝牙时间 " + Arrays.toString(data));
-                                                        String txt = "" + "20" + data[5] + "年" + data[6] + "月" + data[7] + "日" + " " + data[8] + ":" + data[9] + ":" + data[10] ;
+                                                        String txt = "" + "20" + data[5] + "年" + data[6] + "月" + data[7] + "日" + " " + data[8] + ":" + data[9] + ":" + data[10];
                                                         tv17.setText(txt);
 
                                                     }
+
                                                     @Override
                                                     public void onWriteFailure(BleException exception) {
                                                         tv17.setText("获取时间失败");
