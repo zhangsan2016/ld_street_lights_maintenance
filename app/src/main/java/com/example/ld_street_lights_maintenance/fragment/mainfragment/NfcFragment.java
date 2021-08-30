@@ -120,6 +120,7 @@ public class NfcFragment extends BaseBleFragment {
     private static final int UP_BULE_STATE = 25;
     private static final int UP_LAMP_DATA = 26;
     private static final int UP_FIRDIMMING = 27;
+    private static  final int DEVICE_CHECK_FINISH = 28;
     private static final String TAG = "NfcFragment";
 
 
@@ -350,6 +351,11 @@ public class NfcFragment extends BaseBleFragment {
 
                     if (checkAlertDialog.isShowing()) {
                         tv18.setText("光照度上传:正常");
+                    }
+                    break;
+                case DEVICE_CHECK_FINISH:
+                    if (checkAlertDialog.isShowing()) {
+                        ll_dialog.setBackgroundColor(ContextCompat.getColor(mContext, R.color.colorAccent));
                     }
                     break;
             }
@@ -1522,7 +1528,8 @@ public class NfcFragment extends BaseBleFragment {
                             myHandler.sendEmptyMessage(UP_FIRDIMMING);
 
                             //  scrollView.setBackgroundColor(ContextCompat.getColor(mContext, R.color.colorAccent));
-                            ll_dialog.setBackgroundColor(ContextCompat.getColor(mContext, R.color.colorAccent));
+                            // ll_dialog.setBackgroundColor(ContextCompat.getColor(mContext, R.color.colorAccent));
+                            myHandler.sendEmptyMessage(DEVICE_CHECK_FINISH);
                             showToast("设备测试正常~");
 
                         } catch (InterruptedException e) {
@@ -1706,7 +1713,7 @@ public class NfcFragment extends BaseBleFragment {
                                                         int minute = calendar.get(Calendar.MINUTE);//分钟
                                                         int second = calendar.get(Calendar.SECOND);//秒
 
-                                                        if(data[6] != month || data[7] != day || data[8] != hour || data[9] != minute){
+                                                        if(data[6] != month || data[7] != day || data[8] != hour || (data[9] - minute) > 1){
                                                             tv17.setBackgroundResource(R.color.red);
                                                         }
 
