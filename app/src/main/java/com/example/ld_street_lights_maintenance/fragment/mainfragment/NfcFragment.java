@@ -120,7 +120,7 @@ public class NfcFragment extends BaseBleFragment {
     private static final int UP_BULE_STATE = 25;
     private static final int UP_LAMP_DATA = 26;
     private static final int UP_FIRDIMMING = 27;
-    private static  final int DEVICE_CHECK_FINISH = 28;
+    private static final int DEVICE_CHECK_FINISH = 28;
     private static final String TAG = "NfcFragment";
 
 
@@ -337,11 +337,15 @@ public class NfcFragment extends BaseBleFragment {
                         if (lampData.getData().getRESET_COUNT() > 50) {
                             tv12.setBackgroundResource(R.color.red);
                         }
-                        if (lampData.getData().getGPS_CLOSETIME().equals("00:00")) {
-                            tv14.setBackgroundResource(R.color.red);
+                        if (lampData.getData().getGPS_CLOSETIME() != null) {
+                            if (lampData.getData().getGPS_CLOSETIME().equals("00:00")) {
+                                tv14.setBackgroundResource(R.color.red);
+                            }
                         }
-                        if (lampData.getData().getGPS_OPENTIME().equals("00:00")) {
-                            tv15.setBackgroundResource(R.color.red);
+                        if (lampData.getData().getGPS_OPENTIME() != null) {
+                            if (lampData.getData().getGPS_OPENTIME().equals("00:00")) {
+                                tv15.setBackgroundResource(R.color.red);
+                            }
                         }
 
                     }
@@ -1371,7 +1375,7 @@ public class NfcFragment extends BaseBleFragment {
                         clearInterface();
 
                         // 关闭当前
-                        if(checkAlertDialog != null){
+                        if (checkAlertDialog != null) {
                             checkAlertDialog.dismiss();
                         }
 
@@ -1552,7 +1556,7 @@ public class NfcFragment extends BaseBleFragment {
             public void run() {
 
                 isEnd = false;
-                for (int i = 0; i < 5; i++) {
+                for (int i = 0; i < 10; i++) {
                     LogUtil.e("xx  isEnd 执行");
                     final CountDownLatch latch = new CountDownLatch(1);
                     checkIllu(latch, uriViewByUUID, requestBody, illu);
@@ -1713,7 +1717,7 @@ public class NfcFragment extends BaseBleFragment {
                                                         int minute = calendar.get(Calendar.MINUTE);//分钟
                                                         int second = calendar.get(Calendar.SECOND);//秒
 
-                                                        if(data[6] != month || data[7] != day || data[8] != hour || (data[9] - minute) > 1){
+                                                        if (data[6] != month || data[7] != day || data[8] != hour || (data[9] - minute) > 1) {
                                                             tv17.setBackgroundResource(R.color.red);
                                                         }
 
