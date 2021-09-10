@@ -91,7 +91,13 @@ public class MapFragment extends BaseFragment implements ClusterRender, AMap.OnM
             public void onResponse(Call call, final Response response) throws IOException {
                 try {
 
-                    ProjectInfo project =   MyApplication.gson.fromJson( response.body().string(), ProjectInfo.class);
+                    String data = response.body().string();
+                    ProjectInfo project =   MyApplication.gson.fromJson(data, ProjectInfo.class);
+
+                    if(project.getErrno() != 0){
+                      //  showToast("异常：" + project.getErrno());
+                        return;
+                    }
 
                     List<ProjectInfo.DataBeanX.DataBean> projectList =  project.getData().getData();
 

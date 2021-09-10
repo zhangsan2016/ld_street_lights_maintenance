@@ -72,7 +72,6 @@ public class LoginAct extends Activity {
             ((EditText) findViewById(R.id.txt_pass_word)).setText(password);
         }
 
-
         // 测试
         //((EditText) findViewById(R.id.txt_user_name)).setText("ldshow");
         //((EditText) findViewById(R.id.txt_pass_word)).setText("123456");
