@@ -1,23 +1,17 @@
 package com.example.ld_street_lights_maintenance.act;
 
 import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.Rect;
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.DisplayCutout;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowInsets;
 import android.view.WindowManager;
 import android.widget.PopupWindow;
 import android.widget.RadioButton;
@@ -34,7 +28,6 @@ import com.example.ld_street_lights_maintenance.R;
 import com.example.ld_street_lights_maintenance.adapter.MainTabAdapter;
 import com.example.ld_street_lights_maintenance.base.BaseMainActivity;
 import com.example.ld_street_lights_maintenance.fragment.mainfragment.NfcFragment;
-import com.example.ld_street_lights_maintenance.util.DensityUtil;
 import com.example.ld_street_lights_maintenance.util.LogUtil;
 import com.example.ld_street_lights_maintenance.view.LightingPlanningPopupUtils;
 import com.example.ld_street_lights_maintenance.view.OrderPhotoPopupUtils;
@@ -99,6 +92,7 @@ public class MainActivity extends BaseMainActivity {
 
 
     private void initView() {
+
 
         /// 设置 toobar
         setToobar();
